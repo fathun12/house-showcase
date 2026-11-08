@@ -9,5 +9,80 @@
     "language": {
       "label": "Language"
     }
+  },
+  "auth": {
+    "eyebrow": "Admin",
+    "title": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "invalid": "Wrong email or password."
+  },
+  "admin": {
+    "nav": {
+      "label": "Admin navigation",
+      "houses": "Houses",
+      "viewSite": "View site",
+      "signOut": "Sign out"
+    },
+    "houses": {
+      "eyebrow": "01 / Houses",
+      "title": "Houses",
+      "new": "New house",
+      "empty": "No houses yet. Start by adding a new house.",
+      "columns": {
+        "title": "Title",
+        "slug": "Slug",
+        "status": "Status",
+        "updated": "Updated"
+      },
+      "published": "Published",
+      "draft": "Draft"
+    },
+    "houseForm": {
+      "eyebrow": "01 / Houses",
+      "newTitle": "New house",
+      "editTitle": "Edit house",
+      "sections": {
+        "basics": "Basics",
+        "facts": "Numbers",
+        "story": "Story",
+        "publish": "Publish"
+      },
+      "fields": {
+        "slug": "Slug (URL address)",
+        "title": "Title",
+        "tagline": "Concept line",
+        "floors": "Floors",
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "area": "Area (m²)",
+        "order": "Order",
+        "why": "Why it suits our family",
+        "notes": "Architect notes",
+        "published": "Show on the public site"
+      },
+      "hints": {
+        "slug": "Lowercase letters, numbers and hyphens. Example: garden-house",
+        "published": "If unchecked, the house is only visible to you in the dashboard."
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "errors": {
+        "too_small": "Required, or the value is too small.",
+        "too_big": "Too long or too large.",
+        "invalid_format": "Wrong format.",
+        "invalid_type": "Must be a number.",
+        "duplicate": "This slug is already used by another house.",
+        "save_failed": "Could not save. Please try again.",
+        "invalid": "Invalid value."
+      },
+      "delete": {
+        "title": "Delete house",
+        "warning": "Deleting a house also deletes all its rooms and data. This cannot be undone.",
+        "confirm": "I understand, delete this house",
+        "submit": "Delete house"
+      }
+    }
   }
 }
