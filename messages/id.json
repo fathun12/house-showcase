@@ -116,7 +116,7 @@
         "rationale": "Alasan desain"
       },
       "hints": {
-        "position": "Menentukan urutan (00, 01, 02, ...) di tur dan denah."
+        "position": "Menentukan urutan tampil. Nomor di tur dan denah dihitung dari urutan ini (01, 02, 03, ...)."
       },
       "save": "Simpan",
       "cancel": "Batal",
@@ -165,6 +165,59 @@
         "deleteConfirm": "Hapus gambar ini?",
         "deleteYes": "Ya, hapus"
       }
+    }
+  },
+  "public": {
+    "header": {
+      "home": "House Showcase"
+    },
+    "hero": {
+      "label": "Visualisasi desain rumah"
+    },
+    "summary": {
+      "floors": "Lantai",
+      "bedrooms": "Kamar tidur",
+      "bathrooms": "Kamar mandi",
+      "area": "Luas (m²)"
+    },
+    "nav": {
+      "label": "Bagian halaman",
+      "floorplan": "Denah",
+      "rooms": "Ruangan",
+      "why": "Kenapa cocok",
+      "notes": "Catatan",
+      "gallery": "Galeri",
+      "compare": "Perbandingan"
+    },
+    "floorplan": {
+      "title": "Denah",
+      "legend": "Daftar ruangan"
+    },
+    "rooms": {
+      "title": "Tur ruangan",
+      "floor": "Lantai {floor}",
+      "rationale": "Alasan desain"
+    },
+    "why": {
+      "title": "Kenapa cocok untuk keluarga kita"
+    },
+    "notes": {
+      "title": "Catatan arsitek"
+    },
+    "gallery": {
+      "title": "Galeri"
+    },
+    "compare": {
+      "title": "Perbandingan opsi",
+      "indexTitle": "Pilihan rumah",
+      "house": "Rumah"
+    },
+    "empty": {
+      "title": "Belum ada rumah",
+      "text": "Rumah yang sudah diterbitkan akan tampil di sini."
+    },
+    "footer": {
+      "disclaimer": "Ini visualisasi desain, bukan gambar teknis. Ukuran, struktur, dan perizinan perlu disesuaikan oleh arsitek sebelum dibangun."
     }
   }
 }

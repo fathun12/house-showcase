@@ -58,3 +58,18 @@ export type Media = {
   position: number;
   created_at: string;
 };
+
+export type HouseSummary = Pick<
+  House,
+  | "id"
+  | "slug"
+  | "title_id"
+  | "title_en"
+  | "floors"
+  | "bedrooms"
+  | "bathrooms"
+  | "area_m2"
+  | "sort_order"
+>;
+
+export type PublicHouse = House & { rooms: Room[]; media: Media[] };

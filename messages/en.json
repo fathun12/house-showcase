@@ -116,7 +116,7 @@
         "rationale": "Design reasoning"
       },
       "hints": {
-        "position": "Sets the order (00, 01, 02, ...) in the tour and the floor plan."
+        "position": "Sets the display order. Numbers in the tour and floor plan are counted from this order (01, 02, 03, ...)."
       },
       "save": "Save",
       "cancel": "Cancel",
@@ -165,6 +165,59 @@
         "deleteConfirm": "Delete this image?",
         "deleteYes": "Yes, delete"
       }
+    }
+  },
+  "public": {
+    "header": {
+      "home": "House Showcase"
+    },
+    "hero": {
+      "label": "House design visualization"
+    },
+    "summary": {
+      "floors": "Floors",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "area": "Area (m²)"
+    },
+    "nav": {
+      "label": "Page sections",
+      "floorplan": "Floor plan",
+      "rooms": "Rooms",
+      "why": "Why it fits",
+      "notes": "Notes",
+      "gallery": "Gallery",
+      "compare": "Compare"
+    },
+    "floorplan": {
+      "title": "Floor plan",
+      "legend": "Room list"
+    },
+    "rooms": {
+      "title": "Room tour",
+      "floor": "Floor {floor}",
+      "rationale": "Design reasoning"
+    },
+    "why": {
+      "title": "Why it suits our family"
+    },
+    "notes": {
+      "title": "Architect notes"
+    },
+    "gallery": {
+      "title": "Gallery"
+    },
+    "compare": {
+      "title": "Comparing options",
+      "indexTitle": "Choose a house",
+      "house": "House"
+    },
+    "empty": {
+      "title": "No houses yet",
+      "text": "Published houses will appear here."
+    },
+    "footer": {
+      "disclaimer": "This is a design visualization, not a technical drawing. Sizes, structure and permits must be checked by an architect before building."
     }
   }
 }

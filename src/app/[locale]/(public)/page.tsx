@@ -1,6 +1,11 @@
 import { setRequestLocale } from "next-intl/server";
-import { LocaleSwitch } from "@/ui/shared/LocaleSwitch";
-import { ThemeSwitch } from "@/ui/shared/ThemeSwitch";
+import { getPublishedHouse, getPublishedHouses } from "@/features/houses/queries";
+import { buildHouseContent, buildSummaryRows } from "@/features/houses/view";
+import { Compare } from "@/ui/public/Compare";
+import { HousePage } from "@/ui/public/HousePage";
+
+// Safety net: admin changes also refresh this page immediately
+export const revalidate = 3600;
 
 export default async function HomePage({
   params,
@@ -10,15 +15,19 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const houses = await getPublishedHouses();
+
+  if (houses.length === 1) {
+    const house = await getPublishedHouse(houses[0].slug);
+
+    if (house) {
+      return <HousePage content={buildHouseContent(house, locale)} compare={[]} />;
+    }
+  }
+
   return (
-    <main className="gutter mx-auto max-w-page py-16">
-      <p className="label text-accent">00 / Setup</p>
-      <h1 className="heading mt-4 text-6xl">House Showcase</h1>
-      <hr className="my-8 border-t-2 border-foreground" />
-      <div className="flex flex-wrap gap-4">
-        <ThemeSwitch />
-        <LocaleSwitch />
-      </div>
-    </main>
+    <div className="gutter mx-auto max-w-page py-16">
+      <Compare as="h1" rows={buildSummaryRows(houses, locale)} />
+    </div>
   );
 }

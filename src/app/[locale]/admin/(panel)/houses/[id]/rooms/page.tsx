@@ -43,10 +43,10 @@ export default async function AdminRoomsPage({
             </tr>
           </thead>
           <tbody>
-            {rooms.map((room) => (
+            {rooms.map((room, index) => (
               <tr key={room.id}>
                 <Td className="font-mono text-sm">
-                  {String(room.position).padStart(2, "0")}
+                  {String(index + 1).padStart(2, "0")}
                 </Td>
                 <Td>
                   <Link

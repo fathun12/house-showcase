@@ -31,9 +31,9 @@ export async function saveHouse(
   const row = { ...parsed.data, sort_order: parsed.data.sort_order ?? 0 };
   const supabase = await createClient();
 
-  const { error } = houseId
-    ? await supabase.from("houses").update(row).eq("id", houseId)
-    : await supabase.from("houses").insert(row);
+  const { data, error } = houseId
+    ? await supabase.from("houses").update(row).eq("id", houseId).select("id").single()
+    : await supabase.from("houses").insert(row).select("id").single();
 
   if (error) {
     const code = error.code === "23505" ? "duplicate" : "save_failed";
@@ -43,7 +43,7 @@ export async function saveHouse(
   }
 
   revalidatePath("/", "layout");
-  return redirectLocalized("/admin/houses");
+  return redirectLocalized(houseId ? "/admin/houses" : `/admin/houses/${data.id}/rooms`);
 }
 
 export async function deleteHouse(houseId: string): Promise<void> {
