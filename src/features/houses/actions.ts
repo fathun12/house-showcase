@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirectLocalized, requireAdmin } from "@/features/auth/session";
+import { MEDIA_BUCKET } from "@/features/media/url";
 import { createClient } from "@/lib/supabase/server";
+import { readFormValues, toFieldErrors } from "@/lib/utils/validation";
 import { HOUSE_FIELDS, houseSchema, type HouseFormValues } from "./schema";
 
 export type HouseFormState = {
@@ -12,12 +14,6 @@ export type HouseFormState = {
   values: HouseFormValues | null;
 };
 
-function readValues(formData: FormData): HouseFormValues {
-  return Object.fromEntries(
-    HOUSE_FIELDS.map((field) => [field, String(formData.get(field) ?? "")]),
-  ) as HouseFormValues;
-}
-
 export async function saveHouse(
   houseId: string | null,
   _previous: HouseFormState,
@@ -25,18 +21,11 @@ export async function saveHouse(
 ): Promise<HouseFormState> {
   await requireAdmin();
 
-  const values = readValues(formData);
+  const values = readFormValues(formData, HOUSE_FIELDS);
   const parsed = houseSchema.safeParse(values);
 
   if (!parsed.success) {
-    const fieldErrors: Record<string, string> = {};
-
-    for (const issue of parsed.error.issues) {
-      const field = String(issue.path[0] ?? "form");
-      fieldErrors[field] ??= issue.code;
-    }
-
-    return { status: "error", fieldErrors, values };
+    return { status: "error", fieldErrors: toFieldErrors(parsed.error), values };
   }
 
   const row = { ...parsed.data, sort_order: parsed.data.sort_order ?? 0 };
@@ -61,6 +50,19 @@ export async function deleteHouse(houseId: string): Promise<void> {
   await requireAdmin();
 
   const supabase = await createClient();
+
+  // Deleting a house only deletes database rows, so remove its image files first
+  const { data: media } = await supabase
+    .from("media")
+    .select("storage_path")
+    .eq("house_id", houseId);
+
+  const paths = (media ?? []).map((item) => item.storage_path as string);
+
+  if (paths.length > 0) {
+    await supabase.storage.from(MEDIA_BUCKET).remove(paths);
+  }
+
   const { error } = await supabase.from("houses").delete().eq("id", houseId);
 
   if (error) throw new Error("Could not delete house");

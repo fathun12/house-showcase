@@ -83,6 +83,88 @@
         "confirm": "Saya paham, hapus rumah ini",
         "submit": "Hapus rumah"
       }
+    },
+    "tabs": {
+      "label": "Bagian rumah",
+      "details": "Detail",
+      "rooms": "Ruangan",
+      "media": "Gambar"
+    },
+    "rooms": {
+      "eyebrow": "Ruangan",
+      "new": "Ruangan baru",
+      "empty": "Belum ada ruangan. Tambahkan ruangan pertama.",
+      "columns": {
+        "number": "No.",
+        "name": "Nama",
+        "floor": "Lantai"
+      }
+    },
+    "roomForm": {
+      "eyebrow": "Ruangan",
+      "newTitle": "Ruangan baru",
+      "editTitle": "Ubah ruangan",
+      "sections": {
+        "basics": "Dasar",
+        "story": "Cerita"
+      },
+      "fields": {
+        "name": "Nama ruangan",
+        "floor": "Lantai",
+        "position": "Nomor urut",
+        "description": "Fungsi ruangan",
+        "rationale": "Alasan desain"
+      },
+      "hints": {
+        "position": "Menentukan urutan (00, 01, 02, ...) di tur dan denah."
+      },
+      "save": "Simpan",
+      "cancel": "Batal",
+      "errors": {
+        "too_small": "Wajib diisi, atau nilainya terlalu kecil.",
+        "too_big": "Terlalu panjang atau terlalu besar.",
+        "invalid_type": "Harus berupa angka.",
+        "save_failed": "Gagal menyimpan. Coba lagi.",
+        "invalid": "Isian tidak valid."
+      },
+      "delete": {
+        "title": "Hapus ruangan",
+        "warning": "Ruangan akan dihapus. Gambar yang terhubung ke ruangan ini tetap ada, tetapi tidak lagi terhubung ke ruangan mana pun.",
+        "confirm": "Saya paham, hapus ruangan ini",
+        "submit": "Hapus ruangan"
+      }
+    },
+    "media": {
+      "eyebrow": "Gambar",
+      "title": "Gambar",
+      "empty": "Belum ada gambar. Unggah screenshot pertama di atas.",
+      "kinds": {
+        "hero": "Gambar utama",
+        "floorplan": "Denah",
+        "room": "Foto ruangan",
+        "gallery": "Galeri"
+      },
+      "upload": {
+        "kind": "Jenis gambar",
+        "room": "Ruangan",
+        "noRoom": "(tanpa ruangan)",
+        "files": "Pilih gambar",
+        "submit": "Unggah",
+        "uploading": "Mengunggah {done} dari {total}...",
+        "done": "Selesai. Semua gambar terunggah.",
+        "failed": "{failed} gambar gagal diunggah.",
+        "hint": "Gambar otomatis dikecilkan dan diubah ke WebP sebelum diunggah. Gambar utama hanya satu: yang baru menggantikan yang lama."
+      },
+      "item": {
+        "alt": "Teks alternatif",
+        "caption": "Keterangan",
+        "position": "Urutan",
+        "room": "Ruangan",
+        "save": "Simpan",
+        "delete": "Hapus",
+        "deleteConfirm": "Hapus gambar ini?",
+        "deleteYes": "Ya, hapus"
+      }
     }
   }
 }

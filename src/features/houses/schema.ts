@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { optionalNumber, requiredText, text } from "@/lib/utils/validation";
 
 export const HOUSE_FIELDS = [
   "slug",
@@ -20,17 +21,6 @@ export const HOUSE_FIELDS = [
 
 export type HouseField = (typeof HOUSE_FIELDS)[number];
 export type HouseFormValues = Record<HouseField, string>;
-
-const text = (max: number) => z.string().trim().max(max);
-const requiredText = (max: number) => z.string().trim().min(1).max(max);
-
-// Empty string means "not filled" and becomes null
-const optionalNumber = (min: number, max: number, integer = false) =>
-  z
-    .string()
-    .trim()
-    .transform((value) => (value === "" ? null : Number(value)))
-    .pipe((integer ? z.number().int() : z.number()).min(min).max(max).nullable());
 
 export const houseSchema = z.object({
   slug: requiredText(80).regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),

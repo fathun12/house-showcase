@@ -5,6 +5,7 @@ import { getHouseById, isUuid } from "@/features/houses/queries";
 import { DeleteHouse } from "@/ui/admin/DeleteHouse";
 import { FormShell } from "@/ui/admin/FormShell";
 import { HouseForm } from "@/ui/admin/HouseForm";
+import { HouseTabs } from "@/ui/admin/HouseTabs";
 
 export default async function AdminHouseEditPage({
   params,
@@ -29,6 +30,7 @@ export default async function AdminHouseEditPage({
 
   return (
     <FormShell eyebrow={t("eyebrow")} title={t("editTitle")}>
+      <HouseTabs houseId={house.id} active="details" />
       <HouseForm house={house} />
       <DeleteHouse action={deleteHouse.bind(null, house.id)} />
     </FormShell>

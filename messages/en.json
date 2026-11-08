@@ -83,6 +83,88 @@
         "confirm": "I understand, delete this house",
         "submit": "Delete house"
       }
+    },
+    "tabs": {
+      "label": "House sections",
+      "details": "Details",
+      "rooms": "Rooms",
+      "media": "Images"
+    },
+    "rooms": {
+      "eyebrow": "Rooms",
+      "new": "New room",
+      "empty": "No rooms yet. Add the first room.",
+      "columns": {
+        "number": "No.",
+        "name": "Name",
+        "floor": "Floor"
+      }
+    },
+    "roomForm": {
+      "eyebrow": "Rooms",
+      "newTitle": "New room",
+      "editTitle": "Edit room",
+      "sections": {
+        "basics": "Basics",
+        "story": "Story"
+      },
+      "fields": {
+        "name": "Room name",
+        "floor": "Floor",
+        "position": "Order number",
+        "description": "What the room is for",
+        "rationale": "Design reasoning"
+      },
+      "hints": {
+        "position": "Sets the order (00, 01, 02, ...) in the tour and the floor plan."
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "errors": {
+        "too_small": "Required, or the value is too small.",
+        "too_big": "Too long or too large.",
+        "invalid_type": "Must be a number.",
+        "save_failed": "Could not save. Please try again.",
+        "invalid": "Invalid value."
+      },
+      "delete": {
+        "title": "Delete room",
+        "warning": "The room will be deleted. Images linked to this room stay, but are no longer linked to any room.",
+        "confirm": "I understand, delete this room",
+        "submit": "Delete room"
+      }
+    },
+    "media": {
+      "eyebrow": "Images",
+      "title": "Images",
+      "empty": "No images yet. Upload the first screenshot above.",
+      "kinds": {
+        "hero": "Main image",
+        "floorplan": "Floor plan",
+        "room": "Room photos",
+        "gallery": "Gallery"
+      },
+      "upload": {
+        "kind": "Image type",
+        "room": "Room",
+        "noRoom": "(no room)",
+        "files": "Choose images",
+        "submit": "Upload",
+        "uploading": "Uploading {done} of {total}...",
+        "done": "Done. All images uploaded.",
+        "failed": "{failed} images failed to upload.",
+        "hint": "Images are resized and converted to WebP before upload. There is only one main image: a new one replaces the old one."
+      },
+      "item": {
+        "alt": "Alt text",
+        "caption": "Caption",
+        "position": "Order",
+        "room": "Room",
+        "save": "Save",
+        "delete": "Delete",
+        "deleteConfirm": "Delete this image?",
+        "deleteYes": "Yes, delete"
+      }
     }
   }
 }

@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { House, HouseListItem } from "@/types/house";
 
@@ -33,4 +34,14 @@ export async function getHouseById(id: string): Promise<House | null> {
   if (error) throw new Error("Could not load house");
 
   return data;
+}
+
+/** For pages under a house: shows "not found" when the id is invalid or the house does not exist. */
+export async function getHouseOrNotFound(id: string): Promise<House> {
+  if (!isUuid(id)) notFound();
+
+  const house = await getHouseById(id);
+  if (!house) notFound();
+
+  return house;
 }
