@@ -1,26 +1,109 @@
 @import "tailwindcss";
 
+/* Dark mode is driven by the .dark class set by next-themes */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------
+   1. RAW TOKENS: change a value here and the whole site follows.
+   ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --muted: #6b6560;
+  --line: #0a0a0a;
+  --surface: #f4f1ec;
+  --accent: #b8502a; /* terracotta */
+  --accent-ink: #ffffff; /* text on top of accent */
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+}
+
+.dark {
+  --bg: #0a0a0a;
+  --fg: #f5f2ed;
+  --muted: #a19b94;
+  --line: #f5f2ed;
+  --surface: #151413;
+  --accent: #e0693c;
+  --accent-ink: #0a0a0a;
+}
+
+/* ------------------------------------------------------------------
+   2. TAILWIND THEME: only our palette, no rounding, no shadows.
+   ------------------------------------------------------------------ */
+@theme {
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+
+  --container-page: 80rem;
+
+  --default-transition-duration: 120ms;
+  --default-transition-timing-function: linear;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ------------------------------------------------------------------
+   3. BASE
+   ------------------------------------------------------------------ */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--line);
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------
+   4. SHARED UTILITIES: the house style in three words.
+   ------------------------------------------------------------------ */
+@utility gutter {
+  padding-inline: var(--gutter);
+}
+
+/* Small technical label, e.g. "03 / LIVING ROOM" */
+@utility label {
+  @apply font-mono text-xs uppercase tracking-[0.08em];
+}
+
+/* Heavy uppercase headline */
+@utility heading {
+  @apply font-extrabold uppercase tracking-tight;
+  line-height: 0.95;
 }

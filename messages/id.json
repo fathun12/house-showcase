@@ -1,0 +1,13 @@
+{
+  "common": {
+    "theme": {
+      "label": "Tema",
+      "light": "Terang",
+      "dark": "Gelap",
+      "system": "Sistem"
+    },
+    "language": {
+      "label": "Bahasa"
+    }
+  }
+}
