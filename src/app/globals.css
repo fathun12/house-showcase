@@ -130,20 +130,31 @@
   }
 }
 
+/* The room you jumped to starts as a filled terracotta number, then settles */
+@keyframes land {
+  from {
+    background-color: var(--accent);
+    color: var(--accent-ink);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .rise {
-    animation: fade-in 500ms ease-out;
+  html {
+    scroll-behavior: smooth;
   }
 
-  /* The image viewer fades in when it opens */
+  .rise {
+    animation: fade-in 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   .viewer-in {
     animation: fade-in 150ms ease-out;
   }
 
   :is(.reveal, .reveal-fade) {
     transition:
-      opacity 300ms ease-out,
-      translate 300ms ease-out;
+      opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      translate 700ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   :is(.reveal, .reveal-fade)[data-reveal="hidden"] {
@@ -151,6 +162,23 @@
   }
 
   .reveal[data-reveal="hidden"] {
-    translate: 0 12px;
+    translate: 0 20px;
+  }
+
+  /* Photos: the frame stays still, the picture settles into it. Only frames with overflow-hidden. */
+  .reveal-fade.overflow-hidden img {
+    transition: scale 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-fade.overflow-hidden[data-reveal="hidden"] img {
+    scale: 1.06;
+  }
+
+  .reveal-fade.overflow-hidden:not([data-reveal="hidden"]):hover img {
+    scale: 1.03;
+  }
+
+  :target .room-number {
+    animation: land 1200ms ease-out;
   }
 }

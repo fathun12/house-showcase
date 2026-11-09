@@ -15,10 +15,10 @@ export function SectionTitle({
   return (
     <>
       <Reveal aria-hidden kind="fade" className="h-0.5 bg-foreground group-first:hidden" />
-      <Reveal className="pt-12">
+      <Reveal className="pt-16 md:pt-24">
         <Tag>
           {number ? <span className="label block text-accent">{number}</span> : null}
-          <span className="heading mt-3 block text-4xl text-balance md:text-5xl">
+          <span className="heading mt-4 block text-5xl text-balance md:text-7xl">
             {children}
           </span>
         </Tag>
