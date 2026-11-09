@@ -16,7 +16,7 @@ type Props = {
 export function Hero({ brand, title, tagline, facts, image, next }: Props) {
   return (
     <section className="gutter mx-auto max-w-page pt-6 md:pt-10">
-      <div className={cn("grid bg-foreground text-background", image && "md:grid-cols-12")}>
+      <div className={cn("rise grid bg-foreground text-background", image && "md:grid-cols-12")}>
         {image ? (
           <figure className="relative aspect-video md:order-2 md:col-span-5 md:aspect-auto md:min-h-[32rem]">
             <Image

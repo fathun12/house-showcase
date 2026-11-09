@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { ImageView, RoomView } from "@/features/houses/view";
 import { SectionTitle } from "@/ui/public/SectionTitle";
+import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
   number: string;
@@ -13,15 +14,12 @@ export function FloorPlan({ number, plans, rooms }: Props) {
   const t = useTranslations("public.floorplan");
 
   return (
-    <section
-      id="floorplan"
-      className="scroll-mt-20 border-t-2 border-foreground py-12 first:border-t-0"
-    >
+    <section id="floorplan" className="group scroll-mt-20 pb-12">
       <SectionTitle number={number}>{t("title")}</SectionTitle>
 
       <div className="mt-8 flex flex-col gap-8">
         {plans.map((plan) => (
-          <figure key={plan.src} className="reveal border-2 border-foreground">
+          <Reveal as="figure" key={plan.src} delay={160} className="border-2 border-foreground">
             <Image
               src={plan.src}
               alt={plan.alt}
@@ -35,7 +33,7 @@ export function FloorPlan({ number, plans, rooms }: Props) {
                 {plan.caption}
               </figcaption>
             ) : null}
-          </figure>
+          </Reveal>
         ))}
       </div>
 

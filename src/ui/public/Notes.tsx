@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils/cn";
 import { SectionTitle } from "@/ui/public/SectionTitle";
+import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
   id: string;
@@ -12,19 +13,17 @@ type Props = {
 
 export function Notes({ id, number, title, body, emphasis }: Props) {
   return (
-    <section
-      id={id}
-      className="scroll-mt-20 border-t-2 border-foreground py-12 first:border-t-0"
-    >
+    <section id={id} className="group scroll-mt-20 pb-12">
       <SectionTitle number={number}>{title}</SectionTitle>
-      <div
+      <Reveal
+        delay={160}
         className={cn(
-          "reveal mt-8 max-w-3xl text-lg leading-relaxed whitespace-pre-line md:text-xl",
+          "mt-8 max-w-3xl text-lg leading-relaxed whitespace-pre-line md:text-xl",
           emphasis && "border-2 border-accent p-6",
         )}
       >
         {body}
-      </div>
+      </Reveal>
     </section>
   );
 }

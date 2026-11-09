@@ -108,4 +108,39 @@
   line-height: 0.95;
 }
 
-/* 5. MOTION: none for now. To be designed together before building. */
+/* ------------------------------------------------------------------
+   5. MOTION: short, once, and it never moves the layout.
+   - .rise: the hero box fades in when the page opens.
+   - .reveal / .reveal-line: fade in / draw a line the first time something
+     scrolls into view. useReveal sets data-reveal="hidden" only on things that
+     start below the fold, so without JavaScript everything stays visible.
+   - With reduced motion none of this applies.
+   ------------------------------------------------------------------ */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: fade-in 300ms ease-out;
+  }
+
+  .reveal {
+    transition: opacity 150ms ease-out;
+  }
+
+  .reveal[data-reveal="hidden"] {
+    opacity: 0;
+  }
+
+  .reveal-line {
+    transform-origin: left;
+    transition: transform 180ms ease-out;
+  }
+
+  .reveal-line[data-reveal="hidden"] {
+    transform: scaleX(0);
+  }
+}

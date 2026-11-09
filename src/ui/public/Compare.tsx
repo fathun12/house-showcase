@@ -4,6 +4,7 @@ import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils/cn";
 import { SectionTitle } from "@/ui/public/SectionTitle";
 import { Table, Td, Th } from "@/ui/primitives/Table";
+import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
   rows: SummaryRow[];
@@ -26,15 +27,12 @@ export function Compare({ rows, as = "h2", number, currentSlug }: Props) {
   }
 
   return (
-    <section
-      id="compare"
-      className="scroll-mt-20 border-t-2 border-foreground py-12 first:border-t-0"
-    >
+    <section id="compare" className="group scroll-mt-20 pb-12">
       <SectionTitle as={as} number={number}>
         {as === "h1" ? t("compare.indexTitle") : t("compare.title")}
       </SectionTitle>
 
-      <div className="reveal mt-8">
+      <Reveal delay={160} className="mt-8">
         <Table>
           <thead>
             <tr>
@@ -68,7 +66,7 @@ export function Compare({ rows, as = "h2", number, currentSlug }: Props) {
             ))}
           </tbody>
         </Table>
-      </div>
+      </Reveal>
     </section>
   );
 }

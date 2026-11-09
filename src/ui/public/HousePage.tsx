@@ -8,6 +8,7 @@ import { Notes } from "@/ui/public/Notes";
 import { RoomSection } from "@/ui/public/RoomSection";
 import { SectionIndex } from "@/ui/public/SectionIndex";
 import { SectionTitle } from "@/ui/public/SectionTitle";
+import { Reveal } from "@/ui/shared/Reveal";
 
 type Section = { id: string; label: string };
 
@@ -70,16 +71,14 @@ export function HousePage({ content, compare }: Props) {
             ) : null}
 
             {has("rooms") ? (
-              <section
-                id="rooms"
-                className="scroll-mt-20 border-t-2 border-foreground pt-12 pb-6 first:border-t-0"
-              >
+              <section id="rooms" className="group scroll-mt-20 pb-6">
                 <SectionTitle number={numberOf("rooms")}>{t("rooms.title")}</SectionTitle>
                 <div className="mt-8">
-                  {content.rooms.map((room) => (
+                  {content.rooms.map((room, index) => (
                     <RoomSection
                       key={room.id}
                       room={room}
+                      delay={index === 0 ? 160 : 0}
                       floorLabel={
                         room.floor !== null ? t("rooms.floor", { floor: room.floor }) : null
                       }
@@ -110,14 +109,11 @@ export function HousePage({ content, compare }: Props) {
             ) : null}
 
             {has("gallery") ? (
-              <section
-                id="gallery"
-                className="scroll-mt-20 border-t-2 border-foreground py-12 first:border-t-0"
-              >
+              <section id="gallery" className="group scroll-mt-20 pb-12">
                 <SectionTitle number={numberOf("gallery")}>{t("gallery.title")}</SectionTitle>
                 <div className="mt-8 grid gap-6 sm:grid-cols-2">
                   {content.gallery.map((image) => (
-                    <figure key={image.src} className="reveal">
+                    <Reveal as="figure" key={image.src} delay={160}>
                       <Image
                         src={image.src}
                         alt={image.alt}
@@ -129,7 +125,7 @@ export function HousePage({ content, compare }: Props) {
                       {image.caption ? (
                         <figcaption className="label mt-2 text-muted">{image.caption}</figcaption>
                       ) : null}
-                    </figure>
+                    </Reveal>
                   ))}
                 </div>
               </section>

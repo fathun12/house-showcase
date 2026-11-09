@@ -1,20 +1,25 @@
 import Image from "next/image";
 import type { RoomView } from "@/features/houses/view";
+import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
   room: RoomView;
   floorLabel: string | null;
   rationaleLabel: string;
+  /** Wait this long (ms) before fading in, so the section line and title come first */
+  delay?: number;
 };
 
 /** One layout for every room: photos on the left, number and text on the right. */
-export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
+export function RoomSection({ room, floorLabel, rationaleLabel, delay }: Props) {
   const hasPhotos = room.photos.length > 0;
 
   return (
-    <article
+    <Reveal
+      as="article"
       id={room.anchor}
-      className="reveal grid scroll-mt-20 gap-8 border-t border-foreground py-10 md:grid-cols-12 md:gap-12"
+      delay={delay}
+      className="grid scroll-mt-20 gap-8 border-t border-foreground py-10 md:grid-cols-12 md:gap-12"
     >
       {hasPhotos ? (
         <div className="flex flex-col gap-6 md:col-span-7">
@@ -52,6 +57,6 @@ export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
           </div>
         ) : null}
       </div>
-    </article>
+    </Reveal>
   );
 }
