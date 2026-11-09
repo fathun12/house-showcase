@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ImageView } from "@/features/houses/view";
 import { cn } from "@/lib/utils/cn";
+import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
 
 type Props = {
   brand: string;
@@ -19,16 +20,18 @@ export function Hero({ brand, title, tagline, facts, image, next }: Props) {
       <div className={cn("rise grid bg-foreground text-background", image && "md:grid-cols-12")}>
         {image ? (
           <figure className="relative aspect-video md:order-2 md:col-span-5 md:aspect-auto md:min-h-[32rem]">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              sizes="(min-width: 768px) 40vw, 100vw"
-              priority
-              className="object-cover"
-            />
+            <ViewerTrigger itemKey={image.src} fill>
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                sizes="(min-width: 768px) 40vw, 100vw"
+                priority
+                className="object-cover"
+              />
+            </ViewerTrigger>
             {image.caption ? (
-              <figcaption className="label absolute inset-x-0 bottom-0 bg-foreground/80 px-4 py-2">
+              <figcaption className="label pointer-events-none absolute inset-x-0 bottom-0 bg-foreground/80 px-4 py-2">
                 {image.caption}
               </figcaption>
             ) : null}

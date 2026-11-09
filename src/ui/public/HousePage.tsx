@@ -1,13 +1,16 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { HouseContent, SummaryRow } from "@/features/houses/view";
+import { buildViewerItems } from "@/features/viewer/items";
 import { Compare } from "@/ui/public/Compare";
 import { FloorPlan } from "@/ui/public/FloorPlan";
 import { Hero } from "@/ui/public/Hero";
+import { ImageViewer } from "@/ui/public/ImageViewer";
 import { Notes } from "@/ui/public/Notes";
 import { RoomSection } from "@/ui/public/RoomSection";
 import { SectionIndex } from "@/ui/public/SectionIndex";
 import { SectionTitle } from "@/ui/public/SectionTitle";
+import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
 import { Reveal } from "@/ui/shared/Reveal";
 
 type Section = { id: string; label: string };
@@ -47,7 +50,12 @@ export function HousePage({ content, compare }: Props) {
   const first = sections[0];
 
   return (
-    <>
+    <ImageViewer
+      items={buildViewerItems(content)}
+      title={content.title}
+      tagline={content.tagline}
+      facts={content.facts}
+    >
       <Hero
         brand={t("header.home")}
         title={content.title}
@@ -74,11 +82,10 @@ export function HousePage({ content, compare }: Props) {
               <section id="rooms" className="group scroll-mt-20 pb-6">
                 <SectionTitle number={numberOf("rooms")}>{t("rooms.title")}</SectionTitle>
                 <div className="mt-8">
-                  {content.rooms.map((room, index) => (
+                  {content.rooms.map((room) => (
                     <RoomSection
                       key={room.id}
                       room={room}
-                      delay={index === 0 ? 160 : 0}
                       floorLabel={
                         room.floor !== null ? t("rooms.floor", { floor: room.floor }) : null
                       }
@@ -113,15 +120,17 @@ export function HousePage({ content, compare }: Props) {
                 <SectionTitle number={numberOf("gallery")}>{t("gallery.title")}</SectionTitle>
                 <div className="mt-8 grid gap-6 sm:grid-cols-2">
                   {content.gallery.map((image) => (
-                    <Reveal as="figure" kind="wipe" key={image.src} delay={160}>
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        width={image.width}
-                        height={image.height}
-                        sizes="(min-width: 1280px) 580px, (min-width: 640px) 50vw, 100vw"
-                        className="h-auto w-full border border-foreground"
-                      />
+                    <Reveal as="figure" kind="fade" key={image.src}>
+                      <ViewerTrigger itemKey={image.src}>
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          width={image.width}
+                          height={image.height}
+                          sizes="(min-width: 1280px) 580px, (min-width: 640px) 50vw, 100vw"
+                          className="h-auto w-full border border-foreground"
+                        />
+                      </ViewerTrigger>
                       {image.caption ? (
                         <figcaption className="label mt-2 text-muted">{image.caption}</figcaption>
                       ) : null}
@@ -141,6 +150,6 @@ export function HousePage({ content, compare }: Props) {
           </div>
         </div>
       ) : null}
-    </>
+    </ImageViewer>
   );
 }

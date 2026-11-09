@@ -1,17 +1,16 @@
 import Image from "next/image";
 import type { RoomView } from "@/features/houses/view";
+import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
 import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
   room: RoomView;
   floorLabel: string | null;
   rationaleLabel: string;
-  /** Wait this long (ms) before starting, so the section line and title come first */
-  delay?: number;
 };
 
 /** One layout for every room: photos on the left, number and text on the right. */
-export function RoomSection({ room, floorLabel, rationaleLabel, delay = 0 }: Props) {
+export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
   const hasPhotos = room.photos.length > 0;
 
   return (
@@ -21,21 +20,18 @@ export function RoomSection({ room, floorLabel, rationaleLabel, delay = 0 }: Pro
     >
       {hasPhotos ? (
         <div className="flex flex-col gap-6 md:col-span-7">
-          {room.photos.map((photo, index) => (
-            <Reveal
-              as="figure"
-              kind="wipe"
-              key={photo.src}
-              delay={index === 0 ? delay : 0}
-            >
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                width={photo.width}
-                height={photo.height}
-                sizes="(min-width: 1280px) 690px, (min-width: 768px) 58vw, 100vw"
-                className="h-auto w-full border border-foreground"
-              />
+          {room.photos.map((photo) => (
+            <Reveal as="figure" kind="fade" key={photo.src}>
+              <ViewerTrigger itemKey={photo.src}>
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  width={photo.width}
+                  height={photo.height}
+                  sizes="(min-width: 1280px) 690px, (min-width: 768px) 58vw, 100vw"
+                  className="h-auto w-full border border-foreground"
+                />
+              </ViewerTrigger>
               {photo.caption ? (
                 <figcaption className="label mt-2 text-muted">{photo.caption}</figcaption>
               ) : null}
@@ -44,7 +40,7 @@ export function RoomSection({ room, floorLabel, rationaleLabel, delay = 0 }: Pro
         </div>
       ) : null}
 
-      <Reveal delay={delay + 200} className={hasPhotos ? "md:col-span-5" : "md:col-span-8"}>
+      <Reveal className={hasPhotos ? "md:col-span-5" : "md:col-span-8"}>
         <p className="font-mono text-6xl font-bold text-accent md:text-7xl">{room.number}</p>
         <h3 className="heading mt-3 text-3xl md:text-4xl">{room.name}</h3>
         {floorLabel ? <p className="label mt-3 text-muted">{floorLabel}</p> : null}

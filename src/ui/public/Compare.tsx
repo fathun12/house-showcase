@@ -32,7 +32,7 @@ export function Compare({ rows, as = "h2", number, currentSlug }: Props) {
         {as === "h1" ? t("compare.indexTitle") : t("compare.title")}
       </SectionTitle>
 
-      <Reveal delay={160} className="mt-8">
+      <Reveal className="mt-8">
         <Table>
           <thead>
             <tr>

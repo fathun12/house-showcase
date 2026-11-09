@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { ImageView, RoomView } from "@/features/houses/view";
 import { SectionTitle } from "@/ui/public/SectionTitle";
+import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
 import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
@@ -19,21 +20,17 @@ export function FloorPlan({ number, plans, rooms }: Props) {
 
       <div className="mt-8 flex flex-col gap-8">
         {plans.map((plan) => (
-          <Reveal
-            as="figure"
-            kind="wipe"
-            key={plan.src}
-            delay={160}
-            className="border-2 border-foreground"
-          >
-            <Image
-              src={plan.src}
-              alt={plan.alt}
-              width={plan.width}
-              height={plan.height}
-              sizes="(min-width: 1280px) 1184px, 100vw"
-              className="h-auto w-full"
-            />
+          <Reveal as="figure" kind="fade" key={plan.src} className="border-2 border-foreground">
+            <ViewerTrigger itemKey={plan.src}>
+              <Image
+                src={plan.src}
+                alt={plan.alt}
+                width={plan.width}
+                height={plan.height}
+                sizes="(min-width: 1280px) 1184px, 100vw"
+                className="h-auto w-full"
+              />
+            </ViewerTrigger>
             {plan.caption ? (
               <figcaption className="label border-t-2 border-foreground p-3">
                 {plan.caption}

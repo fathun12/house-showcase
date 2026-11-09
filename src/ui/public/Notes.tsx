@@ -16,7 +16,6 @@ export function Notes({ id, number, title, body, emphasis }: Props) {
     <section id={id} className="group scroll-mt-20 pb-12">
       <SectionTitle number={number}>{title}</SectionTitle>
       <Reveal
-        delay={160}
         className={cn(
           "mt-8 max-w-3xl text-lg leading-relaxed whitespace-pre-line md:text-xl",
           emphasis && "border-2 border-accent p-6",

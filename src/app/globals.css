@@ -15,6 +15,10 @@
   --accent: #b8502a; /* terracotta */
   --accent-ink: #ffffff; /* text on top of accent */
 
+  /* The image viewer stage is black in both themes, so pictures read the same */
+  --stage: #0a0a0a;
+  --stage-ink: #f5f2ed;
+
   --gutter: clamp(1rem, 4vw, 3rem);
 }
 
@@ -52,6 +56,8 @@
   --color-surface: var(--surface);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-stage: var(--stage);
+  --color-stage-ink: var(--stage-ink);
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
@@ -129,13 +135,18 @@
     animation: fade-in 500ms ease-out;
   }
 
-  :is(.reveal, .reveal-line, .reveal-mask, .reveal-wipe) {
+  /* The image viewer fades in when it opens */
+  .viewer-in {
+    animation: fade-in 150ms ease-out;
+  }
+
+  :is(.reveal, .reveal-fade) {
     transition:
       opacity 300ms ease-out,
       translate 300ms ease-out;
   }
 
-  :is(.reveal, .reveal-line, .reveal-mask, .reveal-wipe)[data-reveal="hidden"] {
+  :is(.reveal, .reveal-fade)[data-reveal="hidden"] {
     opacity: 0;
   }
 

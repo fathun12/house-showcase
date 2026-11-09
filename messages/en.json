@@ -229,6 +229,28 @@
       "home": "Home",
       "admin": "Admin",
       "disclaimer": "This is a design visualization, not a technical drawing. Sizes, structure and permits must be checked by an architect before building."
+    },
+    "viewer": {
+      "label": "Image viewer",
+      "open": "Zoom",
+      "close": "Close",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "fit": "Fit",
+      "prev": "Previous",
+      "next": "Next",
+      "info": "Info",
+      "infoPanel": "Image information",
+      "jump": "Jump to room",
+      "specs": "Specifications",
+      "hintMouse": "Mouse wheel: zoom. Double-click: magnify. Drag: pan.",
+      "hintTouch": "Pinch: zoom. Double-tap: magnify. Swipe sideways: next picture.",
+      "kinds": {
+        "hero": "Main image",
+        "floorplan": "Floor plan",
+        "room": "Room photo",
+        "gallery": "Gallery"
+      }
     }
   }
 }

@@ -229,6 +229,28 @@
       "home": "Beranda",
       "admin": "Admin",
       "disclaimer": "Ini visualisasi desain, bukan gambar teknis. Ukuran, struktur, dan perizinan perlu disesuaikan oleh arsitek sebelum dibangun."
+    },
+    "viewer": {
+      "label": "Penampil gambar",
+      "open": "Perbesar",
+      "close": "Tutup",
+      "zoomIn": "Perbesar",
+      "zoomOut": "Perkecil",
+      "fit": "Pas layar",
+      "prev": "Sebelumnya",
+      "next": "Berikutnya",
+      "info": "Info",
+      "infoPanel": "Informasi gambar",
+      "jump": "Lompat ke ruangan",
+      "specs": "Spesifikasi",
+      "hintMouse": "Roda mouse: zoom. Klik dua kali: perbesar. Tarik: geser.",
+      "hintTouch": "Cubit: zoom. Ketuk dua kali: perbesar. Geser ke samping: gambar lain.",
+      "kinds": {
+        "hero": "Gambar utama",
+        "floorplan": "Denah",
+        "room": "Foto ruangan",
+        "gallery": "Galeri"
+      }
     }
   }
 }
