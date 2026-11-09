@@ -16,7 +16,7 @@ export function RoomSection({ room, floorLabel, rationaleLabel, flip }: Props) {
   return (
     <article
       id={room.anchor}
-      className="grid scroll-mt-20 gap-8 border-t border-foreground py-10 md:grid-cols-12 md:gap-12"
+      className="reveal grid scroll-mt-20 gap-8 border-t border-foreground py-10 md:grid-cols-12 md:gap-12"
     >
       {hasPhotos ? (
         <div className={cn("flex flex-col gap-6 md:col-span-7", flip && "md:order-2")}>

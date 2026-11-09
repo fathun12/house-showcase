@@ -10,7 +10,7 @@ export function SectionTitle({
   children: ReactNode;
 }) {
   return (
-    <Tag className="flex flex-wrap items-baseline gap-x-4">
+    <Tag className="reveal flex flex-wrap items-baseline gap-x-4">
       {number ? <span className="label text-accent">{number}</span> : null}
       <span className="heading text-4xl md:text-5xl">{children}</span>
     </Tag>

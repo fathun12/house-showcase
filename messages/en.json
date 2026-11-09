@@ -16,7 +16,11 @@
     "email": "Email",
     "password": "Password",
     "submit": "Sign in",
-    "invalid": "Wrong email or password."
+    "invalid": "Wrong email or password.",
+    "panelTitle": "Manage houses, rooms and images in one place.",
+    "point1": "Fill in the house details and story",
+    "point2": "Add rooms and design reasoning",
+    "point3": "Upload floor plans and photos"
   },
   "admin": {
     "nav": {
@@ -217,6 +221,10 @@
       "text": "Published houses will appear here."
     },
     "footer": {
+      "about": "House design visualization, made to discuss together as a family.",
+      "links": "Links",
+      "home": "Home",
+      "admin": "Admin",
       "disclaimer": "This is a design visualization, not a technical drawing. Sizes, structure and permits must be checked by an architect before building."
     }
   }

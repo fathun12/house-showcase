@@ -19,7 +19,7 @@ export function Notes({ id, number, title, body, emphasis }: Props) {
       <SectionTitle number={number}>{title}</SectionTitle>
       <div
         className={cn(
-          "mt-8 max-w-3xl text-lg leading-relaxed whitespace-pre-line md:text-xl",
+          "reveal mt-8 max-w-3xl text-lg leading-relaxed whitespace-pre-line md:text-xl",
           emphasis && "border-2 border-accent p-6",
         )}
       >

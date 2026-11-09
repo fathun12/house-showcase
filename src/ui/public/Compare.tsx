@@ -34,7 +34,7 @@ export function Compare({ rows, as = "h2", number, currentSlug }: Props) {
         {as === "h1" ? t("compare.indexTitle") : t("compare.title")}
       </SectionTitle>
 
-      <div className="mt-8">
+      <div className="reveal mt-8">
         <Table>
           <thead>
             <tr>

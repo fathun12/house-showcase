@@ -34,7 +34,8 @@ function Frame({ label, htmlFor, hint, error, required, children }: FrameProps) 
   );
 }
 
-const CONTROL = "w-full bg-transparent text-foreground placeholder:text-muted";
+const CONTROL =
+  "w-full bg-transparent text-foreground outline-none placeholder:text-muted";
 
 // "id" defaults to "name"; pass a different id when the same field appears many times on a page
 type FieldExtras = {

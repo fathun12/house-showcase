@@ -16,7 +16,11 @@
     "email": "Email",
     "password": "Kata sandi",
     "submit": "Masuk",
-    "invalid": "Email atau kata sandi salah."
+    "invalid": "Email atau kata sandi salah.",
+    "panelTitle": "Kelola rumah, ruangan, dan gambar di satu tempat.",
+    "point1": "Isi detail dan cerita rumah",
+    "point2": "Tambah ruangan dan alasan desain",
+    "point3": "Unggah denah dan foto"
   },
   "admin": {
     "nav": {
@@ -217,6 +221,10 @@
       "text": "Rumah yang sudah diterbitkan akan tampil di sini."
     },
     "footer": {
+      "about": "Visualisasi desain rumah untuk didiskusikan bersama keluarga.",
+      "links": "Tautan",
+      "home": "Beranda",
+      "admin": "Admin",
       "disclaimer": "Ini visualisasi desain, bukan gambar teknis. Ukuran, struktur, dan perizinan perlu disesuaikan oleh arsitek sebelum dibangun."
     }
   }

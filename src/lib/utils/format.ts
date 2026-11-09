@@ -4,7 +4,7 @@ export function formatDate(iso: string, locale: string) {
   );
 }
 
-/** Indonesian is the base language; English falls back to it when empty. */
+/** Shows the visitor's language; when that side is empty, falls back to the other one. */
 export function pickLocalized(locale: string, valueId: string, valueEn: string) {
-  return locale === "en" && valueEn ? valueEn : valueId;
+  return locale === "en" ? valueEn || valueId : valueId || valueEn;
 }

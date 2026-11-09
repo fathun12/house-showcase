@@ -21,7 +21,7 @@ export function FloorPlan({ number, plans, rooms }: Props) {
 
       <div className="mt-8 flex flex-col gap-8">
         {plans.map((plan) => (
-          <figure key={plan.src} className="border-2 border-foreground">
+          <figure key={plan.src} className="reveal border-2 border-foreground">
             <Image
               src={plan.src}
               alt={plan.alt}
