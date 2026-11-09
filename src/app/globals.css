@@ -109,70 +109,37 @@
 }
 
 /* ------------------------------------------------------------------
-   5. MOTION: drawn like a sheet, once, and it never moves the layout.
-   - .rise: the hero box is drawn open from the left when the page opens.
-   - .reveal-line: a section rule draws itself.
-   - .reveal-mask: a section title rises out from behind its rule.
-   - .reveal-wipe: an image or plan is uncovered from the left.
-   - .reveal: text fades in with a small lift.
+   5. MOTION: calm, once, and it never moves the layout.
+   - .rise: the hero box fades in when the page opens. It does not move:
+     moving a big block makes its text and lines flicker.
+   - .reveal (and the other kinds of <Reveal>): the first time something
+     scrolls into view it fades in. Text also lifts 12 px; images and rules
+     only fade, so nothing ever sits half uncovered or half moved while scrolling.
    useReveal sets data-reveal="hidden" only on things that start below the fold,
-   so without JavaScript everything stays visible. Timing comes from
-   --reveal-delay, set by <Reveal delay>. Reduced motion skips all of it.
+   so without JavaScript everything stays visible. Reduced motion skips all of it.
    ------------------------------------------------------------------ */
-@keyframes draw-open {
+@keyframes fade-in {
   from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .rise {
-    animation: draw-open 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    animation: fade-in 500ms ease-out;
   }
 
-  .reveal {
+  :is(.reveal, .reveal-line, .reveal-mask, .reveal-wipe) {
     transition:
-      opacity 400ms ease-out var(--reveal-delay, 0ms),
-      translate 400ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+      opacity 300ms ease-out,
+      translate 300ms ease-out;
+  }
+
+  :is(.reveal, .reveal-line, .reveal-mask, .reveal-wipe)[data-reveal="hidden"] {
+    opacity: 0;
   }
 
   .reveal[data-reveal="hidden"] {
-    opacity: 0;
     translate: 0 12px;
-  }
-
-  .reveal-line {
-    transform-origin: left;
-    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
-  }
-
-  .reveal-line[data-reveal="hidden"] {
-    transform: scaleX(0);
-  }
-
-  .reveal-mask {
-    overflow: hidden;
-    padding-block: 0.12em;
-    margin-block: -0.12em;
-  }
-
-  .reveal-mask > * {
-    transition: translate 550ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
-  }
-
-  .reveal-mask[data-reveal="hidden"] > * {
-    translate: 0 110%;
-  }
-
-  .reveal-wipe {
-    clip-path: inset(0 0 0 0);
-    transition: clip-path 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
-  }
-
-  .reveal-wipe[data-reveal="hidden"] {
-    clip-path: inset(0 100% 0 0);
   }
 }
