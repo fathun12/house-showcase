@@ -46,7 +46,7 @@ export function SectionIndex({ label, items, rooms }: Props) {
     <nav
       ref={navRef}
       aria-label={label}
-      className="sticky top-0 z-10 -mx-[var(--gutter)] overflow-x-auto border-b-2 border-foreground bg-background px-[var(--gutter)] lg:top-8 lg:z-0 lg:mx-0 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-x-visible lg:overflow-y-auto lg:border-b-0 lg:px-0"
+      className="sticky top-0 z-10 -mx-(--gutter) overflow-x-auto border-b-2 border-foreground bg-background px-(--gutter) lg:top-8 lg:z-0 lg:mx-0 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-x-visible lg:overflow-y-auto lg:border-b-0 lg:px-0"
     >
       <ul className="flex lg:flex-col lg:border-t-2 lg:border-foreground">
         {items.map((item) => (
