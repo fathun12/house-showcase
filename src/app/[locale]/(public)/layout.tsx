@@ -1,7 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/ui/public/SiteFooter";
-import { SiteHeader } from "@/ui/public/SiteHeader";
 
 export default async function PublicLayout({
   children,
@@ -15,7 +14,6 @@ export default async function PublicLayout({
 
   return (
     <>
-      <SiteHeader />
       <main>{children}</main>
       <SiteFooter />
     </>

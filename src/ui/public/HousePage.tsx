@@ -8,7 +8,6 @@ import { Notes } from "@/ui/public/Notes";
 import { RoomSection } from "@/ui/public/RoomSection";
 import { SectionIndex } from "@/ui/public/SectionIndex";
 import { SectionTitle } from "@/ui/public/SectionTitle";
-import { Summary } from "@/ui/public/Summary";
 
 type Section = { id: string; label: string };
 
@@ -21,14 +20,12 @@ type Props = {
 export function HousePage({ content, compare }: Props) {
   const t = useTranslations("public");
 
-  const summaryItems = [
-    { key: "floors", value: content.facts.floors },
-    { key: "bedrooms", value: content.facts.bedrooms },
-    { key: "bathrooms", value: content.facts.bathrooms },
-    { key: "area", value: content.facts.area },
-  ].flatMap((item) =>
-    item.value ? [{ label: t(`summary.${item.key}`), value: item.value }] : [],
-  );
+  const facts = [
+    content.facts.floors !== null && t("facts.floors", { count: content.facts.floors }),
+    content.facts.bedrooms !== null && t("facts.bedrooms", { count: content.facts.bedrooms }),
+    content.facts.bathrooms !== null && t("facts.bathrooms", { count: content.facts.bathrooms }),
+    content.facts.area !== null && t("facts.area", { count: content.facts.area }),
+  ].filter((fact): fact is string => Boolean(fact));
 
   const sections = [
     content.floorplans.length > 0 && { id: "floorplan", label: t("nav.floorplan") },
@@ -46,19 +43,21 @@ export function HousePage({ content, compare }: Props) {
 
   const numberOf = (id: string) => sections.find((section) => section.id === id)?.number ?? "";
   const has = (id: string) => sections.some((section) => section.id === id);
+  const first = sections[0];
 
   return (
     <>
       <Hero
-        label={t("hero.label")}
+        brand={t("header.home")}
         title={content.title}
         tagline={content.tagline}
+        facts={facts}
         image={content.hero}
+        next={first ? { href: `#${first.id}`, label: `${first.number} / ${first.label}` } : null}
       />
-      <Summary items={summaryItems} />
 
       {sections.length > 0 ? (
-        <div className="gutter mx-auto max-w-page lg:grid lg:grid-cols-[12rem_1fr] lg:gap-12">
+        <div className="gutter mx-auto max-w-page pt-10 lg:grid lg:grid-cols-[12rem_1fr] lg:gap-12">
           <SectionIndex label={t("nav.label")} items={sections} />
 
           <div className="min-w-0">

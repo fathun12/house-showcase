@@ -175,8 +175,11 @@
     "header": {
       "home": "House Showcase"
     },
-    "hero": {
-      "label": "Visualisasi desain rumah"
+    "facts": {
+      "floors": "{count, number} lantai",
+      "bedrooms": "{count, number} kamar tidur",
+      "bathrooms": "{count, number} kamar mandi",
+      "area": "{count, number} m²"
     },
     "summary": {
       "floors": "Lantai",

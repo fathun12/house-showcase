@@ -3,16 +3,19 @@ import type { ImageView } from "@/features/houses/view";
 import { cn } from "@/lib/utils/cn";
 
 type Props = {
-  label: string;
+  brand: string;
   title: string;
   tagline: string;
+  facts: string[];
   image: ImageView | null;
+  /** The first section of the page, offered as the obvious next step */
+  next: { href: string; label: string } | null;
 };
 
-/** Big inverted box: black in light theme, light in dark theme. Text left, image right. */
-export function Hero({ label, title, tagline, image }: Props) {
+/** Big inverted box from the very top: black in light theme, light in dark theme. */
+export function Hero({ brand, title, tagline, facts, image, next }: Props) {
   return (
-    <section className="gutter mx-auto max-w-page py-6 md:py-10">
+    <section className="gutter mx-auto max-w-page pt-6 md:pt-10">
       <div className={cn("grid bg-foreground text-background", image && "md:grid-cols-12")}>
         {image ? (
           <figure className="relative aspect-video md:order-2 md:col-span-5 md:aspect-auto md:min-h-[32rem]">
@@ -38,23 +41,33 @@ export function Hero({ label, title, tagline, image }: Props) {
             image && "md:order-1 md:col-span-7",
           )}
         >
-          <p className="intro label flex items-center gap-3 text-background/70">
-            <span aria-hidden className="size-2 bg-accent" />
-            {label}
+          <p className="flex items-center gap-3">
+            <span aria-hidden className="size-3 bg-accent" />
+            <span className="heading text-xl">{brand}</span>
           </p>
 
           <div>
-            <h1 className="intro heading text-5xl text-balance [--intro-delay:100ms] sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="heading text-5xl text-balance sm:text-6xl md:text-7xl lg:text-8xl">
               {title}
             </h1>
-            {tagline ? (
-              <p className="intro mt-6 max-w-xl text-lg [--intro-delay:200ms] md:text-xl">
-                {tagline}
+            {tagline ? <p className="mt-6 max-w-xl text-lg md:text-xl">{tagline}</p> : null}
+            {facts.length > 0 ? (
+              <p className="label mt-8 border-t border-background/40 pt-4">
+                {facts.join(" / ")}
               </p>
             ) : null}
           </div>
         </div>
       </div>
+
+      {next ? (
+        <a
+          href={next.href}
+          className="label mt-4 inline-block text-accent underline-offset-4 hover:underline"
+        >
+          {next.label} ↓
+        </a>
+      ) : null}
     </section>
   );
 }

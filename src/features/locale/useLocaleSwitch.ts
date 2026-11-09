@@ -19,9 +19,11 @@ export function useLocaleSwitch() {
     // next-themes then renders its inline script in the browser, which React 19
     // reports as an error in development.
     const path = getPathname({ href: pathname, locale: next });
-    window.location.assign(
+    const target = new URL(
       `${path}${window.location.search}${window.location.hash}`,
+      window.location.origin,
     );
+    window.location.assign(target);
   }
 
   return { locale, switchTo, isPending };

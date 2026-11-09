@@ -175,8 +175,11 @@
     "header": {
       "home": "House Showcase"
     },
-    "hero": {
-      "label": "House design visualization"
+    "facts": {
+      "floors": "{count, plural, one {# floor} other {# floors}}",
+      "bedrooms": "{count, plural, one {# bedroom} other {# bedrooms}}",
+      "bathrooms": "{count, plural, one {# bathroom} other {# bathrooms}}",
+      "area": "{count, number} m²"
     },
     "summary": {
       "floors": "Floors",

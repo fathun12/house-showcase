@@ -28,10 +28,10 @@ export type HouseContent = {
   why: string;
   notes: string;
   facts: {
-    floors: string | null;
-    bedrooms: string | null;
-    bathrooms: string | null;
-    area: string | null;
+    floors: number | null;
+    bedrooms: number | null;
+    bathrooms: number | null;
+    area: number | null;
   };
   hero: ImageView | null;
   floorplans: ImageView[];
@@ -72,7 +72,6 @@ function toImage(item: Media, locale: string, fallbackAlt: string): ImageView {
 
 export function buildHouseContent(house: PublicHouse, locale: string): HouseContent {
   const title = pickLocalized(locale, house.title_id, house.title_en);
-  const format = numberFormatter(locale);
   const media = [...house.media].sort(byPosition);
   const rooms = [...house.rooms].sort(byPosition);
   const roomIds = new Set(rooms.map((room) => room.id));
@@ -92,10 +91,10 @@ export function buildHouseContent(house: PublicHouse, locale: string): HouseCont
     why: pickLocalized(locale, house.why_id, house.why_en),
     notes: pickLocalized(locale, house.notes_id, house.notes_en),
     facts: {
-      floors: format(house.floors),
-      bedrooms: format(house.bedrooms),
-      bathrooms: format(house.bathrooms),
-      area: format(house.area_m2),
+      floors: house.floors,
+      bedrooms: house.bedrooms,
+      bathrooms: house.bathrooms,
+      area: house.area_m2,
     },
     hero: imagesOf("hero")[0] ?? null,
     floorplans: imagesOf("floorplan"),

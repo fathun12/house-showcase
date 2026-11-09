@@ -108,42 +108,4 @@
   line-height: 0.95;
 }
 
-/* ------------------------------------------------------------------
-   5. MOTION: quiet and short. Change the numbers here to tune all of it.
-   ------------------------------------------------------------------ */
-:root {
-  --reveal-distance: 24px;
-  --reveal-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --intro-duration: 700ms;
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    translate: 0 var(--reveal-distance);
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
-/* Plays once when the page opens (hero text). Per-element delay: [--intro-delay:120ms] */
-@media (prefers-reduced-motion: no-preference) {
-  .intro {
-    animation: rise var(--intro-duration) var(--reveal-ease) both;
-    animation-delay: var(--intro-delay, 0ms);
-  }
-}
-
-/* Fades and rises while scrolling into view. Pure CSS: browsers without
-   scroll-driven animations simply show the content normally. */
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 40%;
-    }
-  }
-}
+/* 5. MOTION: none for now. To be designed together before building. */
