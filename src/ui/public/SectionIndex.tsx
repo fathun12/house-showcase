@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import type { RoomView } from "@/features/houses/view";
+import { useActiveSection } from "@/features/nav/useActiveSection";
 
 type Item = { id: string; number: string; label: string };
 
@@ -9,11 +13,38 @@ type Props = {
   rooms: Pick<RoomView, "anchor" | "number" | "name">[];
 };
 
+/** The marker of the section being read: a terracotta bar on the left edge of the
+ *  link on desktop, a bar under the link on phones. It grows in when it becomes active. */
+const marker =
+  "relative before:absolute before:left-0 before:bottom-0 before:h-1 before:w-full before:origin-left before:scale-x-0 before:bg-accent before:transition-transform motion-reduce:before:transition-none aria-[current=true]:before:scale-x-100 " +
+  "lg:before:top-0 lg:before:h-auto lg:before:w-1 lg:before:origin-top lg:before:scale-x-100 lg:before:scale-y-0 lg:aria-[current=true]:before:scale-y-100";
+
 /** Numbered links to the page sections: a sticky bar on phones, a sticky column on desktop.
  *  On desktop the rooms sit under "Rooms", so every room is one click away while scrolling. */
 export function SectionIndex({ label, items, rooms }: Props) {
+  const activeSection = useActiveSection(items.map((item) => item.id));
+  const passedRoom = useActiveSection(rooms.map((room) => room.anchor));
+  const activeRoom = activeSection === "rooms" ? passedRoom : null;
+
+  const navRef = useRef<HTMLElement>(null);
+
+  // On phones the row scrolls sideways: keep the active link in view
+  useEffect(() => {
+    const nav = navRef.current;
+    const link = nav?.querySelector<HTMLElement>('a[data-section][aria-current="true"]');
+    if (!nav || !link || nav.scrollWidth <= nav.clientWidth) return;
+
+    nav.scrollTo({
+      left: link.offsetLeft - (nav.clientWidth - link.offsetWidth) / 2,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  }, [activeSection]);
+
   return (
     <nav
+      ref={navRef}
       aria-label={label}
       className="sticky top-0 z-10 -mx-[var(--gutter)] overflow-x-auto border-b-2 border-foreground bg-background px-[var(--gutter)] lg:top-8 lg:z-0 lg:mx-0 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-x-visible lg:overflow-y-auto lg:border-b-0 lg:px-0"
     >
@@ -22,7 +53,9 @@ export function SectionIndex({ label, items, rooms }: Props) {
           <li key={item.id} className="shrink-0 lg:border-b lg:border-foreground">
             <a
               href={`#${item.id}`}
-              className="label flex min-h-11 items-center gap-2 px-4 whitespace-nowrap hover:bg-surface focus-visible:-outline-offset-2 lg:px-0"
+              data-section
+              aria-current={item.id === activeSection ? "true" : undefined}
+              className={`${marker} label flex min-h-11 items-center gap-2 px-4 whitespace-nowrap hover:bg-surface focus-visible:-outline-offset-2 lg:pr-0`}
             >
               <span className="text-accent">{item.number}</span>
               <span>{item.label}</span>
@@ -34,7 +67,8 @@ export function SectionIndex({ label, items, rooms }: Props) {
                   <li key={room.anchor}>
                     <a
                       href={`#${room.anchor}`}
-                      className="label flex items-baseline gap-2 py-1.5 pl-6 text-muted hover:text-accent focus-visible:-outline-offset-2"
+                      aria-current={room.anchor === activeRoom ? "true" : undefined}
+                      className="label flex items-baseline gap-2 py-1.5 pl-8 text-muted hover:text-accent focus-visible:-outline-offset-2 aria-[current=true]:text-foreground"
                     >
                       <span className="text-accent">{room.number}</span>
                       <span>{room.name}</span>

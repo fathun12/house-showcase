@@ -109,38 +109,70 @@
 }
 
 /* ------------------------------------------------------------------
-   5. MOTION: short, once, and it never moves the layout.
-   - .rise: the hero box fades in when the page opens.
-   - .reveal / .reveal-line: fade in / draw a line the first time something
-     scrolls into view. useReveal sets data-reveal="hidden" only on things that
-     start below the fold, so without JavaScript everything stays visible.
-   - With reduced motion none of this applies.
+   5. MOTION: drawn like a sheet, once, and it never moves the layout.
+   - .rise: the hero box is drawn open from the left when the page opens.
+   - .reveal-line: a section rule draws itself.
+   - .reveal-mask: a section title rises out from behind its rule.
+   - .reveal-wipe: an image or plan is uncovered from the left.
+   - .reveal: text fades in with a small lift.
+   useReveal sets data-reveal="hidden" only on things that start below the fold,
+   so without JavaScript everything stays visible. Timing comes from
+   --reveal-delay, set by <Reveal delay>. Reduced motion skips all of it.
    ------------------------------------------------------------------ */
-@keyframes fade-in {
+@keyframes draw-open {
   from {
-    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .rise {
-    animation: fade-in 300ms ease-out;
+    animation: draw-open 700ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .reveal {
-    transition: opacity 150ms ease-out;
+    transition:
+      opacity 400ms ease-out var(--reveal-delay, 0ms),
+      translate 400ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
   }
 
   .reveal[data-reveal="hidden"] {
     opacity: 0;
+    translate: 0 12px;
   }
 
   .reveal-line {
     transform-origin: left;
-    transition: transform 180ms ease-out;
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
   }
 
   .reveal-line[data-reveal="hidden"] {
     transform: scaleX(0);
+  }
+
+  .reveal-mask {
+    overflow: hidden;
+    padding-block: 0.12em;
+    margin-block: -0.12em;
+  }
+
+  .reveal-mask > * {
+    transition: translate 550ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  }
+
+  .reveal-mask[data-reveal="hidden"] > * {
+    translate: 0 110%;
+  }
+
+  .reveal-wipe {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  }
+
+  .reveal-wipe[data-reveal="hidden"] {
+    clip-path: inset(0 100% 0 0);
   }
 }

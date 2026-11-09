@@ -113,7 +113,7 @@ export function HousePage({ content, compare }: Props) {
                 <SectionTitle number={numberOf("gallery")}>{t("gallery.title")}</SectionTitle>
                 <div className="mt-8 grid gap-6 sm:grid-cols-2">
                   {content.gallery.map((image) => (
-                    <Reveal as="figure" key={image.src} delay={160}>
+                    <Reveal as="figure" kind="wipe" key={image.src} delay={160}>
                       <Image
                         src={image.src}
                         alt={image.alt}
