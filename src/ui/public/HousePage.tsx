@@ -57,12 +57,10 @@ export function HousePage({ content, compare }: Props) {
       />
 
       {sections.length > 0 ? (
-        <div className="mt-10">
-          {/* Direct child of this wrapper, so it stays stuck for the whole page */}
-          <SectionIndex label={t("nav.label")} items={sections} />
+        <div className="gutter mx-auto max-w-page pt-10 lg:grid lg:grid-cols-[12rem_1fr] lg:gap-12">
+          <SectionIndex label={t("nav.label")} items={sections} rooms={content.rooms} />
 
-          {/* Same container and same left edge as the hero box */}
-          <div className="gutter mx-auto max-w-page">
+          <div className="min-w-0">
             {has("floorplan") ? (
               <FloorPlan
                 number={numberOf("floorplan")}

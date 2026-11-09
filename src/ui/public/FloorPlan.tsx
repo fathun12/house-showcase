@@ -40,9 +40,9 @@ export function FloorPlan({ number, plans, rooms }: Props) {
       </div>
 
       {rooms.length > 0 ? (
-        <div className="mt-8">
+        <div className="mt-8 lg:hidden">
           <p className="label text-muted">{t("legend")}</p>
-          <ol className="mt-3 grid border-t-2 border-foreground sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
+          <ol className="mt-3 grid border-t-2 border-foreground sm:grid-cols-2 sm:gap-x-10">
             {rooms.map((room) => (
               <li key={room.id}>
                 <a
