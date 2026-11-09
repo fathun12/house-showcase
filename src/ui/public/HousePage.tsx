@@ -57,10 +57,12 @@ export function HousePage({ content, compare }: Props) {
       />
 
       {sections.length > 0 ? (
-        <div className="gutter mx-auto max-w-page pt-10 lg:grid lg:grid-cols-[12rem_1fr] lg:gap-12">
+        <div className="mt-10">
+          {/* Direct child of this wrapper, so it stays stuck for the whole page */}
           <SectionIndex label={t("nav.label")} items={sections} />
 
-          <div className="min-w-0">
+          {/* Same container and same left edge as the hero box */}
+          <div className="gutter mx-auto max-w-page">
             {has("floorplan") ? (
               <FloorPlan
                 number={numberOf("floorplan")}
@@ -76,11 +78,10 @@ export function HousePage({ content, compare }: Props) {
               >
                 <SectionTitle number={numberOf("rooms")}>{t("rooms.title")}</SectionTitle>
                 <div className="mt-8">
-                  {content.rooms.map((room, index) => (
+                  {content.rooms.map((room) => (
                     <RoomSection
                       key={room.id}
                       room={room}
-                      flip={index % 2 === 1}
                       floorLabel={
                         room.floor !== null ? t("rooms.floor", { floor: room.floor }) : null
                       }
@@ -124,7 +125,7 @@ export function HousePage({ content, compare }: Props) {
                         alt={image.alt}
                         width={image.width}
                         height={image.height}
-                        sizes="(min-width: 1024px) 35vw, (min-width: 640px) 50vw, 100vw"
+                        sizes="(min-width: 1280px) 580px, (min-width: 640px) 50vw, 100vw"
                         className="h-auto w-full border border-foreground"
                       />
                       {image.caption ? (

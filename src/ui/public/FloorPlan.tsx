@@ -27,7 +27,7 @@ export function FloorPlan({ number, plans, rooms }: Props) {
               alt={plan.alt}
               width={plan.width}
               height={plan.height}
-              sizes="(min-width: 1024px) 70vw, 100vw"
+              sizes="(min-width: 1280px) 1184px, 100vw"
               className="h-auto w-full"
             />
             {plan.caption ? (
@@ -42,7 +42,7 @@ export function FloorPlan({ number, plans, rooms }: Props) {
       {rooms.length > 0 ? (
         <div className="mt-8">
           <p className="label text-muted">{t("legend")}</p>
-          <ol className="mt-3 grid border-t-2 border-foreground sm:grid-cols-2 sm:gap-x-10">
+          <ol className="mt-3 grid border-t-2 border-foreground sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
             {rooms.map((room) => (
               <li key={room.id}>
                 <a

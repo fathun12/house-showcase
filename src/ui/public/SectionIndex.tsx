@@ -1,25 +1,29 @@
 type Item = { id: string; number: string; label: string };
 
-/** Numbered links to the page sections: a sticky bar on phones, a sticky column on desktop. */
+/** One thin horizontal row of numbered section links, on phones and desktop alike.
+ *  It sticks to the top of the screen while scrolling. */
 export function SectionIndex({ label, items }: { label: string; items: Item[] }) {
   return (
-    <nav
-      aria-label={label}
-      className="sticky top-0 z-10 -mx-[var(--gutter)] overflow-x-auto border-b-2 border-foreground bg-background px-[var(--gutter)] lg:top-8 lg:z-0 lg:mx-0 lg:self-start lg:overflow-visible lg:border-b-0 lg:px-0"
-    >
-      <ul className="flex lg:flex-col lg:border-t-2 lg:border-foreground">
-        {items.map((item) => (
-          <li key={item.id} className="shrink-0">
-            <a
-              href={`#${item.id}`}
-              className="label flex gap-2 px-4 py-3 whitespace-nowrap hover:bg-surface lg:border-b lg:border-foreground lg:px-0"
-            >
-              <span className="text-accent">{item.number}</span>
-              <span>{item.label}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+    <nav aria-label={label} className="sticky top-0 z-10 bg-background">
+      <div className="gutter mx-auto max-w-page">
+        <div className="border-b-2 border-foreground">
+          {/* The list scrolls sideways on small screens and bleeds into the gutter,
+              while the first link keeps the same left edge as the rest of the page */}
+          <ul className="-mx-[var(--gutter)] flex overflow-x-auto px-[var(--gutter)]">
+            {items.map((item) => (
+              <li key={item.id} className="shrink-0">
+                <a
+                  href={`#${item.id}`}
+                  className="label flex min-h-11 items-center gap-2 pr-6 whitespace-nowrap hover:text-accent focus-visible:-outline-offset-2"
+                >
+                  <span className="text-accent">{item.number}</span>
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </nav>
   );
 }
