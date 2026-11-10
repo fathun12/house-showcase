@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
+import { whatsappHref } from "@/lib/utils/whatsapp";
 import { LocaleSwitch } from "@/ui/shared/LocaleSwitch";
 import { ThemeSwitch } from "@/ui/shared/ThemeSwitch";
 
@@ -10,6 +11,8 @@ export function SiteFooter() {
   const tHeader = useTranslations("public.header");
   const tTheme = useTranslations("common.theme");
   const tLanguage = useTranslations("common.language");
+  const tWhatsapp = useTranslations("public.whatsapp");
+  const whatsapp = whatsappHref(tWhatsapp("generic"));
 
   return (
     <footer className="gutter mx-auto mt-24 max-w-page">
@@ -33,6 +36,18 @@ export function SiteFooter() {
                   {t("home")}
                 </Link>
               </li>
+              {whatsapp ? (
+                <li>
+                  <a
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex min-h-11 items-center hover:text-accent"
+                  >
+                    {tWhatsapp("button")} ↗
+                  </a>
+                </li>
+              ) : null}
               <li>
                 <Link href="/admin" className="flex min-h-11 items-center hover:text-accent">
                   {t("admin")}

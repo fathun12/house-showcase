@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import type { HouseContent } from "@/features/houses/view";
-import { ViewerContext } from "@/features/viewer/context";
-import { buildJumps } from "@/features/viewer/items";
+import { PresentContext, ViewerContext } from "@/features/viewer/context";
+import { buildJumps, buildSlides } from "@/features/viewer/items";
 import type { ViewerItem, ViewerJump } from "@/features/viewer/items";
 import { useScrollLock, useViewer, useViewerKeys } from "@/features/viewer/useViewer";
+import { Presenter } from "@/ui/public/Presenter";
 import { ViewerPanel } from "@/ui/public/ViewerPanel";
 import type { Spec } from "@/ui/public/ViewerPanel";
 import { ViewerButton, ViewerStage } from "@/ui/public/ViewerStage";
@@ -27,6 +28,10 @@ export function ImageViewer({ items, title, tagline, facts, children }: Props) {
   const t = useTranslations("public");
   const format = useFormatter();
   const viewer = useViewer(items);
+  const slides = buildSlides(items);
+  const [presenting, setPresenting] = useState(false);
+  const present = useCallback(() => setPresenting(true), []);
+  const stopPresenting = useCallback(() => setPresenting(false), []);
 
   const specs = [
     facts.floors !== null && { label: t("summary.floors"), value: format.number(facts.floors) },
@@ -46,7 +51,11 @@ export function ImageViewer({ items, title, tagline, facts, children }: Props) {
 
   return (
     <ViewerContext.Provider value={viewer.open}>
-      {children}
+      <PresentContext.Provider value={present}>{children}</PresentContext.Provider>
+
+      {presenting && slides.length > 0 ? (
+        <Presenter slides={slides} onClose={stopPresenting} />
+      ) : null}
 
       {viewer.item ? (
         <ViewerDialog

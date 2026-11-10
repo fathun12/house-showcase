@@ -236,6 +236,17 @@
       "admin": "Admin",
       "disclaimer": "This is a design visualization, not a technical drawing. Sizes, structure and permits must be checked by an architect before building."
     },
+    "whatsapp": {
+      "button": "Comment on WhatsApp",
+      "generic": "Hi, I would like to comment on the house design.",
+      "house": "Hi, I would like to comment on the design of {house}.",
+      "room": "Hi, I would like to comment on the {room} in {house}."
+    },
+    "present": {
+      "start": "Start presentation",
+      "label": "Presentation mode",
+      "hint": "Arrow keys or Page Down: next room. Esc: exit."
+    },
     "viewer": {
       "label": "Image viewer",
       "open": "Zoom",

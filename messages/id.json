@@ -236,6 +236,17 @@
       "admin": "Admin",
       "disclaimer": "Ini visualisasi desain, bukan gambar teknis. Ukuran, struktur, dan perizinan perlu disesuaikan oleh arsitek sebelum dibangun."
     },
+    "whatsapp": {
+      "button": "Komentar lewat WhatsApp",
+      "generic": "Halo, aku mau komentar soal desain rumah.",
+      "house": "Halo, aku mau komentar soal desain rumah {house}.",
+      "room": "Halo, aku mau komentar soal {room} di desain rumah {house}."
+    },
+    "present": {
+      "start": "Mulai presentasi",
+      "label": "Mode presentasi",
+      "hint": "Panah atau Page Down: ruangan berikutnya. Esc: keluar."
+    },
     "viewer": {
       "label": "Penampil gambar",
       "open": "Perbesar",

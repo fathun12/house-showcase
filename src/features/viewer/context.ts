@@ -8,3 +8,10 @@ export const ViewerContext = createContext<OpenViewer | null>(null);
 export function useOpenViewer(): OpenViewer {
   return useContext(ViewerContext) ?? (() => {});
 }
+
+export const PresentContext = createContext<(() => void) | null>(null);
+
+/** Returns a function that starts the presentation; does nothing outside a viewer. */
+export function usePresent(): () => void {
+  return useContext(PresentContext) ?? (() => {});
+}

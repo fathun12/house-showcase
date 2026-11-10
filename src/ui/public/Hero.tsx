@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ImageView } from "@/features/houses/view";
 import { cn } from "@/lib/utils/cn";
+import { PresentButton } from "@/ui/public/PresentButton";
 import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
 
 type Props = {
@@ -11,10 +12,14 @@ type Props = {
   image: ImageView | null;
   /** The first section of the page, offered as the obvious next step */
   next: { href: string; label: string } | null;
+  /** Comment link, only when a WhatsApp number is set */
+  whatsapp: { href: string; label: string } | null;
+  /** Presentation button, only when at least one room has a photo */
+  present: { label: string } | null;
 };
 
 /** Big inverted box from the very top: black in light theme, light in dark theme. */
-export function Hero({ brand, title, tagline, facts, image, next }: Props) {
+export function Hero({ brand, title, tagline, facts, image, next, whatsapp, present }: Props) {
   return (
     <section className="gutter mx-auto max-w-page pt-6 md:pt-10">
       <div className={cn("rise grid bg-foreground text-background", image && "md:grid-cols-12")}>
@@ -72,14 +77,27 @@ export function Hero({ brand, title, tagline, facts, image, next }: Props) {
         </div>
       </div>
 
-      {next ? (
-        <a
-          href={next.href}
-          className="label mt-4 inline-block text-accent underline-offset-4 hover:underline"
-        >
-          {next.label} ↓
-        </a>
-      ) : null}
+      <div className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-1">
+        {next ? (
+          <a
+            href={next.href}
+            className="label inline-flex min-h-11 items-center text-accent underline-offset-4 hover:underline"
+          >
+            {next.label} ↓
+          </a>
+        ) : null}
+        {present ? <PresentButton label={present.label} /> : null}
+        {whatsapp ? (
+          <a
+            href={whatsapp.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="label inline-flex min-h-11 items-center text-accent underline-offset-4 hover:underline"
+          >
+            {whatsapp.label} ↗
+          </a>
+        ) : null}
+      </div>
     </section>
   );
 }

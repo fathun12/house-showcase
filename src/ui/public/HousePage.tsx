@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { HouseContent, SummaryRow } from "@/features/houses/view";
-import { buildViewerItems } from "@/features/viewer/items";
+import { buildSlides, buildViewerItems } from "@/features/viewer/items";
+import { whatsappHref } from "@/lib/utils/whatsapp";
 import { Compare } from "@/ui/public/Compare";
 import { FloorPlan } from "@/ui/public/FloorPlan";
 import { GalleryStrip } from "@/ui/public/GalleryStrip";
@@ -67,9 +68,14 @@ export function HousePage({ content, compare }: Props) {
   const has = (id: string) => sections.some((section) => section.id === id);
   const first = sections[0];
 
+  const viewerItems = buildViewerItems(content);
+  const generalHref = whatsappHref(t("whatsapp.house", { house: content.title }));
+  const roomHref = (name: string) =>
+    whatsappHref(t("whatsapp.room", { room: name, house: content.title }));
+
   return (
     <ImageViewer
-      items={buildViewerItems(content)}
+      items={viewerItems}
       title={content.title}
       tagline={content.tagline}
       facts={content.facts}
@@ -81,6 +87,8 @@ export function HousePage({ content, compare }: Props) {
         facts={facts}
         image={content.hero}
         next={first ? { href: `#${first.id}`, label: `${first.number} / ${first.label}` } : null}
+        whatsapp={generalHref ? { href: generalHref, label: t("whatsapp.button") } : null}
+        present={buildSlides(viewerItems).length > 0 ? { label: t("present.start") } : null}
       />
 
       {content.rooms.length > 0 ? (
@@ -132,6 +140,8 @@ export function HousePage({ content, compare }: Props) {
                         room.floor !== null ? t("rooms.floor", { floor: room.floor }) : null
                       }
                       rationaleLabel={t("rooms.rationale")}
+                      commentHref={roomHref(room.name)}
+                      commentLabel={t("whatsapp.button")}
                     />
                   ))}
                 </div>

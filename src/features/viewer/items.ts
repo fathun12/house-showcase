@@ -62,3 +62,9 @@ export function buildJumps(items: ViewerItem[]): ViewerJump[] {
 
   return jumps;
 }
+
+/** One slide per room that has photos: the room's first photo. */
+export function buildSlides(items: ViewerItem[]): ViewerItem[] {
+  const keys = new Set(buildJumps(items).map((jump) => jump.key));
+  return items.filter((item) => keys.has(item.key));
+}

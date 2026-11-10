@@ -7,10 +7,19 @@ type Props = {
   room: RoomView;
   floorLabel: string | null;
   rationaleLabel: string;
+  /** WhatsApp link with the room name in the message; null when no number is set */
+  commentHref: string | null;
+  commentLabel: string;
 };
 
 /** One layout for every room: photos on the left, number and text on the right. */
-export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
+export function RoomSection({
+  room,
+  floorLabel,
+  rationaleLabel,
+  commentHref,
+  commentLabel,
+}: Props) {
   const hasPhotos = room.photos.length > 0;
 
   return (
@@ -67,6 +76,17 @@ export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
             <p className="label text-accent">{rationaleLabel}</p>
             <p className="mt-2 whitespace-pre-line">{room.rationale}</p>
           </div>
+        ) : null}
+
+        {commentHref ? (
+          <a
+            href={commentHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="label mt-8 inline-flex min-h-11 items-center text-accent underline-offset-4 hover:underline"
+          >
+            {commentLabel} ↗
+          </a>
         ) : null}
       </Reveal>
     </article>
