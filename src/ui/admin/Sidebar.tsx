@@ -46,7 +46,12 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-auto flex flex-col items-start gap-4">
-        <Link href="/" className="label underline underline-offset-4 hover:text-accent">
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="label underline underline-offset-4 hover:text-accent"
+        >
           {t("viewSite")} →
         </Link>
         <ThemeSwitch />
