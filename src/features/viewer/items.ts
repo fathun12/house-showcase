@@ -63,8 +63,21 @@ export function buildJumps(items: ViewerItem[]): ViewerJump[] {
   return jumps;
 }
 
-/** One slide per room that has photos: the room's first photo. */
-export function buildSlides(items: ViewerItem[]): ViewerItem[] {
-  const keys = new Set(buildJumps(items).map((jump) => jump.key));
-  return items.filter((item) => keys.has(item.key));
+/** One presentation slide per room that has photos, holding all of its photos in order. */
+export type RoomSlide = { room: ViewerRoom; images: ImageView[] };
+
+export function buildSlides(items: ViewerItem[]): RoomSlide[] {
+  const slides: RoomSlide[] = [];
+
+  for (const item of items) {
+    if (!item.room) continue;
+
+    const number = item.room.number;
+    const existing = slides.find((slide) => slide.room.number === number);
+
+    if (existing) existing.images.push(item.image);
+    else slides.push({ room: item.room, images: [item.image] });
+  }
+
+  return slides;
 }

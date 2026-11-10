@@ -259,7 +259,11 @@
     "present": {
       "start": "Mulai presentasi",
       "label": "Mode presentasi",
-      "hint": "Panah atau Page Down: ruangan berikutnya. Esc: keluar."
+      "hint": "Panah kiri/kanan: foto. Page Down/Page Up: ruangan. Esc: keluar.",
+      "prevPhoto": "Foto sebelumnya",
+      "nextPhoto": "Foto berikutnya",
+      "prevRoom": "Ruangan sebelumnya",
+      "nextRoom": "Ruangan berikutnya"
     },
     "viewer": {
       "label": "Penampil gambar",

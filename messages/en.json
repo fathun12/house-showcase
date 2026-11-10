@@ -259,7 +259,11 @@
     "present": {
       "start": "Start presentation",
       "label": "Presentation mode",
-      "hint": "Arrow keys or Page Down: next room. Esc: exit."
+      "hint": "Left/Right arrows: photos. Page Down/Page Up: rooms. Esc: exit.",
+      "prevPhoto": "Previous photo",
+      "nextPhoto": "Next photo",
+      "prevRoom": "Previous room",
+      "nextRoom": "Next room"
     },
     "viewer": {
       "label": "Image viewer",
