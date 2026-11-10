@@ -61,6 +61,8 @@
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* Big statements only: lead sentence, architect notes, concept line. Too narrow for paragraphs. */
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
 }
 
 /* ------------------------------------------------------------------

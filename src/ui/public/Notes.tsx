@@ -31,7 +31,7 @@ export function Notes({ id, number, title, body, emphasis = false, signature }: 
               {number} / {title}
             </span>
           </h2>
-          <p className="mt-10 max-w-[60ch] text-xl leading-snug whitespace-pre-line md:text-2xl">
+          <p className="mt-10 max-w-[48ch] font-serif text-3xl leading-tight whitespace-pre-line md:text-4xl">
             {body}
           </p>
           {signature ? (
@@ -52,7 +52,7 @@ export function Notes({ id, number, title, body, emphasis = false, signature }: 
         </h2>
         <div>
           {lead ? (
-            <p className="max-w-[30ch] text-2xl leading-tight font-bold tracking-tight md:text-3xl">
+            <p className="max-w-[28ch] font-serif text-4xl leading-[1.05] md:text-5xl">
               {lead}
             </p>
           ) : null}

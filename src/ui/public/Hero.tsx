@@ -58,7 +58,11 @@ export function Hero({ brand, title, tagline, facts, image, next }: Props) {
             >
               {title}
             </h1>
-            {tagline ? <p className="mt-6 max-w-xl text-lg md:text-xl">{tagline}</p> : null}
+            {tagline ? (
+              <p className="mt-6 max-w-xl font-serif text-3xl leading-tight md:text-4xl">
+                {tagline}
+              </p>
+            ) : null}
             {facts.length > 0 ? (
               <p className="label mt-8 border-t border-background/40 pt-4">
                 {facts.join(" / ")}
