@@ -17,10 +17,22 @@ type Props = {
   whatsapp: { number: string; message: string; label: string } | null;
   /** Presentation button, only when at least one room has a photo */
   present: { label: string } | null;
+  /** "Design by": shown here on small screens only, the desktop side column already has it */
+  designer: { label: string; name: string } | null;
 };
 
 /** Big inverted box from the very top: black in light theme, light in dark theme. */
-export function Hero({ brand, title, tagline, facts, image, next, whatsapp, present }: Props) {
+export function Hero({
+  brand,
+  title,
+  tagline,
+  facts,
+  image,
+  next,
+  whatsapp,
+  present,
+  designer,
+}: Props) {
   return (
     <section className="gutter mx-auto max-w-page pt-6 md:pt-10">
       <div className={cn("rise grid bg-foreground text-background", image && "md:grid-cols-12")}>
@@ -72,6 +84,11 @@ export function Hero({ brand, title, tagline, facts, image, next, whatsapp, pres
             {facts.length > 0 ? (
               <p className="label mt-8 border-t border-background/40 pt-4">
                 {facts.join(" / ")}
+              </p>
+            ) : null}
+            {designer ? (
+              <p className="label mt-3 text-background/60 lg:hidden">
+                {designer.label} {designer.name}
               </p>
             ) : null}
           </div>

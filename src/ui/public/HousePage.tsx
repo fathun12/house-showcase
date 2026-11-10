@@ -95,6 +95,9 @@ export function HousePage({ content, compare }: Props) {
             : null
         }
         present={buildSlides(viewerItems).length > 0 ? { label: t("present.start") } : null}
+        designer={
+          content.designer ? { label: t("specs.designBy"), name: content.designer } : null
+        }
       />
 
       {content.rooms.length > 0 ? (
