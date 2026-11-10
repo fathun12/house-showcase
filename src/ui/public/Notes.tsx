@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils/cn";
-import { SectionTitle } from "@/ui/public/SectionTitle";
 import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
@@ -7,21 +5,65 @@ type Props = {
   number: string;
   title: string;
   body: string;
-  /** Draws a terracotta frame around the text, for the notes that need attention */
+  /** The black box (architect's voice). Without it: the open statement layout. */
   emphasis?: boolean;
+  /** One mono line at the foot of the black box */
+  signature?: string;
 };
 
-export function Notes({ id, number, title, body, emphasis }: Props) {
+const LEAD_MAX = 220;
+
+/** First sentence as a big statement, the rest as a normal paragraph. */
+function splitLead(body: string) {
+  const match = body.trim().match(/^([\s\S]+?[.!?])(?=\s|$)\s*([\s\S]*)$/);
+  if (!match || match[1].length > LEAD_MAX) return { lead: "", rest: body };
+  return { lead: match[1], rest: match[2] };
+}
+
+export function Notes({ id, number, title, body, emphasis = false, signature }: Props) {
+  if (emphasis) {
+    return (
+      <section id={id} className="scroll-mt-20 py-12">
+        <Reveal kind="fade" className="bg-foreground p-8 text-background md:p-12">
+          <h2 className="label flex items-center gap-3">
+            <span aria-hidden className="size-3 bg-accent" />
+            <span>
+              {number} / {title}
+            </span>
+          </h2>
+          <p className="mt-10 max-w-[60ch] text-xl leading-snug whitespace-pre-line md:text-2xl">
+            {body}
+          </p>
+          {signature ? (
+            <p className="label mt-12 border-t border-background/40 pt-4">{signature}</p>
+          ) : null}
+        </Reveal>
+      </section>
+    );
+  }
+
+  const { lead, rest } = splitLead(body);
+
   return (
-    <section id={id} className="group scroll-mt-20 pb-12">
-      <SectionTitle number={number}>{title}</SectionTitle>
-      <Reveal
-        className={cn(
-          "mt-8 max-w-3xl text-lg leading-relaxed whitespace-pre-line md:text-xl",
-          emphasis && "border-2 border-accent p-6",
-        )}
-      >
-        {body}
+    <section id={id} className="scroll-mt-20 border-t-2 border-foreground py-12">
+      <Reveal className="grid gap-6 md:grid-cols-[10rem_1fr] md:gap-8">
+        <h2 className="label text-accent">
+          {number} / {title}
+        </h2>
+        <div>
+          {lead ? (
+            <p className="max-w-[30ch] text-2xl leading-tight font-bold tracking-tight md:text-3xl">
+              {lead}
+            </p>
+          ) : null}
+          {rest ? (
+            <p
+              className={`max-w-[60ch] text-lg whitespace-pre-line ${lead ? "mt-8" : ""}`}
+            >
+              {rest}
+            </p>
+          ) : null}
+        </div>
       </Reveal>
     </section>
   );

@@ -125,6 +125,7 @@ export function HousePage({ content, compare }: Props) {
                 title={t("notes.title")}
                 body={content.notes}
                 emphasis
+                signature={[content.title, ...facts].join(" / ")}
               />
             ) : null}
 
