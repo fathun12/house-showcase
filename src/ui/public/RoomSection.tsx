@@ -19,7 +19,7 @@ export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
       className="grid scroll-mt-20 gap-8 border-t border-foreground py-10 md:grid-cols-12 md:gap-12"
     >
       {hasPhotos ? (
-        <div className="flex flex-col gap-6 md:col-span-7">
+        <div className="flex flex-col gap-6 md:col-span-8">
           {room.photos.map((photo) => (
             <Reveal
               as="figure"
@@ -33,7 +33,7 @@ export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
                   alt={photo.alt}
                   width={photo.width}
                   height={photo.height}
-                  sizes="(min-width: 1280px) 690px, (min-width: 768px) 58vw, 100vw"
+                  sizes="(min-width: 1280px) 720px, (min-width: 768px) 62vw, 100vw"
                   className="h-auto w-full"
                 />
               </ViewerTrigger>
@@ -47,7 +47,11 @@ export function RoomSection({ room, floorLabel, rationaleLabel }: Props) {
         </div>
       ) : null}
 
-      <Reveal className={hasPhotos ? "md:col-span-5" : "md:col-span-8"}>
+      <Reveal
+        className={
+          hasPhotos ? "md:sticky md:top-24 md:col-span-4 md:self-start" : "md:col-span-8"
+        }
+      >
         <p className="room-number w-fit font-mono text-6xl font-bold text-accent md:text-7xl">
           {room.number}
         </p>

@@ -182,8 +182,10 @@
     animation: land 1200ms ease-out;
   }
 
-  /* Sliding rows (room preview, photo strip): the hovered card grows, its two
-     neighbours step aside and every other card dims. Mouse only. */
+  /* Sliding rows (room preview, photo strip): the hovered card grows, the cards
+     before it step left and the cards after it step right. Nothing is dimmed.
+     Mouse only. The growth must fit the row's side padding (px-4 = 16 px), or the
+     first and last card get cut off. */
   .rail-card {
     transition:
       translate 350ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -199,18 +201,18 @@
 
   @media (hover: hover) {
     .rail-card:hover {
-      scale: 1.1;
+      scale: 1.06;
       z-index: 10;
     }
 
     /* Everything after the hovered card steps right, everything before it steps left.
-       6% = the card's growth per side (5%) plus a little air, so nothing overlaps. */
+       4% = the card's growth per side (3%) plus a little air, so nothing overlaps. */
     .rail-card:hover ~ .rail-card {
-      translate: 6% 0;
+      translate: 4% 0;
     }
 
     .rail-card:has(~ .rail-card:hover) {
-      translate: -6% 0;
+      translate: -4% 0;
     }
   }
 }

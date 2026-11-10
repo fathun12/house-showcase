@@ -16,14 +16,14 @@ export function GalleryStrip({ images }: Props) {
       {images.map((image) => (
         <figure
           key={image.src}
-          className="rail-card relative aspect-video w-[78vw] shrink-0 snap-start overflow-hidden bg-stage sm:w-104 lg:w-112"
+          className="rail-card relative aspect-video w-[78vw] shrink-0 snap-start overflow-hidden bg-stage sm:w-112 lg:w-136"
         >
           <ViewerTrigger itemKey={image.src} fill>
             <Image
               src={image.src}
               alt={image.alt}
               fill
-              sizes="(min-width: 1024px) 448px, (min-width: 640px) 416px, 78vw"
+              sizes="(min-width: 1024px) 544px, (min-width: 640px) 448px, 78vw"
               className="object-cover"
             />
           </ViewerTrigger>

@@ -19,7 +19,7 @@ export function Hero({ brand, title, tagline, facts, image, next }: Props) {
     <section className="gutter mx-auto max-w-page pt-6 md:pt-10">
       <div className={cn("rise grid bg-foreground text-background", image && "md:grid-cols-12")}>
         {image ? (
-          <figure className="relative aspect-video md:order-2 md:col-span-5 md:aspect-auto md:min-h-128">
+          <figure className="relative aspect-video md:order-2 md:col-span-7 md:aspect-auto md:min-h-160">
             <ViewerTrigger itemKey={image.src} fill>
               <Image
                 src={image.src}
@@ -41,7 +41,7 @@ export function Hero({ brand, title, tagline, facts, image, next }: Props) {
         <div
           className={cn(
             "flex flex-col justify-between gap-16 p-8 md:p-12",
-            image && "md:order-1 md:col-span-7",
+            image && "md:order-1 md:col-span-5",
           )}
         >
           <p className="flex items-center gap-3">
@@ -50,7 +50,12 @@ export function Hero({ brand, title, tagline, facts, image, next }: Props) {
           </p>
 
           <div>
-            <h1 className="heading text-5xl text-balance sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1
+              className={cn(
+                "heading text-5xl text-balance sm:text-6xl",
+                image ? "md:text-5xl lg:text-6xl" : "md:text-7xl lg:text-8xl",
+              )}
+            >
               {title}
             </h1>
             {tagline ? <p className="mt-6 max-w-xl text-lg md:text-xl">{tagline}</p> : null}
