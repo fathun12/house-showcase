@@ -28,6 +28,7 @@ export type HouseContent = {
   why: string;
   notes: string;
   designer: string;
+  whatsapp: string;
   facts: {
     floors: number | null;
     bedrooms: number | null;
@@ -92,6 +93,7 @@ export function buildHouseContent(house: PublicHouse, locale: string): HouseCont
     why: pickLocalized(locale, house.why_id, house.why_en),
     notes: pickLocalized(locale, house.notes_id, house.notes_en),
     designer: house.designer?.trim() ?? "",
+    whatsapp: house.whatsapp ?? "",
     facts: {
       floors: house.floors,
       bedrooms: house.bedrooms,

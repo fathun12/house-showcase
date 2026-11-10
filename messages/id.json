@@ -65,12 +65,14 @@
         "why": "Kenapa cocok untuk keluarga",
         "notes": "Catatan arsitek",
         "designer": "Desain oleh",
+        "whatsapp": "Nomor WhatsApp",
         "published": "Tampilkan di situs publik"
       },
       "hints": {
         "slug": "Huruf kecil, angka, dan tanda hubung. Contoh: rumah-taman",
         "published": "Kalau tidak dicentang, rumah hanya terlihat olehmu di dasbor.",
-        "designer": "Nama perancang desain. Kosongkan kalau tidak ingin ditampilkan."
+        "designer": "Nama perancang desain. Kosongkan kalau tidak ingin ditampilkan.",
+        "whatsapp": "Boleh ditulis 0812... atau 62812.... Kosongkan untuk menyembunyikan tombol WhatsApp."
       },
       "save": "Simpan",
       "cancel": "Batal",

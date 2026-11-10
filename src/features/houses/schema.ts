@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { optionalNumber, requiredText, text } from "@/lib/utils/validation";
+import { isValidWhatsapp } from "@/lib/utils/whatsapp";
 
 export const HOUSE_FIELDS = [
   "slug",
@@ -16,6 +17,7 @@ export const HOUSE_FIELDS = [
   "bathrooms",
   "area_m2",
   "designer",
+  "whatsapp",
   "sort_order",
   "is_published",
 ] as const;
@@ -38,6 +40,7 @@ export const houseSchema = z.object({
   bathrooms: optionalNumber(0, 30, true),
   area_m2: optionalNumber(1, 100000),
   designer: text(80),
+  whatsapp: text(30).refine((value) => value === "" || isValidWhatsapp(value)),
   sort_order: optionalNumber(-1000, 1000, true),
   is_published: z.string().transform((value) => value === "on"),
 });

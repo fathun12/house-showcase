@@ -69,9 +69,12 @@ export function HousePage({ content, compare }: Props) {
   const first = sections[0];
 
   const viewerItems = buildViewerItems(content);
-  const generalHref = whatsappHref(t("whatsapp.house", { house: content.title }));
+  const generalHref = whatsappHref(
+    content.whatsapp,
+    t("whatsapp.house", { house: content.title }),
+  );
   const roomHref = (name: string) =>
-    whatsappHref(t("whatsapp.room", { room: name, house: content.title }));
+    whatsappHref(content.whatsapp, t("whatsapp.room", { room: name, house: content.title }));
 
   return (
     <ImageViewer

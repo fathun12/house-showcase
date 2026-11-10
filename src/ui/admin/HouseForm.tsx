@@ -65,6 +65,14 @@ export function HouseForm({ house }: { house: House | null }) {
           hint={t("hints.designer")}
           error={error("designer")}
         />
+        <TextField
+          label={t("fields.whatsapp")}
+          name="whatsapp"
+          inputMode="tel"
+          defaultValue={values.whatsapp}
+          hint={t("hints.whatsapp")}
+          error={error("whatsapp")}
+        />
       </FormSection>
 
       <FormSection index="02" title={t("sections.facts")}>

@@ -65,12 +65,14 @@
         "why": "Why it suits our family",
         "notes": "Architect notes",
         "designer": "Design by",
+        "whatsapp": "WhatsApp number",
         "published": "Show on the public site"
       },
       "hints": {
         "slug": "Lowercase letters, numbers and hyphens. Example: garden-house",
         "published": "If unchecked, the house is only visible to you in the dashboard.",
-        "designer": "Name of the person who designed the house. Leave empty to hide it."
+        "designer": "Name of the person who designed the house. Leave empty to hide it.",
+        "whatsapp": "You can write 0812... or 62812.... Leave empty to hide the WhatsApp buttons."
       },
       "save": "Save",
       "cancel": "Cancel",

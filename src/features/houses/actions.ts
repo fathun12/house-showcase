@@ -5,6 +5,7 @@ import { redirectLocalized, requireAdmin } from "@/features/auth/session";
 import { MEDIA_BUCKET } from "@/features/media/url";
 import { createClient } from "@/lib/supabase/server";
 import { readFormValues, toFieldErrors } from "@/lib/utils/validation";
+import { normalizeWhatsapp } from "@/lib/utils/whatsapp";
 import { HOUSE_FIELDS, houseSchema, type HouseFormValues } from "./schema";
 
 export type HouseFormState = {
@@ -31,6 +32,7 @@ export async function saveHouse(
   const row = {
     ...parsed.data,
     designer: parsed.data.designer || null,
+    whatsapp: normalizeWhatsapp(parsed.data.whatsapp) || null,
     sort_order: parsed.data.sort_order ?? 0,
   };
   const supabase = await createClient();
