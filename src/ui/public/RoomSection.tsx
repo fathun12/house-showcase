@@ -62,13 +62,15 @@ export function RoomSection({ room, floorLabel, rationaleLabel, comment }: Props
         {floorLabel ? <p className="label mt-3 text-muted">{floorLabel}</p> : null}
 
         {room.description ? (
-          <p className="mt-6 max-w-[65ch] text-lg whitespace-pre-line">{room.description}</p>
+          <p className="mt-6 max-w-[65ch] text-lg whitespace-pre-line text-justify hyphens-auto">
+            {room.description}
+          </p>
         ) : null}
 
         {room.rationale ? (
           <div className="mt-8 border-l-4 border-accent pl-5">
             <p className="label text-accent">{rationaleLabel}</p>
-            <p className="mt-2 whitespace-pre-line">{room.rationale}</p>
+            <p className="mt-2 whitespace-pre-line text-justify hyphens-auto">{room.rationale}</p>
           </div>
         ) : null}
 
