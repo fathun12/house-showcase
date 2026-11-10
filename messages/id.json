@@ -92,6 +92,18 @@
         "submit": "Hapus rumah"
       }
     },
+    "translate": {
+      "button": "Terjemahkan kolom kosong",
+      "pending": "Menerjemahkan...",
+      "status": {
+        "done": "Selesai. Periksa hasilnya, lalu tekan Simpan.",
+        "nothing": "Tidak ada yang diterjemahkan: isi satu sisi bahasa dan kosongkan sisi lainnya.",
+        "no_key": "Kunci DeepL belum dipasang di server.",
+        "key": "Kunci DeepL ditolak. Periksa kuncinya.",
+        "quota": "Batas terjemahan DeepL bulan ini habis.",
+        "failed": "Terjemahan gagal. Coba lagi."
+      }
+    },
     "tabs": {
       "label": "Bagian rumah",
       "details": "Detail",

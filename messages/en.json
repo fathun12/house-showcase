@@ -92,6 +92,18 @@
         "submit": "Delete house"
       }
     },
+    "translate": {
+      "button": "Translate empty fields",
+      "pending": "Translating...",
+      "status": {
+        "done": "Done. Check the result, then press Save.",
+        "nothing": "Nothing to translate: fill one language side and leave the other empty.",
+        "no_key": "The DeepL key is not set on the server.",
+        "key": "DeepL rejected the key. Check the key.",
+        "quota": "The DeepL limit for this month is used up.",
+        "failed": "Translation failed. Please try again."
+      }
+    },
     "tabs": {
       "label": "House sections",
       "details": "Details",

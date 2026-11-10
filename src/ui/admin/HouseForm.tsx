@@ -6,6 +6,7 @@ import { Link } from "@/lib/i18n/navigation";
 import type { House } from "@/types/house";
 import { BilingualField } from "@/ui/admin/BilingualField";
 import { FormSection } from "@/ui/admin/FormShell";
+import { TranslateButton } from "@/ui/admin/TranslateButton";
 import { Button, buttonStyles } from "@/ui/primitives/Button";
 import { Checkbox, TextField } from "@/ui/primitives/Field";
 
@@ -17,6 +18,8 @@ const KNOWN_ERRORS = new Set([
   "duplicate",
   "save_failed",
 ]);
+
+const TRANSLATE_FIELDS = ["title", "tagline", "why", "notes"] as const;
 
 export function HouseForm({ house }: { house: House | null }) {
   const t = useTranslations("admin.houseForm");
@@ -150,6 +153,7 @@ export function HouseForm({ house }: { house: House | null }) {
         <Link href="/admin/houses" className={buttonStyles("outline")}>
           {t("cancel")}
         </Link>
+        <TranslateButton bases={TRANSLATE_FIELDS} />
       </div>
     </form>
   );

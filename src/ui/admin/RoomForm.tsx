@@ -6,6 +6,7 @@ import { Link } from "@/lib/i18n/navigation";
 import type { Room } from "@/types/house";
 import { BilingualField } from "@/ui/admin/BilingualField";
 import { FormSection } from "@/ui/admin/FormShell";
+import { TranslateButton } from "@/ui/admin/TranslateButton";
 import { Button, buttonStyles } from "@/ui/primitives/Button";
 import { TextField } from "@/ui/primitives/Field";
 
@@ -15,6 +16,8 @@ const KNOWN_ERRORS = new Set([
   "invalid_type",
   "save_failed",
 ]);
+
+const TRANSLATE_FIELDS = ["name", "description", "rationale"] as const;
 
 export function RoomForm({ houseId, room }: { houseId: string; room: Room | null }) {
   const t = useTranslations("admin.roomForm");
@@ -87,6 +90,7 @@ export function RoomForm({ houseId, room }: { houseId: string; room: Room | null
         <Link href={`/admin/houses/${houseId}/rooms`} className={buttonStyles("outline")}>
           {t("cancel")}
         </Link>
+        <TranslateButton bases={TRANSLATE_FIELDS} />
       </div>
     </form>
   );
