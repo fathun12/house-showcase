@@ -187,6 +187,11 @@
       "bathrooms": "Bathrooms",
       "area": "Area (m²)"
     },
+    "specs": {
+      "title": "Specifications",
+      "designBy": "Design by",
+      "designer": "Niam"
+    },
     "nav": {
       "label": "Page sections",
       "floorplan": "Floor plan",

@@ -44,6 +44,25 @@ export function HousePage({ content, compare }: Props) {
       number: String(index + 1).padStart(2, "0"),
     }));
 
+  const specRows = [
+    content.facts.area !== null && {
+      label: t("summary.area"),
+      value: String(content.facts.area),
+    },
+    content.facts.floors !== null && {
+      label: t("summary.floors"),
+      value: String(content.facts.floors),
+    },
+    content.facts.bedrooms !== null && {
+      label: t("summary.bedrooms"),
+      value: String(content.facts.bedrooms),
+    },
+    content.facts.bathrooms !== null && {
+      label: t("summary.bathrooms"),
+      value: String(content.facts.bathrooms),
+    },
+  ].filter((row): row is { label: string; value: string } => Boolean(row));
+
   const numberOf = (id: string) => sections.find((section) => section.id === id)?.number ?? "";
   const has = (id: string) => sections.some((section) => section.id === id);
   const first = sections[0];
@@ -80,7 +99,17 @@ export function HousePage({ content, compare }: Props) {
 
       {sections.length > 0 ? (
         <div className="gutter mx-auto max-w-page pt-10 lg:grid lg:grid-cols-[12rem_1fr] lg:gap-12">
-          <SectionIndex label={t("nav.label")} items={sections} rooms={content.rooms} />
+          <SectionIndex
+            label={t("nav.label")}
+            items={sections}
+            rooms={content.rooms}
+            specs={{
+              title: t("specs.title"),
+              rows: specRows,
+              designByLabel: t("specs.designBy"),
+              designer: t("specs.designer"),
+            }}
+          />
 
           <div className="min-w-0">
             {has("floorplan") ? (

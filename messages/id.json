@@ -187,6 +187,11 @@
       "bathrooms": "Kamar mandi",
       "area": "Luas (m²)"
     },
+    "specs": {
+      "title": "Spesifikasi",
+      "designBy": "Desain oleh",
+      "designer": "Niam"
+    },
     "nav": {
       "label": "Bagian halaman",
       "floorplan": "Denah",

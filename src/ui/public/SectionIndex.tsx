@@ -11,6 +11,13 @@ type Props = {
   items: Item[];
   /** Rooms are listed under the "rooms" item, on desktop only */
   rooms: Pick<RoomView, "anchor" | "number" | "name">[];
+  /** House numbers and the designer's name, under the index, on desktop only */
+  specs: {
+    title: string;
+    rows: { label: string; value: string }[];
+    designByLabel: string;
+    designer: string;
+  };
 };
 
 /** The marker of the section being read: a terracotta bar on the left edge of the
@@ -21,7 +28,7 @@ const marker =
 
 /** Numbered links to the page sections: a sticky bar on phones, a sticky column on desktop.
  *  On desktop the rooms sit under "Rooms", so every room is one click away while scrolling. */
-export function SectionIndex({ label, items, rooms }: Props) {
+export function SectionIndex({ label, items, rooms, specs }: Props) {
   const activeSection = useActiveSection(items.map((item) => item.id));
   const passedRoom = useActiveSection(rooms.map((room) => room.anchor));
   const activeRoom = activeSection === "rooms" ? passedRoom : null;
@@ -80,6 +87,33 @@ export function SectionIndex({ label, items, rooms }: Props) {
           </li>
         ))}
       </ul>
+
+      {specs.rows.length > 0 || specs.designer ? (
+        <div className="mt-10 hidden pb-2 lg:block">
+          {specs.rows.length > 0 ? (
+            <>
+              <p className="label text-accent">{specs.title}</p>
+              <dl className="mt-3 border-t-2 border-foreground">
+                {specs.rows.map((row) => (
+                  <div
+                    key={row.label}
+                    className="flex items-baseline justify-between gap-4 border-b border-foreground py-2.5"
+                  >
+                    <dt className="label text-muted">{row.label}</dt>
+                    <dd className="label">{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </>
+          ) : null}
+
+          {specs.designer ? (
+            <p className="label mt-5 text-muted">
+              {specs.designByLabel} <span className="text-foreground">{specs.designer}</span>
+            </p>
+          ) : null}
+        </div>
+      ) : null}
     </nav>
   );
 }
