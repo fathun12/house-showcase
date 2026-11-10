@@ -1,34 +1,37 @@
 import Image from "next/image";
 import type { ImageView } from "@/features/houses/view";
-import { Rail } from "@/ui/public/Rail";
+import { SlideRow } from "@/ui/public/SlideRow";
 import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
 
 type Props = {
   images: ImageView[];
 };
 
-/** The photo collection as a sliding row. A click opens the image viewer. */
+/** Section 3: the photo collection as a sliding row. A click opens the image viewer. */
 export function GalleryStrip({ images }: Props) {
   return (
-    <Rail>
+    <SlideRow>
       {images.map((image) => (
-        <figure key={image.src} className="rail-card relative w-72 shrink-0 snap-start sm:w-96">
-          <div className="relative aspect-4/3 overflow-hidden border-2 border-foreground">
-            <ViewerTrigger itemKey={image.src} fill>
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="(min-width: 640px) 384px, 288px"
-                className="object-cover"
-              />
-            </ViewerTrigger>
-          </div>
+        <figure
+          key={image.src}
+          className="rail-card relative aspect-4/3 w-[80vw] shrink-0 snap-start overflow-hidden bg-stage sm:w-112"
+        >
+          <ViewerTrigger itemKey={image.src} fill>
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              sizes="(min-width: 640px) 448px, 80vw"
+              className="object-cover"
+            />
+          </ViewerTrigger>
           {image.caption ? (
-            <figcaption className="label mt-2 text-muted">{image.caption}</figcaption>
+            <figcaption className="label pointer-events-none absolute inset-x-0 bottom-0 bg-stage px-4 py-2 text-stage-ink">
+              {image.caption}
+            </figcaption>
           ) : null}
         </figure>
       ))}
-    </Rail>
+    </SlideRow>
   );
 }

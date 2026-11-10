@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { ImageView } from "@/features/houses/view";
 import { cn } from "@/lib/utils/cn";
-import { Rail } from "@/ui/public/Rail";
+import { SlideRow } from "@/ui/public/SlideRow";
 
 type Item = {
   anchor: string;
@@ -20,9 +20,9 @@ type Props = {
   rooms: Item[];
 };
 
-const SWAP_MS = 4000;
+const SWAP_MS = 5000;
 
-/** The photos of one card swap by themselves. The start is staggered so cards never swap together. */
+/** Photos of one card swap by themselves. The start is staggered so cards never swap together. */
 function CyclingPhotos({ photos, offset }: { photos: ImageView[]; offset: number }) {
   const [active, setActive] = useState(0);
 
@@ -42,14 +42,14 @@ function CyclingPhotos({ photos, offset }: { photos: ImageView[]; offset: number
   }, [photos.length, offset]);
 
   return (
-    <div className="relative aspect-4/3 overflow-hidden bg-surface">
+    <div className="absolute inset-0">
       {photos.map((photo, index) => (
         <Image
           key={photo.src}
           src={photo.src}
           alt={photo.alt}
           fill
-          sizes="(min-width: 640px) 288px, 256px"
+          sizes="(min-width: 1024px) 384px, (min-width: 640px) 320px, 72vw"
           className={cn(
             "object-cover transition-opacity duration-700 ease-out",
             index === active ? "opacity-100" : "opacity-0",
@@ -60,37 +60,53 @@ function CyclingPhotos({ photos, offset }: { photos: ImageView[]; offset: number
   );
 }
 
-/** Preview row of the rooms. A card jumps to its room in the detail section below.
+/** Section 1: one card per room. A click jumps to that room in the room tour below.
  *  The hover behaviour (grow, neighbours step aside) lives in globals.css under .rail-card. */
 export function RoomPreview({ title, rooms }: Props) {
   return (
     <section aria-label={title} className="gutter mx-auto max-w-page pt-10">
-      <Rail heading={<h2 className="heading text-3xl md:text-4xl">{title}</h2>}>
-        {rooms.map((room, index) => (
-          <a
-            key={room.anchor}
-            href={`#${room.anchor}`}
-            className="rail-card relative block w-64 shrink-0 snap-start border-2 border-foreground bg-background sm:w-72"
-          >
-            <div className="relative">
-              <CyclingPhotos photos={room.photos} offset={index * 900} />
-              <span className="absolute top-0 left-0 bg-accent px-2 py-1 font-mono text-sm font-bold text-accent-ink">
-                {room.number}
-              </span>
-            </div>
+      <SlideRow heading={<h2 className="heading text-3xl md:text-4xl">{title}</h2>}>
+        {rooms.map((room, index) => {
+          const hasPhotos = room.photos.length > 0;
 
-            <div className="border-t-2 border-foreground p-4">
-              <p className="heading text-xl">{room.name}</p>
-              {room.floorLabel ? (
-                <p className="label mt-2 text-muted">{room.floorLabel}</p>
-              ) : null}
-              {room.description ? (
-                <p className="mt-2 line-clamp-2 text-sm">{room.description}</p>
-              ) : null}
-            </div>
-          </a>
-        ))}
-      </Rail>
+          return (
+            <a
+              key={room.anchor}
+              href={`#${room.anchor}`}
+              className="rail-card relative block aspect-3/4 w-[72vw] shrink-0 snap-start overflow-hidden bg-stage text-stage-ink sm:w-80 lg:w-96"
+            >
+              {hasPhotos ? (
+                <>
+                  <CyclingPhotos photos={room.photos} offset={index * 1200} />
+                  <span className="absolute top-0 left-0 bg-accent px-3 py-1.5 font-mono text-sm font-bold text-accent-ink">
+                    {room.number}
+                  </span>
+                </>
+              ) : (
+                <span
+                  aria-hidden
+                  className="absolute inset-0 grid place-items-center pb-24 font-mono text-9xl font-bold text-accent"
+                >
+                  {room.number}
+                </span>
+              )}
+
+              <div className="absolute inset-x-0 bottom-0 bg-stage p-5 text-stage-ink">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="heading text-2xl">{room.name}</p>
+                  <span aria-hidden className="font-mono text-accent">
+                    →
+                  </span>
+                </div>
+                {room.floorLabel ? <p className="label mt-1 opacity-70">{room.floorLabel}</p> : null}
+                {room.description ? (
+                  <p className="mt-2 line-clamp-2 text-sm opacity-80">{room.description}</p>
+                ) : null}
+              </div>
+            </a>
+          );
+        })}
+      </SlideRow>
     </section>
   );
 }
