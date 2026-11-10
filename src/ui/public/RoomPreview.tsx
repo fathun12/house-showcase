@@ -21,6 +21,7 @@ type Props = {
 };
 
 const SWAP_MS = 5000;
+const AUTO_MS = 8000;
 
 /** Photos of one card swap by themselves. The start is staggered so cards never swap together. */
 function CyclingPhotos({ photos, offset }: { photos: ImageView[]; offset: number }) {
@@ -49,7 +50,7 @@ function CyclingPhotos({ photos, offset }: { photos: ImageView[]; offset: number
           src={photo.src}
           alt={photo.alt}
           fill
-          sizes="(min-width: 1024px) 384px, (min-width: 640px) 320px, 72vw"
+          sizes="(min-width: 1024px) 544px, (min-width: 640px) 448px, 78vw"
           className={cn(
             "object-cover transition-opacity duration-700 ease-out",
             index === active ? "opacity-100" : "opacity-0",
@@ -60,12 +61,15 @@ function CyclingPhotos({ photos, offset }: { photos: ImageView[]; offset: number
   );
 }
 
-/** Section 1: one card per room. A click jumps to that room in the room tour below.
+/** Section 1: one landscape card per room. A click jumps to that room in the room tour below.
  *  The hover behaviour (grow, neighbours step aside) lives in globals.css under .rail-card. */
 export function RoomPreview({ title, rooms }: Props) {
   return (
     <section aria-label={title} className="gutter mx-auto max-w-page pt-10">
-      <SlideRow heading={<h2 className="heading text-3xl md:text-4xl">{title}</h2>}>
+      <SlideRow
+        autoMs={AUTO_MS}
+        heading={<h2 className="heading text-3xl md:text-4xl">{title}</h2>}
+      >
         {rooms.map((room, index) => {
           const hasPhotos = room.photos.length > 0;
 
@@ -73,7 +77,7 @@ export function RoomPreview({ title, rooms }: Props) {
             <a
               key={room.anchor}
               href={`#${room.anchor}`}
-              className="rail-card relative block aspect-3/4 w-[72vw] shrink-0 snap-start overflow-hidden bg-stage text-stage-ink sm:w-80 lg:w-96"
+              className="rail-card relative block aspect-video w-[78vw] shrink-0 snap-start overflow-hidden bg-stage text-stage-ink sm:w-112 lg:w-136"
             >
               {hasPhotos ? (
                 <>
@@ -85,22 +89,22 @@ export function RoomPreview({ title, rooms }: Props) {
               ) : (
                 <span
                   aria-hidden
-                  className="absolute inset-0 grid place-items-center pb-24 font-mono text-9xl font-bold text-accent"
+                  className="absolute inset-0 grid place-items-center pb-16 font-mono text-9xl font-bold text-accent"
                 >
                   {room.number}
                 </span>
               )}
 
-              <div className="absolute inset-x-0 bottom-0 bg-stage p-5 text-stage-ink">
+              <div className="absolute inset-x-0 bottom-0 bg-stage p-4 text-stage-ink">
                 <div className="flex items-start justify-between gap-3">
-                  <p className="heading text-2xl">{room.name}</p>
+                  <p className="heading text-xl">{room.name}</p>
                   <span aria-hidden className="font-mono text-accent">
                     →
                   </span>
                 </div>
                 {room.floorLabel ? <p className="label mt-1 opacity-70">{room.floorLabel}</p> : null}
                 {room.description ? (
-                  <p className="mt-2 line-clamp-2 text-sm opacity-80">{room.description}</p>
+                  <p className="mt-1 line-clamp-1 text-sm opacity-80">{room.description}</p>
                 ) : null}
               </div>
             </a>

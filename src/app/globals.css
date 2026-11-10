@@ -203,16 +203,14 @@
       z-index: 10;
     }
 
-    .rail-card:hover + .rail-card {
-      translate: 9% 0;
+    /* Everything after the hovered card steps right, everything before it steps left.
+       6% = the card's growth per side (5%) plus a little air, so nothing overlaps. */
+    .rail-card:hover ~ .rail-card {
+      translate: 6% 0;
     }
 
-    .rail-card:has(+ .rail-card:hover) {
-      translate: -9% 0;
-    }
-
-    .rail:has(.rail-card:hover) .rail-card:not(:hover) {
-      opacity: 0.55;
+    .rail-card:has(~ .rail-card:hover) {
+      translate: -6% 0;
     }
   }
 }

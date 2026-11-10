@@ -7,21 +7,23 @@ type Props = {
   images: ImageView[];
 };
 
-/** Section 3: the photo collection as a sliding row. A click opens the image viewer. */
+const AUTO_MS = 8000;
+
+/** Section 3: the photo collection as a sliding row of landscape cards. A click opens the viewer. */
 export function GalleryStrip({ images }: Props) {
   return (
-    <SlideRow>
+    <SlideRow autoMs={AUTO_MS}>
       {images.map((image) => (
         <figure
           key={image.src}
-          className="rail-card relative aspect-4/3 w-[80vw] shrink-0 snap-start overflow-hidden bg-stage sm:w-112"
+          className="rail-card relative aspect-video w-[78vw] shrink-0 snap-start overflow-hidden bg-stage sm:w-104 lg:w-112"
         >
           <ViewerTrigger itemKey={image.src} fill>
             <Image
               src={image.src}
               alt={image.alt}
               fill
-              sizes="(min-width: 640px) 448px, 80vw"
+              sizes="(min-width: 1024px) 448px, (min-width: 640px) 416px, 78vw"
               className="object-cover"
             />
           </ViewerTrigger>
