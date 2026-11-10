@@ -3,6 +3,7 @@ import type { ImageView } from "@/features/houses/view";
 import { cn } from "@/lib/utils/cn";
 import { PresentButton } from "@/ui/public/PresentButton";
 import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
+import { WhatsappLink } from "@/ui/public/WhatsappLink";
 
 type Props = {
   brand: string;
@@ -12,8 +13,8 @@ type Props = {
   image: ImageView | null;
   /** The first section of the page, offered as the obvious next step */
   next: { href: string; label: string } | null;
-  /** Comment link, only when a WhatsApp number is set */
-  whatsapp: { href: string; label: string } | null;
+  /** Comment link to this page, only when a WhatsApp number is set */
+  whatsapp: { number: string; message: string; label: string } | null;
   /** Presentation button, only when at least one room has a photo */
   present: { label: string } | null;
 };
@@ -64,7 +65,7 @@ export function Hero({ brand, title, tagline, facts, image, next, whatsapp, pres
               {title}
             </h1>
             {tagline ? (
-              <p className="mt-6 max-w-xl font-serif text-3xl leading-tight md:text-4xl">
+              <p className="mt-6 max-w-xl text-2xl leading-snug font-light tracking-tight md:text-3xl">
                 {tagline}
               </p>
             ) : null}
@@ -88,14 +89,11 @@ export function Hero({ brand, title, tagline, facts, image, next, whatsapp, pres
         ) : null}
         {present ? <PresentButton label={present.label} /> : null}
         {whatsapp ? (
-          <a
-            href={whatsapp.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="label inline-flex min-h-11 items-center text-accent underline-offset-4 hover:underline"
-          >
-            {whatsapp.label} ↗
-          </a>
+          <WhatsappLink
+            number={whatsapp.number}
+            message={whatsapp.message}
+            label={whatsapp.label}
+          />
         ) : null}
       </div>
     </section>

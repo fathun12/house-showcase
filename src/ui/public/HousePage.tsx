@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { HouseContent, SummaryRow } from "@/features/houses/view";
 import { buildSlides, buildViewerItems } from "@/features/viewer/items";
-import { whatsappHref } from "@/lib/utils/whatsapp";
+import { isValidWhatsapp } from "@/lib/utils/whatsapp";
 import { Compare } from "@/ui/public/Compare";
 import { FloorPlan } from "@/ui/public/FloorPlan";
 import { GalleryStrip } from "@/ui/public/GalleryStrip";
@@ -69,12 +69,7 @@ export function HousePage({ content, compare }: Props) {
   const first = sections[0];
 
   const viewerItems = buildViewerItems(content);
-  const generalHref = whatsappHref(
-    content.whatsapp,
-    t("whatsapp.house", { house: content.title }),
-  );
-  const roomHref = (name: string) =>
-    whatsappHref(content.whatsapp, t("whatsapp.room", { room: name, house: content.title }));
+  const hasWhatsapp = isValidWhatsapp(content.whatsapp);
 
   return (
     <ImageViewer
@@ -90,7 +85,15 @@ export function HousePage({ content, compare }: Props) {
         facts={facts}
         image={content.hero}
         next={first ? { href: `#${first.id}`, label: `${first.number} / ${first.label}` } : null}
-        whatsapp={generalHref ? { href: generalHref, label: t("whatsapp.button") } : null}
+        whatsapp={
+          hasWhatsapp
+            ? {
+                number: content.whatsapp,
+                message: t("whatsapp.house", { house: content.title }),
+                label: t("whatsapp.button"),
+              }
+            : null
+        }
         present={buildSlides(viewerItems).length > 0 ? { label: t("present.start") } : null}
       />
 
@@ -143,8 +146,18 @@ export function HousePage({ content, compare }: Props) {
                         room.floor !== null ? t("rooms.floor", { floor: room.floor }) : null
                       }
                       rationaleLabel={t("rooms.rationale")}
-                      commentHref={roomHref(room.name)}
-                      commentLabel={t("whatsapp.button")}
+                      comment={
+                        hasWhatsapp
+                          ? {
+                              number: content.whatsapp,
+                              message: t("whatsapp.room", {
+                                room: room.name,
+                                house: content.title,
+                              }),
+                              label: t("whatsapp.button"),
+                            }
+                          : null
+                      }
                     />
                   ))}
                 </div>

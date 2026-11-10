@@ -1,25 +1,19 @@
 import Image from "next/image";
 import type { RoomView } from "@/features/houses/view";
 import { ViewerTrigger } from "@/ui/public/ViewerTrigger";
+import { WhatsappLink } from "@/ui/public/WhatsappLink";
 import { Reveal } from "@/ui/shared/Reveal";
 
 type Props = {
   room: RoomView;
   floorLabel: string | null;
   rationaleLabel: string;
-  /** WhatsApp link with the room name in the message; null when no number is set */
-  commentHref: string | null;
-  commentLabel: string;
+  /** WhatsApp comment about this room; null when no number is set */
+  comment: { number: string; message: string; label: string } | null;
 };
 
 /** One layout for every room: photos on the left, number and text on the right. */
-export function RoomSection({
-  room,
-  floorLabel,
-  rationaleLabel,
-  commentHref,
-  commentLabel,
-}: Props) {
+export function RoomSection({ room, floorLabel, rationaleLabel, comment }: Props) {
   const hasPhotos = room.photos.length > 0;
 
   return (
@@ -78,15 +72,14 @@ export function RoomSection({
           </div>
         ) : null}
 
-        {commentHref ? (
-          <a
-            href={commentHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="label mt-8 inline-flex min-h-11 items-center text-accent underline-offset-4 hover:underline"
-          >
-            {commentLabel} ↗
-          </a>
+        {comment ? (
+          <WhatsappLink
+            number={comment.number}
+            message={comment.message}
+            anchor={room.anchor}
+            label={comment.label}
+            className="mt-8"
+          />
         ) : null}
       </Reveal>
     </article>
