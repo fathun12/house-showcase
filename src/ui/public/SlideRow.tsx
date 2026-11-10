@@ -10,7 +10,7 @@ type Props = {
   children: ReactNode;
 };
 
-const GLIDE_MS = 800;
+const GLIDE_MS = 700;
 const DRAG_START_PX = 6;
 // How far a flick carries after release: speed (px per ms) times this many ms.
 const CARRY_MS = 220;
@@ -20,7 +20,7 @@ const arrow =
   "grid size-11 place-items-center border-2 border-foreground font-mono text-lg enabled:hover:bg-foreground enabled:hover:text-background disabled:opacity-30";
 
 // Fast at first, slowing down at the end.
-const ease = (p: number) => 1 - Math.pow(1 - p, 4);
+const ease = (p: number) => 1 - Math.pow(1 - p, 3);
 
 // Scroll positions where a card sits at the left edge. offsetLeft ignores transforms,
 // so a hovered (scaled) card or a neighbour that stepped aside does not change the result.

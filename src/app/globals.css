@@ -194,8 +194,8 @@
 
   .rail-card {
     transition:
-      translate 250ms ease-out,
-      scale 250ms ease-out;
+      translate 200ms ease-out,
+      scale 200ms ease-out;
     will-change: translate, scale;
   }
 
@@ -204,7 +204,7 @@
   }
 
   .rail-slot:has(:focus-visible) > .rail-card {
-    scale: 1.06;
+    scale: 1.08;
   }
 
   @media (hover: hover) {
@@ -213,17 +213,17 @@
     }
 
     .rail-slot:hover > .rail-card {
-      scale: 1.06;
+      scale: 1.08;
     }
 
     /* Everything after the hovered card steps right, everything before it steps left.
-       4% = the card's growth per side (3%) plus a little air, so nothing overlaps. */
+       5% = the card's growth per side (4%) plus a little air, so nothing overlaps. */
     .rail-slot:hover ~ .rail-slot > .rail-card {
-      translate: 4% 0;
+      translate: 5% 0;
     }
 
     .rail-slot:has(~ .rail-slot:hover) > .rail-card {
-      translate: -4% 0;
+      translate: -5% 0;
     }
 
     /* While dragging, nothing grows or steps aside */
