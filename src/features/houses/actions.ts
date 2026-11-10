@@ -28,7 +28,11 @@ export async function saveHouse(
     return { status: "error", fieldErrors: toFieldErrors(parsed.error), values };
   }
 
-  const row = { ...parsed.data, sort_order: parsed.data.sort_order ?? 0 };
+  const row = {
+    ...parsed.data,
+    designer: parsed.data.designer || null,
+    sort_order: parsed.data.sort_order ?? 0,
+  };
   const supabase = await createClient();
 
   const { data, error } = houseId

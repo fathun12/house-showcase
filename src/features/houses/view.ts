@@ -27,6 +27,7 @@ export type HouseContent = {
   tagline: string;
   why: string;
   notes: string;
+  designer: string;
   facts: {
     floors: number | null;
     bedrooms: number | null;
@@ -90,6 +91,7 @@ export function buildHouseContent(house: PublicHouse, locale: string): HouseCont
     tagline: pickLocalized(locale, house.tagline_id, house.tagline_en),
     why: pickLocalized(locale, house.why_id, house.why_en),
     notes: pickLocalized(locale, house.notes_id, house.notes_en),
+    designer: house.designer?.trim() ?? "",
     facts: {
       floors: house.floors,
       bedrooms: house.bedrooms,

@@ -58,6 +58,13 @@ export function HouseForm({ house }: { house: House | null }) {
           defaults={{ id: values.tagline_id, en: values.tagline_en }}
           errors={{ id: error("tagline_id"), en: error("tagline_en") }}
         />
+        <TextField
+          label={t("fields.designer")}
+          name="designer"
+          defaultValue={values.designer}
+          hint={t("hints.designer")}
+          error={error("designer")}
+        />
       </FormSection>
 
       <FormSection index="02" title={t("sections.facts")}>

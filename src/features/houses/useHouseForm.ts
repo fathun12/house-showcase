@@ -26,6 +26,7 @@ function houseToFormValues(house: House | null): HouseFormValues {
     bedrooms: house?.bedrooms?.toString() ?? "",
     bathrooms: house?.bathrooms?.toString() ?? "",
     area_m2: house?.area_m2?.toString() ?? "",
+    designer: house?.designer ?? "",
     sort_order: house?.sort_order?.toString() ?? "0",
     is_published: house?.is_published ? "on" : "",
   };

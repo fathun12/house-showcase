@@ -107,7 +107,7 @@ export function HousePage({ content, compare }: Props) {
               title: t("specs.title"),
               rows: specRows,
               designByLabel: t("specs.designBy"),
-              designer: t("specs.designer"),
+              designer: content.designer,
             }}
           />
 

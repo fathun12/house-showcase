@@ -13,6 +13,7 @@ export type House = {
   bedrooms: number | null;
   bathrooms: number | null;
   area_m2: number | null;
+  designer: string | null;
   is_published: boolean;
   sort_order: number;
   created_at: string;

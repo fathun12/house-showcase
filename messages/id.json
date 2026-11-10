@@ -64,11 +64,13 @@
         "order": "Urutan",
         "why": "Kenapa cocok untuk keluarga",
         "notes": "Catatan arsitek",
+        "designer": "Desain oleh",
         "published": "Tampilkan di situs publik"
       },
       "hints": {
         "slug": "Huruf kecil, angka, dan tanda hubung. Contoh: rumah-taman",
-        "published": "Kalau tidak dicentang, rumah hanya terlihat olehmu di dasbor."
+        "published": "Kalau tidak dicentang, rumah hanya terlihat olehmu di dasbor.",
+        "designer": "Nama perancang desain. Kosongkan kalau tidak ingin ditampilkan."
       },
       "save": "Simpan",
       "cancel": "Batal",
@@ -189,8 +191,7 @@
     },
     "specs": {
       "title": "Spesifikasi",
-      "designBy": "Desain oleh",
-      "designer": "Niam"
+      "designBy": "Desain oleh"
     },
     "nav": {
       "label": "Bagian halaman",

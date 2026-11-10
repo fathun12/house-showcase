@@ -15,6 +15,7 @@ export const HOUSE_FIELDS = [
   "bedrooms",
   "bathrooms",
   "area_m2",
+  "designer",
   "sort_order",
   "is_published",
 ] as const;
@@ -36,6 +37,7 @@ export const houseSchema = z.object({
   bedrooms: optionalNumber(0, 30, true),
   bathrooms: optionalNumber(0, 30, true),
   area_m2: optionalNumber(1, 100000),
+  designer: text(80),
   sort_order: optionalNumber(-1000, 1000, true),
   is_published: z.string().transform((value) => value === "on"),
 });

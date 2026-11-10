@@ -64,11 +64,13 @@
         "order": "Order",
         "why": "Why it suits our family",
         "notes": "Architect notes",
+        "designer": "Design by",
         "published": "Show on the public site"
       },
       "hints": {
         "slug": "Lowercase letters, numbers and hyphens. Example: garden-house",
-        "published": "If unchecked, the house is only visible to you in the dashboard."
+        "published": "If unchecked, the house is only visible to you in the dashboard.",
+        "designer": "Name of the person who designed the house. Leave empty to hide it."
       },
       "save": "Save",
       "cancel": "Cancel",
@@ -189,8 +191,7 @@
     },
     "specs": {
       "title": "Specifications",
-      "designBy": "Design by",
-      "designer": "Niam"
+      "designBy": "Design by"
     },
     "nav": {
       "label": "Page sections",

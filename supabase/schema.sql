@@ -31,6 +31,7 @@ create table public.houses (
   bedrooms     smallint check (bedrooms >= 0),
   bathrooms    smallint check (bathrooms >= 0),
   area_m2      numeric(8, 2) check (area_m2 > 0),
+  designer     text,
   is_published boolean not null default false,
   sort_order   integer not null default 0,
   created_at   timestamptz not null default now(),
