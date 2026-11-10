@@ -74,10 +74,11 @@ export function RoomPreview({ title, rooms }: Props) {
           const hasPhotos = room.photos.length > 0;
 
           return (
+            <div key={room.anchor} className="rail-slot shrink-0 snap-start px-2">
             <a
-              key={room.anchor}
               href={`#${room.anchor}`}
-              className="rail-card relative block aspect-video w-[78vw] shrink-0 snap-start overflow-hidden bg-stage text-stage-ink sm:w-112 lg:w-136"
+              draggable={false}
+              className="rail-card relative block aspect-video w-[78vw] overflow-hidden bg-stage text-stage-ink sm:w-112 lg:w-136"
             >
               {hasPhotos ? (
                 <>
@@ -108,6 +109,7 @@ export function RoomPreview({ title, rooms }: Props) {
                 ) : null}
               </div>
             </a>
+            </div>
           );
         })}
       </SlideRow>
