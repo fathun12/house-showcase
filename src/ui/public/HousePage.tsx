@@ -128,13 +128,6 @@ export function HousePage({ content, compare }: Props) {
               />
             ) : null}
 
-            {has("gallery") ? (
-              <section id="gallery" className="group scroll-mt-20 pb-12">
-                <SectionTitle number={numberOf("gallery")}>{t("gallery.title")}</SectionTitle>
-                <GalleryStrip images={content.gallery} />
-              </section>
-            ) : null}
-
             {has("compare") ? (
               <Compare
                 rows={compare}
@@ -144,6 +137,15 @@ export function HousePage({ content, compare }: Props) {
             ) : null}
           </div>
         </div>
+      ) : null}
+
+      {has("gallery") ? (
+        <section id="gallery" className="group gutter mx-auto max-w-page scroll-mt-20 pt-6 pb-16">
+          <SectionTitle number={numberOf("gallery")}>{t("gallery.title")}</SectionTitle>
+          <div className="mt-6">
+            <GalleryStrip images={content.gallery} />
+          </div>
+        </section>
       ) : null}
     </ImageViewer>
   );
