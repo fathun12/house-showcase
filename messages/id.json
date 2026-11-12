@@ -54,6 +54,7 @@
         "publish": "Terbit"
       },
       "fields": {
+        "kind": "Jenis proyek",
         "slug": "Slug (alamat URL)",
         "title": "Judul",
         "tagline": "Kalimat konsep",
@@ -67,6 +68,10 @@
         "designer": "Desain oleh",
         "whatsapp": "Nomor WhatsApp",
         "published": "Tampilkan di situs publik"
+      },
+      "kinds": {
+        "house": "Rumah",
+        "furniture": "Furnitur"
       },
       "hints": {
         "slug": "Huruf kecil, angka, dan tanda hubung. Contoh: rumah-taman",
@@ -108,7 +113,32 @@
       "label": "Bagian rumah",
       "details": "Detail",
       "rooms": "Ruangan",
-      "media": "Gambar"
+      "media": "Gambar",
+      "models": "3D"
+    },
+    "models": {
+      "eyebrow": "3D",
+      "title": "Model 3D",
+      "empty": "Belum ada model 3D. Unggah file .glb pertama di atas.",
+      "upload": {
+        "files": "Pilih file .glb",
+        "submit": "Unggah",
+        "uploading": "Mengunggah...",
+        "done": "Selesai. Model terunggah.",
+        "hint": "Dari SketchUp: File, Export, 3D Model, lalu pilih glTF Binary (*.glb). Tiap bagian furnitur harus berupa group atau component bernama. Maksimal 20 MB per file.",
+        "errors": {
+          "not_glb": "Ini bukan file .glb yang valid.",
+          "too_big": "File lebih dari 20 MB.",
+          "failed": "Gagal mengunggah. Coba lagi."
+        }
+      },
+      "item": {
+        "size": "Ukuran",
+        "delete": "Hapus",
+        "deleteConfirm": "Hapus model ini?",
+        "deleteYes": "Ya, hapus",
+        "cancel": "Batal"
+      }
     },
     "rooms": {
       "eyebrow": "Ruangan",

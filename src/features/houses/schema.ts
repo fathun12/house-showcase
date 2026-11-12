@@ -1,8 +1,10 @@
 import { z } from "zod";
 import { optionalNumber, requiredText, text } from "@/lib/utils/validation";
+import { HOUSE_KINDS } from "@/types/house";
 import { isValidWhatsapp } from "@/lib/utils/whatsapp";
 
 export const HOUSE_FIELDS = [
+  "kind",
   "slug",
   "title_id",
   "title_en",
@@ -26,6 +28,7 @@ export type HouseField = (typeof HOUSE_FIELDS)[number];
 export type HouseFormValues = Record<HouseField, string>;
 
 export const houseSchema = z.object({
+  kind: z.enum(HOUSE_KINDS),
   slug: requiredText(80).regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
   title_id: requiredText(120),
   title_en: text(120),

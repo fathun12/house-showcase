@@ -3,12 +3,12 @@
 import { useTranslations } from "next-intl";
 import { useHouseForm } from "@/features/houses/useHouseForm";
 import { Link } from "@/lib/i18n/navigation";
-import type { House } from "@/types/house";
+import { HOUSE_KINDS, type House } from "@/types/house";
 import { BilingualField } from "@/ui/admin/BilingualField";
 import { FormSection } from "@/ui/admin/FormShell";
 import { TranslateButton } from "@/ui/admin/TranslateButton";
 import { Button, buttonStyles } from "@/ui/primitives/Button";
-import { Checkbox, TextField } from "@/ui/primitives/Field";
+import { Checkbox, Select, TextField } from "@/ui/primitives/Field";
 
 const KNOWN_ERRORS = new Set([
   "too_small",
@@ -40,6 +40,12 @@ export function HouseForm({ house }: { house: House | null }) {
       ) : null}
 
       <FormSection index="01" title={t("sections.basics")}>
+        <Select
+          label={t("fields.kind")}
+          name="kind"
+          defaultValue={values.kind}
+          options={HOUSE_KINDS.map((value) => ({ value, label: t(`kinds.${value}`) }))}
+        />
         <TextField
           label={t("fields.slug")}
           name="slug"

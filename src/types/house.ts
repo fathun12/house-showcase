@@ -1,5 +1,10 @@
+export const HOUSE_KINDS = ["house", "furniture"] as const;
+
+export type HouseKind = (typeof HOUSE_KINDS)[number];
+
 export type House = {
   id: string;
+  kind: HouseKind;
   slug: string;
   title_id: string;
   title_en: string;
@@ -75,3 +80,12 @@ export type HouseSummary = Pick<
 >;
 
 export type PublicHouse = House & { rooms: Room[]; media: Media[] };
+
+export type Model = {
+  id: string;
+  house_id: string;
+  storage_path: string;
+  size_bytes: number | null;
+  position: number;
+  created_at: string;
+};

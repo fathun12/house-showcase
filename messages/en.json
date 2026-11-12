@@ -54,6 +54,7 @@
         "publish": "Publish"
       },
       "fields": {
+        "kind": "Project type",
         "slug": "Slug (URL address)",
         "title": "Title",
         "tagline": "Concept line",
@@ -67,6 +68,10 @@
         "designer": "Design by",
         "whatsapp": "WhatsApp number",
         "published": "Show on the public site"
+      },
+      "kinds": {
+        "house": "House",
+        "furniture": "Furniture"
       },
       "hints": {
         "slug": "Lowercase letters, numbers and hyphens. Example: garden-house",
@@ -108,7 +113,32 @@
       "label": "House sections",
       "details": "Details",
       "rooms": "Rooms",
-      "media": "Images"
+      "media": "Images",
+      "models": "3D"
+    },
+    "models": {
+      "eyebrow": "3D",
+      "title": "3D models",
+      "empty": "No 3D models yet. Upload the first .glb file above.",
+      "upload": {
+        "files": "Choose .glb files",
+        "submit": "Upload",
+        "uploading": "Uploading...",
+        "done": "Done. Model uploaded.",
+        "hint": "From SketchUp: File, Export, 3D Model, then choose glTF Binary (*.glb). Every furniture part must be a named group or component. Maximum 20 MB per file.",
+        "errors": {
+          "not_glb": "This is not a valid .glb file.",
+          "too_big": "The file is larger than 20 MB.",
+          "failed": "Upload failed. Please try again."
+        }
+      },
+      "item": {
+        "size": "Size",
+        "delete": "Delete",
+        "deleteConfirm": "Delete this model?",
+        "deleteYes": "Yes, delete",
+        "cancel": "Cancel"
+      }
     },
     "rooms": {
       "eyebrow": "Rooms",

@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils/cn";
 
-type Tab = "details" | "rooms" | "media";
+type Tab = "details" | "rooms" | "media" | "models";
 
 export function HouseTabs({ houseId, active }: { houseId: string; active: Tab }) {
   const t = useTranslations("admin.tabs");
@@ -11,6 +11,7 @@ export function HouseTabs({ houseId, active }: { houseId: string; active: Tab })
     { key: "details", href: `/admin/houses/${houseId}` },
     { key: "rooms", href: `/admin/houses/${houseId}/rooms` },
     { key: "media", href: `/admin/houses/${houseId}/media` },
+    { key: "models", href: `/admin/houses/${houseId}/models` },
   ];
 
   return (

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirectLocalized, requireAdmin } from "@/features/auth/session";
 import { MEDIA_BUCKET } from "@/features/media/url";
+import { MODEL_BUCKET } from "@/features/models/url";
 import { createClient } from "@/lib/supabase/server";
 import { readFormValues, toFieldErrors } from "@/lib/utils/validation";
 import { normalizeWhatsapp } from "@/lib/utils/whatsapp";
@@ -67,6 +68,17 @@ export async function deleteHouse(houseId: string): Promise<void> {
 
   if (paths.length > 0) {
     await supabase.storage.from(MEDIA_BUCKET).remove(paths);
+  }
+
+  const { data: models } = await supabase
+    .from("models")
+    .select("storage_path")
+    .eq("house_id", houseId);
+
+  const modelPaths = (models ?? []).map((item) => item.storage_path as string);
+
+  if (modelPaths.length > 0) {
+    await supabase.storage.from(MODEL_BUCKET).remove(modelPaths);
   }
 
   const { error } = await supabase.from("houses").delete().eq("id", houseId);

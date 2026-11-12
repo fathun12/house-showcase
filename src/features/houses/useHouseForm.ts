@@ -13,6 +13,7 @@ const initialState: HouseFormState = {
 
 function houseToFormValues(house: House | null): HouseFormValues {
   return {
+    kind: house?.kind ?? "house",
     slug: house?.slug ?? "",
     title_id: house?.title_id ?? "",
     title_en: house?.title_en ?? "",
