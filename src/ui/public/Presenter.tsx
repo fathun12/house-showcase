@@ -227,7 +227,7 @@ export function Presenter({ slides, onClose }: Props) {
           </ViewerButton>
           <ViewerButton onClick={onClose}>
             {t("viewer.close")}
-            <span aria-hidden className="ml-3 hidden opacity-60 [@media(pointer:fine)]:inline">
+            <span aria-hidden className="ml-3 hidden opacity-60 pointer-fine:inline">
               Esc
             </span>
           </ViewerButton>

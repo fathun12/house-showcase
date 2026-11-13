@@ -68,7 +68,7 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
         <ViewerButton onClick={() => setExpanded((open) => !open)} className="ml-auto">
           {expanded ? t("close") : t("expand")}
           {expanded ? (
-            <span aria-hidden className="ml-3 hidden opacity-60 [@media(pointer:fine)]:inline">
+            <span aria-hidden className="ml-3 hidden opacity-60 pointer-fine:inline">
               Esc
             </span>
           ) : null}
