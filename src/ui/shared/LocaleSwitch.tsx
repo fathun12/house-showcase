@@ -5,7 +5,7 @@ import { LOCALE_LABELS, LOCALES } from "@/features/locale/options";
 import { useLocaleSwitch } from "@/features/locale/useLocaleSwitch";
 import { Segmented } from "@/ui/primitives/Segmented";
 
-export function LocaleSwitch() {
+export function LocaleSwitch({ fill = false }: { fill?: boolean }) {
   const t = useTranslations("common.language");
   const { locale, switchTo, isPending } = useLocaleSwitch();
 
@@ -19,6 +19,7 @@ export function LocaleSwitch() {
       value={locale}
       onChange={switchTo}
       disabled={isPending}
+      fill={fill}
     />
   );
 }

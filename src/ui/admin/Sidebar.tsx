@@ -8,14 +8,17 @@ import { Button } from "@/ui/primitives/Button";
 import { LocaleSwitch } from "@/ui/shared/LocaleSwitch";
 import { ThemeSwitch } from "@/ui/shared/ThemeSwitch";
 
-const NAV = [{ href: "/admin/houses", key: "houses" }] as const;
+const NAV = [
+  { href: "/admin/houses", key: "houses" },
+  { href: "/admin/furniture", key: "furniture" },
+] as const;
 
 export function Sidebar() {
   const t = useTranslations("admin.nav");
   const pathname = usePathname();
 
   return (
-    <aside className="flex flex-col gap-8 border-b-2 border-foreground p-6 md:min-h-dvh md:border-r-2 md:border-b-0">
+    <aside className="flex min-w-0 flex-col gap-8 border-b-2 border-foreground p-6 md:sticky md:top-0 md:h-dvh md:self-start md:overflow-y-auto md:border-r-2 md:border-b-0">
       <div>
         <p className="label text-accent">Admin</p>
         <p className="heading mt-2 text-2xl">House Showcase</p>
@@ -45,7 +48,7 @@ export function Sidebar() {
         </ul>
       </nav>
 
-      <div className="mt-auto flex flex-col items-start gap-4">
+      <div className="mt-auto flex flex-col items-stretch gap-4">
         <Link
           href="/"
           target="_blank"
@@ -54,8 +57,8 @@ export function Sidebar() {
         >
           {t("viewSite")} →
         </Link>
-        <ThemeSwitch />
-        <LocaleSwitch />
+        <ThemeSwitch fill />
+        <LocaleSwitch fill />
         <form action={signOut} className="w-full">
           <Button type="submit" variant="outline" className="w-full">
             {t("signOut")}

@@ -5,7 +5,7 @@ import { THEMES } from "@/features/theme/options";
 import { useThemeSwitch } from "@/features/theme/useThemeSwitch";
 import { Segmented } from "@/ui/primitives/Segmented";
 
-export function ThemeSwitch() {
+export function ThemeSwitch({ fill = false }: { fill?: boolean }) {
   const t = useTranslations("common.theme");
   const { theme, setTheme } = useThemeSwitch();
 
@@ -15,6 +15,7 @@ export function ThemeSwitch() {
       options={THEMES.map((value) => ({ value, label: t(value) }))}
       value={theme}
       onChange={setTheme}
+      fill={fill}
     />
   );
 }

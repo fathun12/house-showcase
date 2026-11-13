@@ -16,7 +16,7 @@ export default async function AdminPanelLayout({
   await requireAdmin();
 
   return (
-    <div className="md:grid md:grid-cols-[16rem_1fr]">
+    <div className="md:grid md:grid-cols-[17rem_1fr]">
       <Sidebar />
       <main className="gutter min-w-0 py-10">{children}</main>
     </div>

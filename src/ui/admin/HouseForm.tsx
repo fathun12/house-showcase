@@ -3,12 +3,12 @@
 import { useTranslations } from "next-intl";
 import { useHouseForm } from "@/features/houses/useHouseForm";
 import { Link } from "@/lib/i18n/navigation";
-import { HOUSE_KINDS, type House } from "@/types/house";
+import type { House, HouseKind } from "@/types/house";
 import { BilingualField } from "@/ui/admin/BilingualField";
 import { FormSection } from "@/ui/admin/FormShell";
 import { TranslateButton } from "@/ui/admin/TranslateButton";
 import { Button, buttonStyles } from "@/ui/primitives/Button";
-import { Checkbox, Select, TextField } from "@/ui/primitives/Field";
+import { Checkbox, TextField } from "@/ui/primitives/Field";
 
 const KNOWN_ERRORS = new Set([
   "too_small",
@@ -19,11 +19,14 @@ const KNOWN_ERRORS = new Set([
   "save_failed",
 ]);
 
-const TRANSLATE_FIELDS = ["title", "tagline", "why", "notes"] as const;
+const HOUSE_TRANSLATE = ["title", "tagline", "why", "notes"] as const;
+const FURNITURE_TRANSLATE = ["title", "tagline", "material", "finish", "why", "notes"] as const;
 
-export function HouseForm({ house }: { house: House | null }) {
+export function HouseForm({ house, kind }: { house: House | null; kind: HouseKind }) {
   const t = useTranslations("admin.houseForm");
-  const { values, errors, formAction, isPending } = useHouseForm(house);
+  const tf = useTranslations("admin.furnitureForm");
+  const { values, errors, formAction, isPending } = useHouseForm(house, kind);
+  const isFurniture = kind === "furniture";
 
   const error = (field: string) => {
     const code = errors[field];
@@ -33,6 +36,8 @@ export function HouseForm({ house }: { house: House | null }) {
 
   return (
     <form action={formAction} className="flex flex-col gap-12">
+      <input type="hidden" name="kind" value={kind} />
+
       {error("form") ? (
         <p role="alert" className="label border-2 border-accent p-4 text-accent">
           {error("form")}
@@ -40,12 +45,6 @@ export function HouseForm({ house }: { house: House | null }) {
       ) : null}
 
       <FormSection index="01" title={t("sections.basics")}>
-        <Select
-          label={t("fields.kind")}
-          name="kind"
-          defaultValue={values.kind}
-          options={HOUSE_KINDS.map((value) => ({ value, label: t(`kinds.${value}`) }))}
-        />
         <TextField
           label={t("fields.slug")}
           name="slug"
@@ -71,7 +70,7 @@ export function HouseForm({ house }: { house: House | null }) {
           label={t("fields.designer")}
           name="designer"
           defaultValue={values.designer}
-          hint={t("hints.designer")}
+          hint={isFurniture ? tf("hints.designer") : t("hints.designer")}
           error={error("designer")}
         />
         <TextField
@@ -84,49 +83,96 @@ export function HouseForm({ house }: { house: House | null }) {
         />
       </FormSection>
 
-      <FormSection index="02" title={t("sections.facts")}>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-5">
-          <TextField
-            label={t("fields.floors")}
-            name="floors"
-            inputMode="numeric"
-            defaultValue={values.floors}
-            error={error("floors")}
+      {isFurniture ? (
+        <FormSection index="02" title={tf("sections.size")}>
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            <TextField
+              label={tf("fields.length")}
+              name="length_cm"
+              inputMode="decimal"
+              defaultValue={values.length_cm}
+              error={error("length_cm")}
+            />
+            <TextField
+              label={tf("fields.width")}
+              name="width_cm"
+              inputMode="decimal"
+              defaultValue={values.width_cm}
+              error={error("width_cm")}
+            />
+            <TextField
+              label={tf("fields.height")}
+              name="height_cm"
+              inputMode="decimal"
+              defaultValue={values.height_cm}
+              error={error("height_cm")}
+            />
+            <TextField
+              label={t("fields.order")}
+              name="sort_order"
+              inputMode="numeric"
+              defaultValue={values.sort_order}
+              error={error("sort_order")}
+            />
+          </div>
+          <BilingualField
+            label={tf("fields.material")}
+            name="material"
+            defaults={{ id: values.material_id, en: values.material_en }}
+            errors={{ id: error("material_id"), en: error("material_en") }}
           />
-          <TextField
-            label={t("fields.bedrooms")}
-            name="bedrooms"
-            inputMode="numeric"
-            defaultValue={values.bedrooms}
-            error={error("bedrooms")}
+          <BilingualField
+            label={tf("fields.finish")}
+            name="finish"
+            defaults={{ id: values.finish_id, en: values.finish_en }}
+            errors={{ id: error("finish_id"), en: error("finish_en") }}
           />
-          <TextField
-            label={t("fields.bathrooms")}
-            name="bathrooms"
-            inputMode="numeric"
-            defaultValue={values.bathrooms}
-            error={error("bathrooms")}
-          />
-          <TextField
-            label={t("fields.area")}
-            name="area_m2"
-            inputMode="decimal"
-            defaultValue={values.area_m2}
-            error={error("area_m2")}
-          />
-          <TextField
-            label={t("fields.order")}
-            name="sort_order"
-            inputMode="numeric"
-            defaultValue={values.sort_order}
-            error={error("sort_order")}
-          />
-        </div>
-      </FormSection>
+        </FormSection>
+      ) : (
+        <FormSection index="02" title={t("sections.facts")}>
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-5">
+            <TextField
+              label={t("fields.floors")}
+              name="floors"
+              inputMode="numeric"
+              defaultValue={values.floors}
+              error={error("floors")}
+            />
+            <TextField
+              label={t("fields.bedrooms")}
+              name="bedrooms"
+              inputMode="numeric"
+              defaultValue={values.bedrooms}
+              error={error("bedrooms")}
+            />
+            <TextField
+              label={t("fields.bathrooms")}
+              name="bathrooms"
+              inputMode="numeric"
+              defaultValue={values.bathrooms}
+              error={error("bathrooms")}
+            />
+            <TextField
+              label={t("fields.area")}
+              name="area_m2"
+              inputMode="decimal"
+              defaultValue={values.area_m2}
+              error={error("area_m2")}
+            />
+            <TextField
+              label={t("fields.order")}
+              name="sort_order"
+              inputMode="numeric"
+              defaultValue={values.sort_order}
+              error={error("sort_order")}
+            />
+          </div>
+        </FormSection>
+      )}
 
       <FormSection index="03" title={t("sections.story")}>
         <BilingualField
-          label={t("fields.why")}
+          label={isFurniture ? tf("fields.why") : t("fields.why")}
           name="why"
           multiline
           rows={6}
@@ -134,7 +180,7 @@ export function HouseForm({ house }: { house: House | null }) {
           errors={{ id: error("why_id"), en: error("why_en") }}
         />
         <BilingualField
-          label={t("fields.notes")}
+          label={isFurniture ? tf("fields.notes") : t("fields.notes")}
           name="notes"
           multiline
           rows={6}
@@ -148,7 +194,7 @@ export function HouseForm({ house }: { house: House | null }) {
           label={t("fields.published")}
           name="is_published"
           defaultChecked={values.is_published === "on"}
-          hint={t("hints.published")}
+          hint={isFurniture ? tf("hints.published") : t("hints.published")}
         />
       </FormSection>
 
@@ -156,10 +202,13 @@ export function HouseForm({ house }: { house: House | null }) {
         <Button type="submit" disabled={isPending}>
           {t("save")}
         </Button>
-        <Link href="/admin/houses" className={buttonStyles("outline")}>
+        <Link
+          href={isFurniture ? "/admin/furniture" : "/admin/houses"}
+          className={buttonStyles("outline")}
+        >
           {t("cancel")}
         </Link>
-        <TranslateButton bases={TRANSLATE_FIELDS} />
+        <TranslateButton bases={isFurniture ? FURNITURE_TRANSLATE : HOUSE_TRANSLATE} />
       </div>
     </form>
   );

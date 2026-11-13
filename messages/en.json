@@ -54,7 +54,6 @@
         "publish": "Publish"
       },
       "fields": {
-        "kind": "Project type",
         "slug": "Slug (URL address)",
         "title": "Title",
         "tagline": "Concept line",
@@ -68,10 +67,6 @@
         "designer": "Design by",
         "whatsapp": "WhatsApp number",
         "published": "Show on the public site"
-      },
-      "kinds": {
-        "house": "House",
-        "furniture": "Furniture"
       },
       "hints": {
         "slug": "Lowercase letters, numbers and hyphens. Example: garden-house",
@@ -95,6 +90,33 @@
         "warning": "Deleting a house also deletes all its rooms and data. This cannot be undone.",
         "confirm": "I understand, delete this house",
         "submit": "Delete house"
+      }
+    },
+    "furniture": {
+      "eyebrow": "02 / Furniture",
+      "title": "Furniture",
+      "new": "New furniture",
+      "empty": "No furniture yet. Start by adding new furniture."
+    },
+    "furnitureForm": {
+      "eyebrow": "02 / Furniture",
+      "newTitle": "New furniture",
+      "editTitle": "Edit furniture",
+      "sections": {
+        "size": "Size and material"
+      },
+      "fields": {
+        "length": "Length (cm)",
+        "width": "Width (cm)",
+        "height": "Height (cm)",
+        "material": "Material",
+        "finish": "Finish",
+        "why": "Design reasoning",
+        "notes": "Designer notes"
+      },
+      "hints": {
+        "designer": "Name of the person who designed the furniture. Leave empty to hide it.",
+        "published": "If unchecked, the furniture is only visible to you in the dashboard."
       }
     },
     "translate": {

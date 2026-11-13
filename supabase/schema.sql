@@ -156,3 +156,13 @@ create policy "house_media_admin_all" on storage.objects
 -- tables public.models and public.model_parts, their RLS policies and grants,
 -- bucket 'house-models' (20 MB) and policy "house_models_admin_all":
 -- see the SQL that was run in the Supabase SQL Editor on 12 Nov 2026.
+
+-- 13 Nov 2026: furniture specs (already run in Supabase; do not run again)
+alter table public.houses
+  add column length_cm numeric check (length_cm > 0),
+  add column width_cm numeric check (width_cm > 0),
+  add column height_cm numeric check (height_cm > 0),
+  add column material_id text not null default '',
+  add column material_en text not null default '',
+  add column finish_id text not null default '',
+  add column finish_en text not null default '';

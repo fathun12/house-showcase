@@ -5,6 +5,7 @@ import { redirectLocalized, requireAdmin } from "@/features/auth/session";
 import { MEDIA_BUCKET } from "@/features/media/url";
 import { MODEL_BUCKET } from "@/features/models/url";
 import { createClient } from "@/lib/supabase/server";
+import type { HouseKind } from "@/types/house";
 import { readFormValues, toFieldErrors } from "@/lib/utils/validation";
 import { normalizeWhatsapp } from "@/lib/utils/whatsapp";
 import { HOUSE_FIELDS, houseSchema, type HouseFormValues } from "./schema";
@@ -50,10 +51,13 @@ export async function saveHouse(
   }
 
   revalidatePath("/", "layout");
-  return redirectLocalized(houseId ? "/admin/houses" : `/admin/houses/${data.id}/rooms`);
+  const base = parsed.data.kind === "furniture" ? "/admin/furniture" : "/admin/houses";
+  const next = parsed.data.kind === "furniture" ? "media" : "rooms";
+
+  return redirectLocalized(houseId ? base : `${base}/${data.id}/${next}`);
 }
 
-export async function deleteHouse(houseId: string): Promise<void> {
+export async function deleteHouse(houseId: string, kind: HouseKind = "house"): Promise<void> {
   await requireAdmin();
 
   const supabase = await createClient();
@@ -86,5 +90,5 @@ export async function deleteHouse(houseId: string): Promise<void> {
   if (error) throw new Error("Could not delete house");
 
   revalidatePath("/", "layout");
-  await redirectLocalized("/admin/houses");
+  await redirectLocalized(kind === "furniture" ? "/admin/furniture" : "/admin/houses");
 }

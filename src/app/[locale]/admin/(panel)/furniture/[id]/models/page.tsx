@@ -7,13 +7,13 @@ import { HouseTabs } from "@/ui/admin/HouseTabs";
 import { ModelItem } from "@/ui/admin/ModelItem";
 import { ModelUploader } from "@/ui/admin/ModelUploader";
 
-export default async function AdminModelsPage({
+export default async function AdminFurnitureModelsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const house = await getHouseOrNotFound(id);
+  const house = await getHouseOrNotFound(id, "furniture");
   const t = await getTranslations("admin.models");
   const locale = await getLocale();
   const models = await listModels(id);
@@ -23,7 +23,7 @@ export default async function AdminModelsPage({
       eyebrow={`${pickLocalized(locale, house.title_id, house.title_en)} / ${t("eyebrow")}`}
       title={t("title")}
     >
-      <HouseTabs houseId={id} active="models" />
+      <HouseTabs houseId={id} active="models" kind="furniture" />
       <ModelUploader houseId={id} />
 
       {models.length === 0 ? <p className="text-muted">{t("empty")}</p> : null}

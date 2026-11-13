@@ -18,6 +18,13 @@ export type House = {
   bedrooms: number | null;
   bathrooms: number | null;
   area_m2: number | null;
+  length_cm: number | null;
+  width_cm: number | null;
+  height_cm: number | null;
+  material_id: string;
+  material_en: string;
+  finish_id: string;
+  finish_en: string;
   designer: string | null;
   whatsapp: string | null;
   is_published: boolean;

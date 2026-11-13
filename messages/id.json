@@ -54,7 +54,6 @@
         "publish": "Terbit"
       },
       "fields": {
-        "kind": "Jenis proyek",
         "slug": "Slug (alamat URL)",
         "title": "Judul",
         "tagline": "Kalimat konsep",
@@ -68,10 +67,6 @@
         "designer": "Desain oleh",
         "whatsapp": "Nomor WhatsApp",
         "published": "Tampilkan di situs publik"
-      },
-      "kinds": {
-        "house": "Rumah",
-        "furniture": "Furnitur"
       },
       "hints": {
         "slug": "Huruf kecil, angka, dan tanda hubung. Contoh: rumah-taman",
@@ -95,6 +90,33 @@
         "warning": "Menghapus rumah juga menghapus semua ruangan dan datanya. Tindakan ini tidak bisa dibatalkan.",
         "confirm": "Saya paham, hapus rumah ini",
         "submit": "Hapus rumah"
+      }
+    },
+    "furniture": {
+      "eyebrow": "02 / Furnitur",
+      "title": "Furnitur",
+      "new": "Furnitur baru",
+      "empty": "Belum ada furnitur. Mulai dengan menambah furnitur baru."
+    },
+    "furnitureForm": {
+      "eyebrow": "02 / Furnitur",
+      "newTitle": "Furnitur baru",
+      "editTitle": "Ubah furnitur",
+      "sections": {
+        "size": "Ukuran dan bahan"
+      },
+      "fields": {
+        "length": "Panjang (cm)",
+        "width": "Lebar (cm)",
+        "height": "Tinggi (cm)",
+        "material": "Bahan",
+        "finish": "Finishing",
+        "why": "Alasan desain",
+        "notes": "Catatan perancang"
+      },
+      "hints": {
+        "designer": "Nama perancang furnitur. Kosongkan kalau tidak ingin ditampilkan.",
+        "published": "Kalau tidak dicentang, furnitur hanya terlihat olehmu di dasbor."
       }
     },
     "translate": {

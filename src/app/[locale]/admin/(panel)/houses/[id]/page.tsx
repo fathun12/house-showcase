@@ -18,7 +18,7 @@ export default async function AdminHouseEditPage({
   if (id === "new") {
     return (
       <FormShell eyebrow={t("eyebrow")} title={t("newTitle")}>
-        <HouseForm house={null} />
+        <HouseForm house={null} kind="house" />
       </FormShell>
     );
   }
@@ -26,12 +26,12 @@ export default async function AdminHouseEditPage({
   if (!isUuid(id)) notFound();
 
   const house = await getHouseById(id);
-  if (!house) notFound();
+  if (!house || house.kind !== "house") notFound();
 
   return (
     <FormShell eyebrow={t("eyebrow")} title={t("editTitle")}>
       <HouseTabs houseId={house.id} active="details" />
-      <HouseForm house={house} />
+      <HouseForm house={house} kind="house" />
       <DeleteHouse action={deleteHouse.bind(null, house.id)} />
     </FormShell>
   );
