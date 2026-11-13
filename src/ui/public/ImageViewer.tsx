@@ -15,16 +15,33 @@ import { ViewerButton, ViewerStage } from "@/ui/public/ViewerStage";
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
+const NO_FACTS: HouseContent["facts"] = {
+  floors: null,
+  bedrooms: null,
+  bathrooms: null,
+  area: null,
+};
+
 type Props = {
   items: ViewerItem[];
   title: string;
   tagline: string;
-  facts: HouseContent["facts"];
+  /** House numbers (floors, rooms, area). Leave out for furniture. */
+  facts?: HouseContent["facts"];
+  /** Ready-made specification rows (furniture); used instead of the house numbers when given */
+  specs?: Spec[];
   children: ReactNode;
 };
 
 /** Wraps the house page: every <ViewerTrigger> inside it opens the viewer. */
-export function ImageViewer({ items, title, tagline, facts, children }: Props) {
+export function ImageViewer({
+  items,
+  title,
+  tagline,
+  facts = NO_FACTS,
+  specs: givenSpecs,
+  children,
+}: Props) {
   const t = useTranslations("public");
   const format = useFormatter();
   const viewer = useViewer(items);
@@ -33,7 +50,7 @@ export function ImageViewer({ items, title, tagline, facts, children }: Props) {
   const present = useCallback(() => setPresenting(true), []);
   const stopPresenting = useCallback(() => setPresenting(false), []);
 
-  const specs = [
+  const houseSpecs = [
     facts.floors !== null && { label: t("summary.floors"), value: format.number(facts.floors) },
     facts.bedrooms !== null && {
       label: t("summary.bedrooms"),
@@ -48,6 +65,8 @@ export function ImageViewer({ items, title, tagline, facts, children }: Props) {
       value: format.number(facts.area, { maximumFractionDigits: 1 }),
     },
   ].filter((spec): spec is Spec => Boolean(spec));
+
+  const specs = givenSpecs ?? houseSpecs;
 
   return (
     <ViewerContext.Provider value={viewer.open}>

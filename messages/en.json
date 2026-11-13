@@ -345,6 +345,46 @@
         "room": "Room photo",
         "gallery": "Gallery"
       }
+    },
+    "furniture": {
+      "nav": {
+        "model": "3D model",
+        "specs": "Size and material",
+        "why": "Design reasoning",
+        "notes": "Notes"
+      },
+      "model": {
+        "title": "3D model",
+        "label": "3D model viewer",
+        "loading": "Loading 3D model...",
+        "error": "The 3D model could not be loaded. Reload the page, or try again later.",
+        "expand": "Full screen",
+        "close": "Close",
+        "tapToOpen": "Tap to rotate the 3D model",
+        "resetView": "Reset view",
+        "showAll": "Show all",
+        "parts": "Parts: tap to hide or show",
+        "part": "Part {number}",
+        "hintMouse": "Drag: rotate. Mouse wheel: zoom. Right-click and drag: pan.",
+        "hintTouch": "One finger: rotate. Pinch: zoom. Two fingers: pan."
+      },
+      "specs": {
+        "title": "Size and material",
+        "length": "Length",
+        "width": "Width",
+        "height": "Height",
+        "unit": "cm",
+        "material": "Material",
+        "finish": "Finish",
+        "note": "Sizes are in centimeters. Follow these numbers, not an estimate from the pictures."
+      },
+      "why": {
+        "title": "Design reasoning"
+      },
+      "notes": {
+        "title": "Designer notes"
+      },
+      "whatsapp": "Hi, I would like to comment on the design of the {item}."
     }
   }
 }

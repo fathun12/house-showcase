@@ -72,6 +72,7 @@ export const getPublishedHouse = cache(async (slug: string): Promise<PublicHouse
     .from("houses")
     .select("*, rooms(*), media(*)")
     .eq("slug", slug)
+    .eq("kind", "house")
     .maybeSingle();
 
   if (error) throw new Error("Could not load house");

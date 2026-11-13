@@ -50,7 +50,7 @@ export type SummaryRow = {
   area: string | null;
 };
 
-const byPosition = (
+export const byPosition = (
   a: { position: number; created_at: string },
   b: { position: number; created_at: string },
 ) => a.position - b.position || a.created_at.localeCompare(b.created_at);
@@ -60,7 +60,7 @@ function numberFormatter(locale: string) {
   return (value: number | null) => (value === null ? null : formatter.format(value));
 }
 
-function toImage(item: Media, locale: string, fallbackAlt: string): ImageView {
+export function toImage(item: Media, locale: string, fallbackAlt: string): ImageView {
   const caption = pickLocalized(locale, item.caption_id, item.caption_en);
 
   return {

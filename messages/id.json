@@ -345,6 +345,46 @@
         "room": "Foto ruangan",
         "gallery": "Galeri"
       }
+    },
+    "furniture": {
+      "nav": {
+        "model": "Model 3D",
+        "specs": "Ukuran dan bahan",
+        "why": "Alasan desain",
+        "notes": "Catatan"
+      },
+      "model": {
+        "title": "Model 3D",
+        "label": "Penampil model 3D",
+        "loading": "Memuat model 3D...",
+        "error": "Model 3D tidak bisa dimuat. Muat ulang halaman, atau coba lagi nanti.",
+        "expand": "Layar penuh",
+        "close": "Tutup",
+        "tapToOpen": "Ketuk untuk memutar model 3D",
+        "resetView": "Tampilan awal",
+        "showAll": "Tampilkan semua",
+        "parts": "Bagian: ketuk untuk menyembunyikan atau menampilkan",
+        "part": "Bagian {number}",
+        "hintMouse": "Seret: putar. Roda mouse: zoom. Klik kanan lalu seret: geser.",
+        "hintTouch": "Satu jari: putar. Cubit: zoom. Dua jari: geser."
+      },
+      "specs": {
+        "title": "Ukuran dan bahan",
+        "length": "Panjang",
+        "width": "Lebar",
+        "height": "Tinggi",
+        "unit": "cm",
+        "material": "Bahan",
+        "finish": "Finishing",
+        "note": "Ukuran dalam sentimeter. Ikuti angka ini, bukan perkiraan dari gambar."
+      },
+      "why": {
+        "title": "Alasan desain"
+      },
+      "notes": {
+        "title": "Catatan perancang"
+      },
+      "whatsapp": "Halo, aku mau komentar soal desain furnitur {item}."
     }
   }
 }

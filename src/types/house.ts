@@ -99,3 +99,18 @@ export type Model = {
   position: number;
   created_at: string;
 };
+
+export type ModelPart = {
+  id: string;
+  model_id: string;
+  node_name: string;
+  label_id: string;
+  label_en: string;
+  motion: "none" | "slide" | "hinge";
+  settings: Record<string, unknown>;
+  position: number;
+};
+
+export type PublicModel = Model & { model_parts: ModelPart[] };
+
+export type PublicFurniture = House & { media: Media[]; models: PublicModel[] };
