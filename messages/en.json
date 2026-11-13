@@ -166,7 +166,48 @@
         "delete": "Delete",
         "deleteConfirm": "Delete this model?",
         "deleteYes": "Yes, delete",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "parts": "Set up parts and movement",
+        "partsClose": "Close setup"
+      },
+      "parts": {
+        "title": "Parts and movement",
+        "hint": "Every top-level group or component in the file becomes one part. Choose how a part moves and watch it in the preview, then save. The X, Y, Z directions follow the model; if a movement goes the wrong way, change the direction or the hinge side.",
+        "loading": "Loading model...",
+        "error": "The model could not be loaded.",
+        "empty": "No parts were found in this file.",
+        "resetView": "Reset view",
+        "showAll": "Show all",
+        "labelId": "Part name / ID",
+        "labelEn": "Part name / EN",
+        "motion": "Movement",
+        "motions": {
+          "none": "Does not move",
+          "slide": "Slide (drawer)",
+          "hinge": "Hinge (door)"
+        },
+        "dir": "Slide direction",
+        "amount": "Slide distance (% of the part size)",
+        "axis": "Hinge axis",
+        "axes": {
+          "x": "X",
+          "y": "Y (vertical)",
+          "z": "Z"
+        },
+        "angle": "Opening angle",
+        "pivot": "Hinge on the {axis} side",
+        "sides": {
+          "min": "low (-)",
+          "max": "high (+)"
+        },
+        "test": "Try opening",
+        "testClose": "Close again",
+        "hide": "Hide",
+        "show": "Show",
+        "save": "Save parts",
+        "saving": "Saving...",
+        "saved": "Saved.",
+        "failed": "Could not save. Please try again."
       }
     },
     "rooms": {
@@ -366,7 +407,12 @@
         "parts": "Parts: tap to hide or show",
         "part": "Part {number}",
         "hintMouse": "Drag: rotate. Mouse wheel: zoom. Right-click and drag: pan.",
-        "hintTouch": "One finger: rotate. Pinch: zoom. Two fingers: pan."
+        "hintTouch": "One finger: rotate. Pinch: zoom. Two fingers: pan.",
+        "openPart": "Open",
+        "closePart": "Close",
+        "openAll": "Open all",
+        "closeAll": "Close all",
+        "openHint": "Tap or click doors and drawers on the model to open them."
       },
       "specs": {
         "title": "Size and material",
@@ -384,7 +430,13 @@
       "notes": {
         "title": "Designer notes"
       },
-      "whatsapp": "Hi, I would like to comment on the design of the {item}."
+      "whatsapp": "Hi, I would like to comment on the design of the {item}.",
+      "index": {
+        "title": "Choose furniture",
+        "name": "Furniture",
+        "size": "Size (cm)",
+        "material": "Material"
+      }
     }
   }
 }

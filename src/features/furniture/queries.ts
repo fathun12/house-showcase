@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { createPublicClient } from "@/lib/supabase/server";
-import type { PublicFurniture } from "@/types/house";
+import type { FurnitureSummary, PublicFurniture } from "@/types/house";
 
 /** One published furniture project with its images and 3D models. Null when it does not exist, is a draft, or is a house. */
 export const getPublishedFurniture = cache(async (slug: string): Promise<PublicFurniture | null> => {
@@ -17,3 +17,19 @@ export const getPublishedFurniture = cache(async (slug: string): Promise<PublicF
 
   return data;
 });
+
+/** Published furniture for the home page list (no login). */
+export async function getPublishedFurnitureList(): Promise<FurnitureSummary[]> {
+  const supabase = createPublicClient();
+
+  const { data, error } = await supabase
+    .from("houses")
+    .select("id, slug, title_id, title_en, length_cm, width_cm, height_cm, material_id, material_en, sort_order")
+    .eq("kind", "furniture")
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  if (error) throw new Error("Could not load furniture");
+
+  return data ?? [];
+}

@@ -166,7 +166,48 @@
         "delete": "Hapus",
         "deleteConfirm": "Hapus model ini?",
         "deleteYes": "Ya, hapus",
-        "cancel": "Batal"
+        "cancel": "Batal",
+        "parts": "Atur bagian dan gerak",
+        "partsClose": "Tutup pengaturan"
+      },
+      "parts": {
+        "title": "Bagian dan gerak",
+        "hint": "Tiap group atau component di tingkat teratas file menjadi satu bagian. Pilih gerak sebuah bagian dan lihat hasilnya langsung di pratinjau, lalu simpan. Arah X, Y, Z mengikuti model; kalau geraknya terbalik, ganti arah atau sisi engselnya.",
+        "loading": "Memuat model...",
+        "error": "Model tidak bisa dimuat.",
+        "empty": "Tidak ada bagian yang terdeteksi di file ini.",
+        "resetView": "Tampilan awal",
+        "showAll": "Tampilkan semua",
+        "labelId": "Nama bagian / ID",
+        "labelEn": "Nama bagian / EN",
+        "motion": "Gerak",
+        "motions": {
+          "none": "Tidak bergerak",
+          "slide": "Geser (laci)",
+          "hinge": "Engsel (pintu)"
+        },
+        "dir": "Arah geser",
+        "amount": "Jarak geser (% ukuran bagian)",
+        "axis": "Poros engsel",
+        "axes": {
+          "x": "X",
+          "y": "Y (tegak)",
+          "z": "Z"
+        },
+        "angle": "Sudut buka",
+        "pivot": "Engsel di sisi {axis}",
+        "sides": {
+          "min": "kecil (-)",
+          "max": "besar (+)"
+        },
+        "test": "Coba buka",
+        "testClose": "Tutup lagi",
+        "hide": "Sembunyikan",
+        "show": "Tampilkan",
+        "save": "Simpan bagian",
+        "saving": "Menyimpan...",
+        "saved": "Tersimpan.",
+        "failed": "Gagal menyimpan. Coba lagi."
       }
     },
     "rooms": {
@@ -366,7 +407,12 @@
         "parts": "Bagian: ketuk untuk menyembunyikan atau menampilkan",
         "part": "Bagian {number}",
         "hintMouse": "Seret: putar. Roda mouse: zoom. Klik kanan lalu seret: geser.",
-        "hintTouch": "Satu jari: putar. Cubit: zoom. Dua jari: geser."
+        "hintTouch": "Satu jari: putar. Cubit: zoom. Dua jari: geser.",
+        "openPart": "Buka",
+        "closePart": "Tutup",
+        "openAll": "Buka semua",
+        "closeAll": "Tutup semua",
+        "openHint": "Ketuk atau klik pintu dan laci di model untuk membukanya."
       },
       "specs": {
         "title": "Ukuran dan bahan",
@@ -384,7 +430,13 @@
       "notes": {
         "title": "Catatan perancang"
       },
-      "whatsapp": "Halo, aku mau komentar soal desain furnitur {item}."
+      "whatsapp": "Halo, aku mau komentar soal desain furnitur {item}.",
+      "index": {
+        "title": "Pilihan furnitur",
+        "name": "Furnitur",
+        "size": "Ukuran (cm)",
+        "material": "Bahan"
+      }
     }
   }
 }

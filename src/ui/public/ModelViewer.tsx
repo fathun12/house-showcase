@@ -23,11 +23,13 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
   const [expanded, setExpanded] = useState(false);
   const interactive = !coarse || expanded;
 
-  const { hostRef, parts, status, toggle, showAll, resetView } = useModelScene(
-    models,
-    interactive,
-  );
+  const { hostRef, parts, status, toggle, toggleOpen, setAllOpen, showAll, resetView } =
+    useModelScene(models, interactive);
+
   const allVisible = parts.every((part) => part.visible);
+  const openable = parts.filter((part) => part.motion !== "none");
+  const allOpen = openable.length > 0 && openable.every((part) => part.open);
+  const showParts = parts.length > 1 || openable.length > 0;
 
   // Full screen: freeze the page behind it, and let Escape close it
   useEffect(() => {
@@ -109,6 +111,11 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
           <ViewerButton onClick={resetView} disabled={status !== "ready"}>
             {t("resetView")}
           </ViewerButton>
+          {openable.length > 0 ? (
+            <ViewerButton onClick={() => setAllOpen(!allOpen)}>
+              {allOpen ? t("closeAll") : t("openAll")}
+            </ViewerButton>
+          ) : null}
           {parts.length > 1 ? (
             <ViewerButton onClick={showAll} disabled={allVisible}>
               {t("showAll")}
@@ -116,7 +123,11 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
           ) : null}
         </div>
 
-        {parts.length > 1 ? (
+        {openable.length > 0 ? (
+          <p className="label mt-3 text-stage-ink/60">{t("openHint")}</p>
+        ) : null}
+
+        {showParts ? (
           <div className="mt-3">
             <p className="label text-stage-ink/60">{t("parts")}</p>
             <ul
@@ -126,7 +137,7 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
               )}
             >
               {parts.map((part, index) => (
-                <li key={part.id} className="shrink-0">
+                <li key={part.id} className="flex shrink-0">
                   <ViewerButton
                     active={part.visible}
                     aria-pressed={part.visible}
@@ -135,6 +146,16 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
                   >
                     {part.label || t("part", { number: index + 1 })}
                   </ViewerButton>
+                  {part.motion !== "none" ? (
+                    <ViewerButton
+                      active={part.open}
+                      aria-pressed={part.open}
+                      onClick={() => toggleOpen(part.id)}
+                      className="-ml-px"
+                    >
+                      {part.open ? t("closePart") : t("openPart")}
+                    </ViewerButton>
+                  ) : null}
                 </li>
               ))}
             </ul>

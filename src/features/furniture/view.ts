@@ -1,15 +1,17 @@
 import { byPosition, toImage } from "@/features/houses/view";
 import type { ImageView } from "@/features/houses/view";
+import { readSettings } from "@/features/model3d/config";
+import type { PartConfig } from "@/features/model3d/config";
 import { modelUrl } from "@/features/models/url";
 import type { ViewerItem } from "@/features/viewer/items";
 import { pickLocalized } from "@/lib/utils/format";
-import type { PublicFurniture } from "@/types/house";
+import type { FurnitureSummary, PublicFurniture } from "@/types/house";
 
 export type ModelView = {
   id: string;
   url: string;
-  /** glTF node name -> label chosen in the admin (only parts that have one) */
-  labels: Record<string, string>;
+  /** glTF node name -> label and movement chosen in the admin */
+  configs: Record<string, PartConfig>;
 };
 
 export type FurnitureContent = {
@@ -39,14 +41,17 @@ export function buildFurnitureContent(item: PublicFurniture, locale: string): Fu
     media.filter((entry) => entry.kind === kind).map((entry) => toImage(entry, locale, title));
 
   const models = [...item.models].sort(byPosition).map((model) => {
-    const labels: Record<string, string> = {};
+    const configs: Record<string, PartConfig> = {};
 
     for (const part of model.model_parts) {
-      const label = pickLocalized(locale, part.label_id, part.label_en);
-      if (label) labels[part.node_name] = label;
+      configs[part.node_name] = {
+        label: pickLocalized(locale, part.label_id, part.label_en),
+        motion: part.motion,
+        settings: readSettings(part.settings),
+      };
     }
 
-    return { id: model.id, url: modelUrl(model.storage_path), labels };
+    return { id: model.id, url: modelUrl(model.storage_path), configs };
   });
 
   return {
@@ -83,4 +88,28 @@ export function buildFurnitureViewerItems(content: FurnitureContent): ViewerItem
   }
 
   return items;
+}
+
+export type FurnitureRow = {
+  slug: string;
+  title: string;
+  /** "120 × 60 × 75", only when all three sizes are filled in */
+  size: string | null;
+  material: string;
+};
+
+export function buildFurnitureRows(list: FurnitureSummary[], locale: string): FurnitureRow[] {
+  const formatter = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
+
+  return list.map((item) => ({
+    slug: item.slug,
+    title: pickLocalized(locale, item.title_id, item.title_en),
+    size:
+      item.length_cm !== null && item.width_cm !== null && item.height_cm !== null
+        ? [item.length_cm, item.width_cm, item.height_cm]
+            .map((value) => formatter.format(value))
+            .join(" \u00d7 ")
+        : null,
+    material: pickLocalized(locale, item.material_id, item.material_en),
+  }));
 }

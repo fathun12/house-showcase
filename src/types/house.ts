@@ -114,3 +114,17 @@ export type ModelPart = {
 export type PublicModel = Model & { model_parts: ModelPart[] };
 
 export type PublicFurniture = House & { media: Media[]; models: PublicModel[] };
+
+export type FurnitureSummary = Pick<
+  House,
+  | "id"
+  | "slug"
+  | "title_id"
+  | "title_en"
+  | "length_cm"
+  | "width_cm"
+  | "height_cm"
+  | "material_id"
+  | "material_en"
+  | "sort_order"
+>;

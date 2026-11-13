@@ -1,12 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Model } from "@/types/house";
+import type { PublicModel } from "@/types/house";
 
-export async function listModels(houseId: string): Promise<Model[]> {
+export async function listModels(houseId: string): Promise<PublicModel[]> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("models")
-    .select("*")
+    .select("*, model_parts(*)")
     .eq("house_id", houseId)
     .order("position", { ascending: true })
     .order("created_at", { ascending: true });

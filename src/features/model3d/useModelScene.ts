@@ -8,9 +8,11 @@ import {
   HemisphereLight,
   Mesh,
   PerspectiveCamera,
+  Raycaster,
   Scene,
   Sphere,
   Texture,
+  Vector2,
   Vector3,
   WebGLRenderer,
 } from "three";
@@ -18,24 +20,51 @@ import type { Object3D } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
+import type { Motion, PartConfig } from "./config";
+import { createRig } from "./motion";
+import type { Rig } from "./motion";
 
 export type ModelInput = {
   url: string;
-  /** glTF node name -> label chosen in the admin */
-  labels: Record<string, string>;
+  /** part key (node name) -> what the admin set: label and movement */
+  configs: Record<string, PartConfig>;
 };
 
-export type PartInfo = { id: string; label: string; visible: boolean };
+export type PartInfo = {
+  id: string;
+  /** Stable name inside the file; repeated names get #2, #3, ... */
+  key: string;
+  name: string;
+  label: string;
+  visible: boolean;
+  motion: Motion;
+  open: boolean;
+};
 
 export type SceneStatus = "loading" | "ready" | "error";
+
+type BuiltPart = {
+  id: string;
+  key: string;
+  name: string;
+  label: string;
+  object: Object3D;
+  rig: Rig | null;
+  motion: Motion;
+  progress: number;
+  target: number;
+};
 
 type Built = {
   controls: OrbitControls;
   canvas: HTMLCanvasElement;
-  parts: { id: string; label: string; object: Object3D }[];
+  parts: BuiltPart[];
   reset: () => void;
   dispose: () => void;
 };
+
+const OPEN_MS = 600;
+const ease = (value: number) => value * value * (3 - 2 * value);
 
 /** SketchUp wraps everything in one or two nodes: go down to the level where the real parts begin. */
 function findParts(scene: Object3D): Object3D[] {
@@ -48,6 +77,34 @@ function findParts(scene: Object3D): Object3D[] {
   return node.children.filter(
     (child) => !child.type.endsWith("Camera") && !child.type.endsWith("Light"),
   );
+}
+
+/** Names inside one file, made unique: Door, Door#2, Door#3. */
+function uniqueKeys(objects: Object3D[]) {
+  const seen = new Map<string, number>();
+
+  return objects.map((object, index) => {
+    const base = object.name || `part-${index + 1}`;
+    const count = (seen.get(base) ?? 0) + 1;
+    seen.set(base, count);
+    return count === 1 ? base : `${base}#${count}`;
+  });
+}
+
+function isInside(node: Object3D, ancestor: Object3D) {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current === ancestor) return true;
+  }
+  return false;
+}
+
+/** A hit only counts when nothing between the hit and its part is hidden. */
+function visibleUpTo(node: Object3D, ancestor: Object3D) {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (!current.visible) return false;
+    if (current === ancestor) return true;
+  }
+  return false;
 }
 
 function disposeTree(root: Object3D) {
@@ -66,7 +123,12 @@ function disposeTree(root: Object3D) {
   });
 }
 
-function buildScene(host: HTMLElement, gltfs: GLTF[], models: ModelInput[]): Built {
+function buildScene(
+  host: HTMLElement,
+  gltfs: GLTF[],
+  models: ModelInput[],
+  onPick: (id: string) => void,
+): Built {
   const scene = new Scene();
   const camera = new PerspectiveCamera(35, 1, 0.01, 1000);
   const renderer = new WebGLRenderer({ antialias: true, alpha: true });
@@ -80,28 +142,40 @@ function buildScene(host: HTMLElement, gltfs: GLTF[], models: ModelInput[]): Bui
 
   const root = new Group();
   scene.add(root);
+  for (const gltf of gltfs) root.add(gltf.scene);
+  root.updateMatrixWorld(true);
 
-  const parts: Built["parts"] = [];
-
-  gltfs.forEach((gltf, modelIndex) => {
-    root.add(gltf.scene);
-
-    const labels = models[modelIndex]?.labels ?? {};
-    const found = findParts(gltf.scene);
-    const list = found.length > 0 ? found : [gltf.scene];
-
-    list.forEach((object, index) => {
-      parts.push({
-        id: `${modelIndex}:${index}`,
-        label: labels[object.name] || object.name,
-        object,
-      });
-    });
-  });
-
+  // Measure the closed model first, so the camera frames it before anything moves
   const sphere = new Box3().setFromObject(root).getBoundingSphere(new Sphere());
   const radius = Number.isFinite(sphere.radius) && sphere.radius > 0 ? sphere.radius : 1;
   const center = sphere.center;
+
+  const parts: BuiltPart[] = [];
+
+  gltfs.forEach((gltf, modelIndex) => {
+    const found = findParts(gltf.scene);
+    const list = found.length > 0 ? found : [gltf.scene];
+    const keys = uniqueKeys(list);
+    const configs = models[modelIndex]?.configs ?? {};
+
+    list.forEach((object, index) => {
+      const key = keys[index];
+      const config = configs[key];
+      const rig = config ? createRig(object, config) : null;
+
+      parts.push({
+        id: `${modelIndex}:${index}`,
+        key,
+        name: object.name || key,
+        label: config?.label || object.name || key,
+        object,
+        rig,
+        motion: rig && config ? config.motion : "none",
+        progress: 0,
+        target: 0,
+      });
+    });
+  });
 
   scene.add(new HemisphereLight(0xffffff, 0x8a8a8a, 1.8));
 
@@ -115,8 +189,9 @@ function buildScene(host: HTMLElement, gltfs: GLTF[], models: ModelInput[]): Bui
 
   scene.add(keyLight, keyLight.target, fillLight, fillLight.target);
 
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  controls.enableDamping = !reduced;
   controls.screenSpacePanning = true;
 
   const reset = () => {
@@ -159,7 +234,61 @@ function buildScene(host: HTMLElement, gltfs: GLTF[], models: ModelInput[]): Bui
   observer.observe(host);
   resize();
 
+  // A tap or click (not a drag) on a door or drawer opens or closes it
+  const raycaster = new Raycaster();
+  const pointer = new Vector2();
+  let down: { x: number; y: number; time: number } | null = null;
+
+  const onDown = (event: PointerEvent) => {
+    down = event.button === 0 ? { x: event.clientX, y: event.clientY, time: event.timeStamp } : null;
+  };
+
+  const onUp = (event: PointerEvent) => {
+    const start = down;
+    down = null;
+
+    if (!start || !controls.enabled) return;
+    if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > 6) return;
+    if (event.timeStamp - start.time > 500) return;
+
+    const rect = canvas.getBoundingClientRect();
+    pointer.set(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1,
+    );
+    raycaster.setFromCamera(pointer, camera);
+
+    for (const hit of raycaster.intersectObject(root, true)) {
+      const part = parts.find((item) => isInside(hit.object, item.object));
+      if (!part || !visibleUpTo(hit.object, part.object)) continue;
+
+      // The nearest visible surface decides: a frame in front of a drawer does not open the drawer
+      if (part.rig) onPick(part.id);
+      return;
+    }
+  };
+
+  canvas.addEventListener("pointerdown", onDown);
+  canvas.addEventListener("pointerup", onUp);
+
+  let last = performance.now();
+
   const render = () => {
+    const now = performance.now();
+    const elapsed = Math.min(now - last, 50);
+    last = now;
+
+    for (const part of parts) {
+      if (!part.rig || part.progress === part.target) continue;
+
+      const step = reduced ? 1 : elapsed / OPEN_MS;
+      part.progress =
+        part.target > part.progress
+          ? Math.min(part.target, part.progress + step)
+          : Math.max(part.target, part.progress - step);
+      part.rig.set(ease(part.progress));
+    }
+
     controls.update();
     renderer.render(scene, camera);
   };
@@ -177,6 +306,8 @@ function buildScene(host: HTMLElement, gltfs: GLTF[], models: ModelInput[]): Bui
   render();
 
   const dispose = () => {
+    canvas.removeEventListener("pointerdown", onDown);
+    canvas.removeEventListener("pointerup", onUp);
     intersection.disconnect();
     observer.disconnect();
     renderer.setAnimationLoop(null);
@@ -190,30 +321,56 @@ function buildScene(host: HTMLElement, gltfs: GLTF[], models: ModelInput[]): Bui
   return { controls, canvas, parts, reset, dispose };
 }
 
+function toInfo(part: BuiltPart): PartInfo {
+  return {
+    id: part.id,
+    key: part.key,
+    name: part.name,
+    label: part.label,
+    visible: part.object.visible,
+    motion: part.motion,
+    open: part.target === 1,
+  };
+}
+
+/** Shows every part again. */
+function revealAll(parts: BuiltPart[]) {
+  for (const part of parts) part.object.visible = true;
+}
+
+/** Sets the open or closed target of every part that can move, and returns their ids. */
+function setOpenTargets(parts: BuiltPart[], open: boolean) {
+  const ids = new Set<string>();
+
+  for (const part of parts) {
+    if (!part.rig) continue;
+    part.target = open ? 1 : 0;
+    ids.add(part.id);
+  }
+
+  return ids;
+}
+
 /**
  * Loads the .glb files into one 3D scene inside the element that `hostRef` points to.
  * `interactive` false = the model is only shown (the page scrolls normally over it).
- * Pass a stable `models` array (it restarts the scene whenever it changes).
+ * Pass a stable `models` value (it restarts the scene whenever it changes).
  */
 export function useModelScene(models: ModelInput[], interactive: boolean) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const objectsRef = useRef(new Map<string, Object3D>());
-  const resetRef = useRef<() => void>(() => {});
+  const builtRef = useRef<Built | null>(null);
   const interactiveRef = useRef(interactive);
 
   const [parts, setParts] = useState<PartInfo[]>([]);
   const [status, setStatus] = useState<SceneStatus>("loading");
 
   const applyInteractive = useCallback(() => {
-    const controls = controlsRef.current;
-    const canvas = canvasRef.current;
-    if (!controls || !canvas) return;
+    const built = builtRef.current;
+    if (!built) return;
 
-    controls.enabled = interactiveRef.current;
-    canvas.style.touchAction = interactiveRef.current ? "none" : "pan-y";
-    canvas.style.cursor = interactiveRef.current ? "grab" : "default";
+    built.controls.enabled = interactiveRef.current;
+    built.canvas.style.touchAction = interactiveRef.current ? "none" : "pan-y";
+    built.canvas.style.cursor = interactiveRef.current ? "grab" : "default";
   }, []);
 
   useEffect(() => {
@@ -221,28 +378,32 @@ export function useModelScene(models: ModelInput[], interactive: boolean) {
     applyInteractive();
   }, [interactive, applyInteractive]);
 
+  const toggleOpen = useCallback((id: string) => {
+    const part = builtRef.current?.parts.find((item) => item.id === id);
+    if (!part || !part.rig) return;
+
+    part.target = part.target === 1 ? 0 : 1;
+    const open = part.target === 1;
+
+    setParts((current) => current.map((item) => (item.id === id ? { ...item, open } : item)));
+  }, []);
+
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
 
     let disposed = false;
-    const holder: { built: Built | null } = { built: null };
     const loader = new GLTFLoader();
 
     Promise.all(models.map((model) => loader.loadAsync(model.url)))
       .then((gltfs) => {
         if (disposed) return;
 
-        const built = buildScene(host, gltfs, models);
-        holder.built = built;
-
-        controlsRef.current = built.controls;
-        canvasRef.current = built.canvas;
-        resetRef.current = built.reset;
-        objectsRef.current = new Map(built.parts.map((part) => [part.id, part.object]));
+        const built = buildScene(host, gltfs, models, toggleOpen);
+        builtRef.current = built;
         applyInteractive();
 
-        setParts(built.parts.map((part) => ({ id: part.id, label: part.label, visible: true })));
+        setParts(built.parts.map(toInfo));
         setStatus("ready");
       })
       .catch(() => {
@@ -251,30 +412,49 @@ export function useModelScene(models: ModelInput[], interactive: boolean) {
 
     return () => {
       disposed = true;
-      holder.built?.dispose();
-      controlsRef.current = null;
-      canvasRef.current = null;
-      resetRef.current = () => {};
-      objectsRef.current = new Map();
+      builtRef.current?.dispose();
+      builtRef.current = null;
     };
-  }, [models, applyInteractive]);
+  }, [models, applyInteractive, toggleOpen]);
 
   const toggle = useCallback((id: string) => {
-    const object = objectsRef.current.get(id);
-    if (!object) return;
+    const part = builtRef.current?.parts.find((item) => item.id === id);
+    if (!part) return;
 
-    object.visible = !object.visible;
-    const visible = object.visible;
+    part.object.visible = !part.object.visible;
+    const visible = part.object.visible;
 
-    setParts((current) => current.map((part) => (part.id === id ? { ...part, visible } : part)));
+    setParts((current) => current.map((item) => (item.id === id ? { ...item, visible } : item)));
   }, []);
 
   const showAll = useCallback(() => {
-    for (const object of objectsRef.current.values()) object.visible = true;
-    setParts((current) => current.map((part) => ({ ...part, visible: true })));
+    revealAll(builtRef.current?.parts ?? []);
+    setParts((current) => current.map((item) => ({ ...item, visible: true })));
   }, []);
 
-  const resetView = useCallback(() => resetRef.current(), []);
+  const setAllOpen = useCallback((open: boolean) => {
+    const ids = setOpenTargets(builtRef.current?.parts ?? [], open);
 
-  return { hostRef, parts, status, toggle, showAll, resetView };
+    setParts((current) =>
+      current.map((item) => (ids.has(item.id) ? { ...item, open } : item)),
+    );
+  }, []);
+
+  /** Admin preview: rebuild the movement of one part from new settings, and show it right away. */
+  const applyConfig = useCallback((id: string, config: PartConfig, open: boolean) => {
+    const part = builtRef.current?.parts.find((item) => item.id === id);
+    if (!part) return;
+
+    part.rig?.dispose();
+    part.progress = 0;
+    part.rig = createRig(part.object, config);
+    part.motion = part.rig ? config.motion : "none";
+    part.target = part.rig && open ? 1 : 0;
+
+    setParts((current) => current.map((item) => (item.id === id ? toInfo(part) : item)));
+  }, []);
+
+  const resetView = useCallback(() => builtRef.current?.reset(), []);
+
+  return { hostRef, parts, status, toggle, toggleOpen, setAllOpen, showAll, applyConfig, resetView };
 }
