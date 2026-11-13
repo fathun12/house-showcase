@@ -2,7 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { getHouseOrNotFound } from "@/features/houses/queries";
 import { listMedia } from "@/features/media/queries";
 import { pickLocalized } from "@/lib/utils/format";
-import { MEDIA_KINDS } from "@/types/house";
+import { FURNITURE_MEDIA_KINDS } from "@/types/house";
 import { FormShell } from "@/ui/admin/FormShell";
 import { HouseTabs } from "@/ui/admin/HouseTabs";
 import { MediaItem } from "@/ui/admin/MediaItem";
@@ -25,11 +25,11 @@ export default async function AdminFurnitureMediaPage({
       title={t("title")}
     >
       <HouseTabs houseId={id} active="media" kind="furniture" />
-      <Uploader houseId={id} rooms={[]} />
+      <Uploader houseId={id} rooms={[]} kinds={FURNITURE_MEDIA_KINDS} />
 
       {media.length === 0 ? <p className="text-muted">{t("empty")}</p> : null}
 
-      {MEDIA_KINDS.map((kind) => {
+      {FURNITURE_MEDIA_KINDS.map((kind) => {
         const group = media.filter((item) => item.kind === kind);
         if (group.length === 0) return null;
 

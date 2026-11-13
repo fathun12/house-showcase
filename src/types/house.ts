@@ -57,6 +57,9 @@ export const MEDIA_KINDS = ["hero", "floorplan", "room", "gallery"] as const;
 
 export type MediaKind = (typeof MEDIA_KINDS)[number];
 
+/** Furniture has no floor plan or rooms, so only these image types apply. */
+export const FURNITURE_MEDIA_KINDS = ["hero", "gallery"] as const satisfies readonly MediaKind[];
+
 export type Media = {
   id: string;
   house_id: string;

@@ -147,15 +147,94 @@ create policy "house_media_admin_all" on storage.objects
 -- ---------- added later (already run in Supabase; do not run again) ----------
 
 -- 10 Nov 2026
--- alter table public.houses add column whatsapp text;
+alter table public.houses add column whatsapp text;
 
--- 12 Nov 2026: project kind and 3D models
--- alter table public.houses
---   add column kind text not null default 'house'
---   check (kind in ('house', 'furniture'));
--- tables public.models and public.model_parts, their RLS policies and grants,
--- bucket 'house-models' (20 MB) and policy "house_models_admin_all":
--- see the SQL that was run in the Supabase SQL Editor on 12 Nov 2026.
+-- 12 Nov 2026: project kind (house or furniture)
+alter table public.houses
+  add column kind text not null default 'house'
+  constraint houses_kind_check check (kind in ('house', 'furniture'));
+
+-- 12 Nov 2026: 3D models of a furniture project
+create table public.models (
+  id uuid primary key default gen_random_uuid(),
+  house_id uuid not null references public.houses (id) on delete cascade,
+  storage_path text not null,
+  size_bytes integer,
+  position smallint not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create index models_house_idx on public.models (house_id, position);
+
+-- One row per movable part of a model (door, drawer, ...). motion: none, slide or hinge.
+create table public.model_parts (
+  id uuid primary key default gen_random_uuid(),
+  model_id uuid not null references public.models (id) on delete cascade,
+  node_name text not null,
+  label_id text not null default '',
+  label_en text not null default '',
+  motion text not null default 'none'
+    constraint model_parts_motion_check check (motion in ('none', 'slide', 'hinge')),
+  settings jsonb not null default '{}'::jsonb,
+  position smallint not null default 0
+);
+
+create index model_parts_model_idx on public.model_parts (model_id, position);
+
+alter table public.models enable row level security;
+alter table public.model_parts enable row level security;
+
+create policy "models_admin_all" on public.models
+  for all to authenticated using (true) with check (true);
+
+create policy "models_public_read" on public.models
+  for select to anon, authenticated
+  using (exists (
+    select 1 from public.houses h
+    where h.id = models.house_id and h.is_published
+  ));
+
+create policy "model_parts_admin_all" on public.model_parts
+  for all to authenticated using (true) with check (true);
+
+create policy "model_parts_public_read" on public.model_parts
+  for select to anon, authenticated
+  using (exists (
+    select 1
+    from public.models m
+    join public.houses h on h.id = m.house_id
+    where m.id = model_parts.model_id and h.is_published
+  ));
+
+-- The live database also keeps Supabase's default grants for anon on these two tables.
+-- RLS has no write policy for anon, so anon cannot write.
+grant select on public.models, public.model_parts to anon, authenticated;
+grant insert, update, delete on public.models, public.model_parts to authenticated;
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'house-models',
+  'house-models',
+  true,
+  20971520,
+  array['model/gltf-binary', 'application/octet-stream']
+)
+on conflict (id) do nothing;
+
+create policy "house_models_admin_all" on storage.objects
+  for all to authenticated
+  using (bucket_id = 'house-models')
+  with check (bucket_id = 'house-models');
+
+-- 13 Nov 2026: furniture specs
+alter table public.houses
+  add column length_cm numeric check (length_cm > 0),
+  add column width_cm numeric check (width_cm > 0),
+  add column height_cm numeric check (height_cm > 0),
+  add column material_id text not null default '',
+  add column material_en text not null default '',
+  add column finish_id text not null default '',
+  add column finish_en text not null default '';
 
 -- 13 Nov 2026: furniture specs (already run in Supabase; do not run again)
 alter table public.houses

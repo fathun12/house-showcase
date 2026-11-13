@@ -28,7 +28,7 @@ export default async function AdminFurnitureEditPage({
     <FormShell eyebrow={t("eyebrow")} title={t("editTitle")}>
       <HouseTabs houseId={house.id} active="details" kind="furniture" />
       <HouseForm house={house} kind="furniture" />
-      <DeleteHouse action={deleteHouse.bind(null, house.id, "furniture")} />
+      <DeleteHouse action={deleteHouse.bind(null, house.id, "furniture")} kind="furniture" />
     </FormShell>
   );
 }

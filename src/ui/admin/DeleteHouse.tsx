@@ -1,9 +1,18 @@
 import { useTranslations } from "next-intl";
+import type { HouseKind } from "@/types/house";
 import { Button } from "@/ui/primitives/Button";
 import { Checkbox } from "@/ui/primitives/Field";
 
-export function DeleteHouse({ action }: { action: () => Promise<void> }) {
-  const t = useTranslations("admin.houseForm.delete");
+export function DeleteHouse({
+  action,
+  kind = "house",
+}: {
+  action: () => Promise<void>;
+  kind?: HouseKind;
+}) {
+  const houseText = useTranslations("admin.houseForm.delete");
+  const furnitureText = useTranslations("admin.furnitureForm.delete");
+  const t = kind === "furniture" ? furnitureText : houseText;
 
   return (
     <section className="mt-16 flex flex-col gap-6 border-2 border-accent p-6">

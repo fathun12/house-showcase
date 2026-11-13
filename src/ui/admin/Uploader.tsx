@@ -9,7 +9,15 @@ import { Select } from "@/ui/primitives/Field";
 
 type RoomOption = { value: string; label: string };
 
-export function Uploader({ houseId, rooms }: { houseId: string; rooms: RoomOption[] }) {
+export function Uploader({
+  houseId,
+  rooms,
+  kinds = MEDIA_KINDS,
+}: {
+  houseId: string;
+  rooms: RoomOption[];
+  kinds?: readonly MediaKind[];
+}) {
   const t = useTranslations("admin.media");
   const { state, upload } = useUploader(houseId);
 
@@ -34,7 +42,7 @@ export function Uploader({ houseId, rooms }: { houseId: string; rooms: RoomOptio
           name="kind"
           value={kind}
           onChange={(event) => setKind(event.target.value as MediaKind)}
-          options={MEDIA_KINDS.map((value) => ({ value, label: t(`kinds.${value}`) }))}
+          options={kinds.map((value) => ({ value, label: t(`kinds.${value}`) }))}
         />
         {kind === "room" ? (
           <Select

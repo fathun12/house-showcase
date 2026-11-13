@@ -26,6 +26,7 @@
     "nav": {
       "label": "Navigasi admin",
       "houses": "Rumah",
+      "furniture": "Furnitur",
       "viewSite": "Lihat situs",
       "signOut": "Keluar"
     },
@@ -42,6 +43,12 @@
       },
       "published": "Terbit",
       "draft": "Draf"
+    },
+    "furniture": {
+      "eyebrow": "02 / Furnitur",
+      "title": "Furnitur",
+      "new": "Furnitur baru",
+      "empty": "Belum ada furnitur. Mulai dengan menambah furnitur baru."
     },
     "houseForm": {
       "eyebrow": "01 / Rumah",
@@ -81,7 +88,7 @@
         "too_big": "Terlalu panjang atau terlalu besar.",
         "invalid_format": "Format tidak sesuai.",
         "invalid_type": "Harus berupa angka.",
-        "duplicate": "Slug ini sudah dipakai rumah lain.",
+        "duplicate": "Slug ini sudah dipakai proyek lain.",
         "save_failed": "Gagal menyimpan. Coba lagi.",
         "invalid": "Isian tidak valid."
       },
@@ -91,12 +98,6 @@
         "confirm": "Saya paham, hapus rumah ini",
         "submit": "Hapus rumah"
       }
-    },
-    "furniture": {
-      "eyebrow": "02 / Furnitur",
-      "title": "Furnitur",
-      "new": "Furnitur baru",
-      "empty": "Belum ada furnitur. Mulai dengan menambah furnitur baru."
     },
     "furnitureForm": {
       "eyebrow": "02 / Furnitur",
@@ -117,6 +118,12 @@
       "hints": {
         "designer": "Nama perancang furnitur. Kosongkan kalau tidak ingin ditampilkan.",
         "published": "Kalau tidak dicentang, furnitur hanya terlihat olehmu di dasbor."
+      },
+      "delete": {
+        "title": "Hapus furnitur",
+        "warning": "Menghapus furnitur juga menghapus semua gambar dan model 3D-nya. Tindakan ini tidak bisa dibatalkan.",
+        "confirm": "Saya paham, hapus furnitur ini",
+        "submit": "Hapus furnitur"
       }
     },
     "translate": {

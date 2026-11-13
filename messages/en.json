@@ -26,6 +26,7 @@
     "nav": {
       "label": "Admin navigation",
       "houses": "Houses",
+      "furniture": "Furniture",
       "viewSite": "View site",
       "signOut": "Sign out"
     },
@@ -42,6 +43,12 @@
       },
       "published": "Published",
       "draft": "Draft"
+    },
+    "furniture": {
+      "eyebrow": "02 / Furniture",
+      "title": "Furniture",
+      "new": "New furniture",
+      "empty": "No furniture yet. Start by adding new furniture."
     },
     "houseForm": {
       "eyebrow": "01 / Houses",
@@ -81,7 +88,7 @@
         "too_big": "Too long or too large.",
         "invalid_format": "Wrong format.",
         "invalid_type": "Must be a number.",
-        "duplicate": "This slug is already used by another house.",
+        "duplicate": "This slug is already used by another project.",
         "save_failed": "Could not save. Please try again.",
         "invalid": "Invalid value."
       },
@@ -91,12 +98,6 @@
         "confirm": "I understand, delete this house",
         "submit": "Delete house"
       }
-    },
-    "furniture": {
-      "eyebrow": "02 / Furniture",
-      "title": "Furniture",
-      "new": "New furniture",
-      "empty": "No furniture yet. Start by adding new furniture."
     },
     "furnitureForm": {
       "eyebrow": "02 / Furniture",
@@ -117,6 +118,12 @@
       "hints": {
         "designer": "Name of the person who designed the furniture. Leave empty to hide it.",
         "published": "If unchecked, the furniture is only visible to you in the dashboard."
+      },
+      "delete": {
+        "title": "Delete furniture",
+        "warning": "Deleting furniture also deletes all its images and 3D models. This cannot be undone.",
+        "confirm": "I understand, delete this furniture",
+        "submit": "Delete furniture"
       }
     },
     "translate": {
