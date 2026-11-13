@@ -43,7 +43,7 @@ export function ViewerPanel({ item, title, tagline, specs, jumps, onJump }: Prop
   return (
     <aside
       aria-label={t("viewer.infoPanel")}
-      className="max-h-[45dvh] shrink-0 overflow-y-auto border-t-2 border-foreground bg-background lg:max-h-none lg:w-[26rem] lg:border-t-0 lg:border-l-2"
+      className="max-h-[45dvh] shrink-0 overflow-y-auto border-t-2 border-foreground bg-background lg:max-h-none lg:w-104 lg:border-t-0 lg:border-l-2"
     >
       <div className="p-6">
         <p className="label text-muted">{context}</p>

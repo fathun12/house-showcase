@@ -78,7 +78,7 @@ export function RoomPreview({ title, rooms }: Props) {
             <a
               href={`#${room.anchor}`}
               draggable={false}
-              className="rail-card relative block aspect-video w-[78vw] overflow-hidden bg-stage text-stage-ink sm:w-112 lg:w-136"
+              className="rail-card relative block aspect-video w-[78vw] overflow-hidden bg-stage text-stage-ink sm:w-md lg:w-136"
             >
               {hasPhotos ? (
                 <>

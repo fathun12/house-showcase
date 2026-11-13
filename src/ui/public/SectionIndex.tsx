@@ -53,7 +53,7 @@ export function SectionIndex({ label, items, rooms, specs }: Props) {
     <nav
       ref={navRef}
       aria-label={label}
-      className="sticky top-0 z-10 -mx-(--gutter) overflow-x-auto border-b-2 border-foreground bg-background px-(--gutter) lg:top-8 lg:z-0 lg:mx-0 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-x-visible lg:overflow-y-auto lg:border-b-0 lg:px-0"
+      className="sticky top-0 z-10 -mx-(--gutter) overflow-x-auto border-b-2 border-foreground bg-background gutter lg:top-8 lg:z-0 lg:mx-0 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-x-visible lg:overflow-y-auto lg:border-b-0 lg:px-0"
     >
       <ul className="flex lg:flex-col lg:border-t-2 lg:border-foreground">
         {items.map((item) => (
@@ -75,7 +75,7 @@ export function SectionIndex({ label, items, rooms, specs }: Props) {
                     <a
                       href={`#${room.anchor}`}
                       aria-current={room.anchor === activeRoom ? "true" : undefined}
-                      className="label flex items-baseline gap-2 py-1.5 pl-8 text-muted hover:text-accent focus-visible:-outline-offset-2 aria-[current=true]:text-foreground"
+                      className="label flex items-baseline gap-2 py-1.5 pl-8 text-muted hover:text-accent focus-visible:-outline-offset-2 aria-current:text-foreground"
                     >
                       <span className="text-accent">{room.number}</span>
                       <span>{room.name}</span>

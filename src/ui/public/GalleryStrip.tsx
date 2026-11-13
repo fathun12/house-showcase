@@ -15,7 +15,7 @@ export function GalleryStrip({ images }: Props) {
     <SlideRow autoMs={AUTO_MS}>
       {images.map((image) => (
         <div key={image.src} className="rail-slot shrink-0 snap-start px-2">
-        <figure className="rail-card relative aspect-video w-[78vw] overflow-hidden bg-stage sm:w-112 lg:w-136">
+        <figure className="rail-card relative aspect-video w-[78vw] overflow-hidden bg-stage sm:w-md lg:w-136">
           <ViewerTrigger itemKey={image.src} fill>
             <Image
               src={image.src}

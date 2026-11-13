@@ -62,8 +62,8 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
       <div className="flex items-center gap-4 border-b border-stage-ink/30 px-4 py-2 sm:px-6">
         <p className="label">{t("title")}</p>
         <p className="label hidden flex-1 text-stage-ink/60 sm:block">
-          <span className="hidden [@media(pointer:fine)]:inline">{t("hintMouse")}</span>
-          <span className="hidden [@media(pointer:coarse)]:inline">{t("hintTouch")}</span>
+          <span className="hidden pointer-fine:inline">{t("hintMouse")}</span>
+          <span className="hidden pointer-coarse:inline">{t("hintTouch")}</span>
         </p>
         <ViewerButton onClick={() => setExpanded((open) => !open)} className="ml-auto">
           {expanded ? t("close") : t("expand")}

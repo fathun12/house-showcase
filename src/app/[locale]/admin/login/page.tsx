@@ -19,7 +19,7 @@ export default async function AdminLoginPage({
   return (
     <main className="gutter mx-auto flex min-h-dvh max-w-page items-center py-10">
       <div className="grid w-full md:grid-cols-2">
-        <aside className="flex min-h-[26rem] flex-col justify-between bg-foreground p-8 text-background md:min-h-[34rem] md:p-10">
+        <aside className="flex min-h-104 flex-col justify-between bg-foreground p-8 text-background md:min-h-136 md:p-10">
           <p className="flex items-center gap-3">
             <span aria-hidden className="size-3 bg-accent" />
             <span className="heading text-xl">House Showcase</span>

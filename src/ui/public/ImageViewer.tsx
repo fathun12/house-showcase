@@ -167,12 +167,12 @@ function ViewerDialog({
             {pad(position)} / {pad(count)}
           </p>
           <p className="label hidden flex-1 text-stage-ink/60 sm:block">
-            <span className="hidden [@media(pointer:fine)]:inline">{t("hintMouse")}</span>
-            <span className="hidden [@media(pointer:coarse)]:inline">{t("hintTouch")}</span>
+            <span className="hidden pointer-fine:inline">{t("hintMouse")}</span>
+            <span className="hidden pointer-coarse:inline">{t("hintTouch")}</span>
           </p>
           <ViewerButton onClick={onClose} className="ml-auto">
             {t("close")}
-            <span aria-hidden className="ml-3 hidden opacity-60 [@media(pointer:fine)]:inline">
+            <span aria-hidden className="ml-3 hidden opacity-60 pointer-fine:inline">
               Esc
             </span>
           </ViewerButton>
