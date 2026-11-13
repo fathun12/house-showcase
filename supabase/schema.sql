@@ -143,3 +143,16 @@ create policy "house_media_admin_all" on storage.objects
   for all to authenticated
   using (bucket_id = 'house-media')
   with check (bucket_id = 'house-media');
+
+-- ---------- added later (already run in Supabase; do not run again) ----------
+
+-- 10 Nov 2026
+-- alter table public.houses add column whatsapp text;
+
+-- 12 Nov 2026: project kind and 3D models
+-- alter table public.houses
+--   add column kind text not null default 'house'
+--   check (kind in ('house', 'furniture'));
+-- tables public.models and public.model_parts, their RLS policies and grants,
+-- bucket 'house-models' (20 MB) and policy "house_models_admin_all":
+-- see the SQL that was run in the Supabase SQL Editor on 12 Nov 2026.
