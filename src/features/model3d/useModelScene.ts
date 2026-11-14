@@ -16,7 +16,7 @@ import {
   Vector3,
   WebGLRenderer,
 } from "three";
-import type { Object3D } from "three";
+import type { Material, MeshStandardMaterial, Object3D } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -127,7 +127,7 @@ function buildScene(
   host: HTMLElement,
   gltfs: GLTF[],
   models: ModelInput[],
-  onPick: (id: string) => void,
+  onPick: (id: string, openable: boolean) => void,
 ): Built {
   const scene = new Scene();
   const camera = new PerspectiveCamera(35, 1, 0.01, 1000);
@@ -263,7 +263,7 @@ function buildScene(
       if (!part || !visibleUpTo(hit.object, part.object)) continue;
 
       // The nearest visible surface decides: a frame in front of a drawer does not open the drawer
-      if (part.rig) onPick(part.id);
+      onPick(part.id, Boolean(part.rig));
       return;
     }
   };
@@ -321,6 +321,48 @@ function buildScene(
   return { controls, canvas, parts, reset, dispose };
 }
 
+const HIGHLIGHT = 0xb8502a;
+
+type Tinted = { part: BuiltPart; saved: Map<Mesh, Material | Material[]> };
+
+/** Gives every mesh of a part its own copy of the material with a terracotta glow
+ *  (materials are shared between parts, so the original ones must not be changed). */
+function tint(part: BuiltPart): Tinted {
+  const saved = new Map<Mesh, Material | Material[]>();
+
+  part.object.traverse((node) => {
+    if (!(node instanceof Mesh)) return;
+
+    saved.set(node, node.material);
+
+    const glow = (material: Material) => {
+      const copy = material.clone();
+      const standard = copy as MeshStandardMaterial;
+
+      if (standard.emissive) {
+        standard.emissive.set(HIGHLIGHT);
+        standard.emissiveIntensity = 0.9;
+      }
+
+      return copy;
+    };
+
+    node.material = Array.isArray(node.material) ? node.material.map(glow) : glow(node.material);
+  });
+
+  return { part, saved };
+}
+
+function untint(tinted: Tinted | null) {
+  if (!tinted) return;
+
+  for (const [mesh, original] of tinted.saved) {
+    const copies = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    mesh.material = original;
+    for (const copy of copies) copy.dispose();
+  }
+}
+
 function toInfo(part: BuiltPart): PartInfo {
   return {
     id: part.id,
@@ -356,10 +398,17 @@ function setOpenTargets(parts: BuiltPart[], open: boolean) {
  * `interactive` false = the model is only shown (the page scrolls normally over it).
  * Pass a stable `models` value (it restarts the scene whenever it changes).
  */
-export function useModelScene(models: ModelInput[], interactive: boolean) {
+export function useModelScene(
+  models: ModelInput[],
+  interactive: boolean,
+  /** Admin: a click on a part selects it. Without it, a click opens or closes a door or drawer. */
+  onSelect?: (id: string) => void,
+) {
   const hostRef = useRef<HTMLDivElement>(null);
   const builtRef = useRef<Built | null>(null);
   const interactiveRef = useRef(interactive);
+  const selectRef = useRef(onSelect);
+  const highlightRef = useRef<Tinted | null>(null);
 
   const [parts, setParts] = useState<PartInfo[]>([]);
   const [status, setStatus] = useState<SceneStatus>("loading");
@@ -377,6 +426,10 @@ export function useModelScene(models: ModelInput[], interactive: boolean) {
     interactiveRef.current = interactive;
     applyInteractive();
   }, [interactive, applyInteractive]);
+
+  useEffect(() => {
+    selectRef.current = onSelect;
+  }, [onSelect]);
 
   const toggleOpen = useCallback((id: string) => {
     const part = builtRef.current?.parts.find((item) => item.id === id);
@@ -399,7 +452,10 @@ export function useModelScene(models: ModelInput[], interactive: boolean) {
       .then((gltfs) => {
         if (disposed) return;
 
-        const built = buildScene(host, gltfs, models, toggleOpen);
+        const built = buildScene(host, gltfs, models, (id, openable) => {
+          if (selectRef.current) selectRef.current(id);
+          else if (openable) toggleOpen(id);
+        });
         builtRef.current = built;
         applyInteractive();
 
@@ -412,6 +468,8 @@ export function useModelScene(models: ModelInput[], interactive: boolean) {
 
     return () => {
       disposed = true;
+      untint(highlightRef.current);
+      highlightRef.current = null;
       builtRef.current?.dispose();
       builtRef.current = null;
     };
@@ -456,5 +514,30 @@ export function useModelScene(models: ModelInput[], interactive: boolean) {
 
   const resetView = useCallback(() => builtRef.current?.reset(), []);
 
-  return { hostRef, parts, status, toggle, toggleOpen, setAllOpen, showAll, applyConfig, resetView };
+  /** Admin: make one part glow so it can be told apart from the others (null = none). */
+  const highlight = useCallback((id: string | null) => {
+    const built = builtRef.current;
+    if (!built) return;
+
+    if (highlightRef.current?.part.id === id) return;
+
+    untint(highlightRef.current);
+    highlightRef.current = null;
+
+    const part = id ? built.parts.find((item) => item.id === id) : undefined;
+    if (part) highlightRef.current = tint(part);
+  }, []);
+
+  return {
+    hostRef,
+    parts,
+    status,
+    toggle,
+    toggleOpen,
+    setAllOpen,
+    showAll,
+    applyConfig,
+    resetView,
+    highlight,
+  };
 }

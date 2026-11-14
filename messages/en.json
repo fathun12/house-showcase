@@ -213,7 +213,12 @@
         "save": "Save parts",
         "saving": "Saving...",
         "saved": "Saved.",
-        "failed": "Could not save. Please try again."
+        "failed": "Could not save. Please try again.",
+        "counter": "Part {current} of {total}",
+        "counterNone": "{total} parts. Select one to set it up.",
+        "prevPart": "Previous part",
+        "nextPart": "Next part",
+        "clickHint": "Click a part in the model or in the list: it glows terracotta and its settings open."
       }
     },
     "rooms": {

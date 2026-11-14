@@ -213,7 +213,12 @@
         "save": "Simpan bagian",
         "saving": "Menyimpan...",
         "saved": "Tersimpan.",
-        "failed": "Gagal menyimpan. Coba lagi."
+        "failed": "Gagal menyimpan. Coba lagi.",
+        "counter": "Bagian {current} dari {total}",
+        "counterNone": "{total} bagian. Pilih satu untuk mengaturnya.",
+        "prevPart": "Bagian sebelumnya",
+        "nextPart": "Bagian berikutnya",
+        "clickHint": "Klik sebuah bagian di model atau di daftar: bagian itu menyala terakota dan pengaturannya terbuka."
       }
     },
     "rooms": {
