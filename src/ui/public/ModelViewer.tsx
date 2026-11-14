@@ -79,8 +79,6 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
       aria-label={t("label")}
       className={cn(
         "flex flex-col bg-stage text-stage-ink",
-        light && "stage-light",
-        light && !expanded && "border-2 border-foreground",
         expanded ? "fixed inset-0 z-50" : "relative",
       )}
     >
@@ -102,7 +100,8 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
 
       <div
         className={cn(
-          "relative min-h-0",
+          "relative min-h-0 bg-stage text-stage-ink",
+          light && "stage-light",
           expanded ? "flex-1" : "h-[70dvh] min-h-96 lg:h-[78dvh]",
         )}
       >

@@ -191,7 +191,8 @@ function buildScene(
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = !reduced;
+  // No inertia: orbit and pan follow the pointer exactly and stop the moment it stops
+  controls.enableDamping = false;
   controls.screenSpacePanning = true;
 
   const reset = () => {
