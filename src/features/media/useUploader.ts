@@ -1,49 +1,72 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "@/lib/i18n/navigation";
+import { runPool, throttledReporter } from "@/features/upload/state";
+import { useUploadState } from "@/features/upload/useUploadState";
 import type { MediaKind } from "@/types/house";
-import { addMedia } from "./actions";
+import { addMediaBatch } from "./actions";
 import { compressImage } from "./compress";
 import { uploadToStorage } from "./upload";
 
-type UploadState = {
-  status: "idle" | "working" | "done" | "error";
-  done: number;
-  total: number;
-  failed: number;
-};
+const CONCURRENCY = 3;
+// Of one file's progress bar: the first part is shrinking, the rest is sending
+const COMPRESS_SHARE = 0.35;
 
-const IDLE: UploadState = { status: "idle", done: 0, total: 0, failed: 0 };
+type Uploaded = { storagePath: string; width: number; height: number };
 
 export function useUploader(houseId: string) {
-  const router = useRouter();
-  const [state, setState] = useState<UploadState>(IDLE);
+  const { state, begin, patch, saving, finish } = useUploadState();
 
   async function upload(files: File[], kind: MediaKind, roomId: string | null) {
     if (files.length === 0) return;
 
-    const total = files.length;
-    let failed = 0;
+    begin(files.map((file) => file.name));
+    const uploaded: (Uploaded | null)[] = files.map(() => null);
 
-    setState({ status: "working", done: 0, total, failed });
-
-    for (const [index, source] of files.entries()) {
+    await runPool(files, CONCURRENCY, async (source, index) => {
       try {
-        const { file, width, height } = await compressImage(source);
-        const storagePath = await uploadToStorage(houseId, file);
-        const result = await addMedia({ houseId, roomId, kind, storagePath, width, height });
+        patch(index, { phase: "compressing", fraction: 0 });
+        const reportShrink = throttledReporter((value) =>
+          patch(index, { fraction: value * COMPRESS_SHARE }),
+        );
+        const { file, width, height } = await compressImage(source, (percent) =>
+          reportShrink(percent / 100),
+        );
 
-        if (!result.ok) failed += 1;
+        patch(index, { phase: "uploading", fraction: COMPRESS_SHARE });
+        const reportSend = throttledReporter((value) =>
+          patch(index, { fraction: COMPRESS_SHARE + value * (1 - COMPRESS_SHARE) }),
+        );
+        const storagePath = await uploadToStorage(houseId, file, reportSend);
+
+        uploaded[index] = { storagePath, width, height };
+        patch(index, { phase: "done", fraction: 1 });
       } catch {
-        failed += 1;
+        patch(index, { phase: "failed", fraction: 1, reason: "failed" });
+      }
+    });
+
+    const ready = uploaded.filter((item): item is Uploaded => item !== null);
+    let failed = files.length - ready.length;
+
+    if (ready.length > 0) {
+      saving();
+
+      let ok = false;
+      try {
+        ok = (await addMediaBatch({ houseId, roomId, kind, items: ready })).ok;
+      } catch {
+        ok = false;
       }
 
-      setState({ status: "working", done: index + 1, total, failed });
+      if (!ok) {
+        failed = files.length;
+        uploaded.forEach((item, index) => {
+          if (item) patch(index, { phase: "failed", reason: "failed" });
+        });
+      }
     }
 
-    setState({ status: failed > 0 ? "error" : "done", done: total, total, failed });
-    router.refresh();
+    finish(failed);
   }
 
   return { state, upload };

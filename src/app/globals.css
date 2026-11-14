@@ -130,6 +130,28 @@
   }
 }
 
+/* Busy bar (admin): a block slides along a track while something is saving, uploading or deleting */
+@keyframes busy-slide {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 250% 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .busy-bar {
+    animation: busy-slide 1.1s linear infinite;
+  }
+}
+
+/* The 3D viewer can switch to a white stage: only the two stage tokens change inside it */
+.stage-light {
+  --stage: #ffffff;
+  --stage-ink: #0a0a0a;
+}
+
 /* The room you jumped to starts as a filled terracotta number, then settles */
 @keyframes land {
   from {

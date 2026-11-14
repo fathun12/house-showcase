@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/client";
+import { uploadFile } from "@/lib/supabase/upload";
 import { MODEL_BUCKET, MODEL_MAX_BYTES } from "./url";
 
 export type GlbCheck = "ok" | "not_glb" | "too_big";
@@ -12,18 +12,21 @@ export async function checkGlb(file: File): Promise<GlbCheck> {
   return magic === "glTF" ? "ok" : "not_glb";
 }
 
-/** Uploads one .glb to storage and returns its path inside the bucket. */
-export async function uploadModelToStorage(houseId: string, file: File): Promise<string> {
-  const supabase = createClient();
+/** Uploads one .glb to storage and returns its path inside the bucket. onProgress gets 0 to 1. */
+export async function uploadModelToStorage(
+  houseId: string,
+  file: File,
+  onProgress?: (fraction: number) => void,
+): Promise<string> {
   const path = `${houseId}/${crypto.randomUUID()}.glb`;
 
-  const { error } = await supabase.storage.from(MODEL_BUCKET).upload(path, file, {
+  await uploadFile({
+    bucket: MODEL_BUCKET,
+    path,
+    file,
     contentType: "model/gltf-binary",
-    cacheControl: "31536000",
-    upsert: false,
+    onProgress,
   });
-
-  if (error) throw new Error("Upload failed");
 
   return path;
 }

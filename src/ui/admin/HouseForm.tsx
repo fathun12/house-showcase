@@ -199,8 +199,8 @@ export function HouseForm({ house, kind }: { house: House | null; kind: HouseKin
       </FormSection>
 
       <div className="flex flex-wrap gap-4 border-t-2 border-foreground pt-8">
-        <Button type="submit" disabled={isPending}>
-          {t("save")}
+        <Button type="submit" busy={isPending}>
+          {isPending ? t("saving") : t("save")}
         </Button>
         <Link
           href={isFurniture ? "/admin/furniture" : "/admin/houses"}

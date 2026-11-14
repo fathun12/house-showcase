@@ -3,16 +3,18 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useModelUploader } from "@/features/models/useModelUploader";
+import { UploadStatus } from "@/ui/admin/UploadStatus";
 import { Button } from "@/ui/primitives/Button";
 
 export function ModelUploader({ houseId }: { houseId: string }) {
   const t = useTranslations("admin.models.upload");
+  const tu = useTranslations("admin.upload");
   const { state, upload } = useModelUploader(houseId);
 
   const [files, setFiles] = useState<File[]>([]);
   const [inputKey, setInputKey] = useState(0);
 
-  const working = state.status === "working";
+  const working = state.status === "working" || state.status === "saving";
 
   async function handleUpload() {
     await upload(files);
@@ -32,24 +34,29 @@ export function ModelUploader({ houseId }: { houseId: string }) {
           type="file"
           accept=".glb"
           multiple
+          disabled={working}
           onChange={(event) => setFiles(Array.from(event.target.files ?? []))}
           className="label w-full file:mr-4 file:cursor-pointer file:border-2 file:border-foreground file:bg-transparent file:px-4 file:py-2 file:text-foreground"
         />
         <p className="text-sm text-muted">{t("hint")}</p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
-        <Button type="button" onClick={handleUpload} disabled={working || files.length === 0}>
-          {t("submit")}
+      <div>
+        <Button
+          type="button"
+          onClick={handleUpload}
+          busy={working}
+          disabled={files.length === 0}
+        >
+          {state.status === "saving"
+            ? tu("buttonSaving")
+            : working
+              ? tu("buttonWorking")
+              : t("submit")}
         </Button>
-        <p aria-live="polite" className="label">
-          {state.status === "working" ? t("uploading") : null}
-          {state.status === "done" ? t("done") : null}
-          {state.status === "error" && state.error ? (
-            <span className="text-accent">{t(`errors.${state.error}`)}</span>
-          ) : null}
-        </p>
       </div>
+
+      <UploadStatus state={state} />
     </section>
   );
 }

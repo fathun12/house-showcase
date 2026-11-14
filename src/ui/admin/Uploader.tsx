@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useUploader } from "@/features/media/useUploader";
 import { MEDIA_KINDS, type MediaKind } from "@/types/house";
+import { UploadStatus } from "@/ui/admin/UploadStatus";
 import { Button } from "@/ui/primitives/Button";
 import { Select } from "@/ui/primitives/Field";
 
@@ -19,6 +20,7 @@ export function Uploader({
   kinds?: readonly MediaKind[];
 }) {
   const t = useTranslations("admin.media");
+  const tu = useTranslations("admin.upload");
   const { state, upload } = useUploader(houseId);
 
   const [kind, setKind] = useState<MediaKind>("gallery");
@@ -26,7 +28,7 @@ export function Uploader({
   const [files, setFiles] = useState<File[]>([]);
   const [inputKey, setInputKey] = useState(0);
 
-  const working = state.status === "working";
+  const working = state.status === "working" || state.status === "saving";
 
   async function handleUpload() {
     await upload(files, kind, kind === "room" && roomId ? roomId : null);
@@ -65,26 +67,29 @@ export function Uploader({
           type="file"
           accept="image/*"
           multiple={kind !== "hero"}
+          disabled={working}
           onChange={(event) => setFiles(Array.from(event.target.files ?? []))}
           className="label w-full file:mr-4 file:cursor-pointer file:border-2 file:border-foreground file:bg-transparent file:px-4 file:py-2 file:text-foreground"
         />
         <p className="text-sm text-muted">{t("upload.hint")}</p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
-        <Button type="button" onClick={handleUpload} disabled={working || files.length === 0}>
-          {t("upload.submit")}
+      <div>
+        <Button
+          type="button"
+          onClick={handleUpload}
+          busy={working}
+          disabled={files.length === 0}
+        >
+          {state.status === "saving"
+            ? tu("buttonSaving")
+            : working
+              ? tu("buttonWorking")
+              : t("upload.submit")}
         </Button>
-        <p aria-live="polite" className="label">
-          {state.status === "working"
-            ? t("upload.uploading", { done: state.done, total: state.total })
-            : null}
-          {state.status === "done" ? t("upload.done") : null}
-          {state.status === "error" ? (
-            <span className="text-accent">{t("upload.failed", { failed: state.failed })}</span>
-          ) : null}
-        </p>
       </div>
+
+      <UploadStatus state={state} />
     </section>
   );
 }

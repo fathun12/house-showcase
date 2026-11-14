@@ -16,7 +16,6 @@ import { useModelScene } from "@/features/model3d/useModelScene";
 import type { ModelInput, PartInfo } from "@/features/model3d/useModelScene";
 import { saveModelParts } from "@/features/models/actions";
 import { modelUrl } from "@/features/models/url";
-import { useRouter } from "@/lib/i18n/navigation";
 import type { PublicModel } from "@/types/house";
 import { Button } from "@/ui/primitives/Button";
 import { Select, TextField } from "@/ui/primitives/Field";
@@ -63,7 +62,6 @@ const dirLabel = (dir: string) => `${dir.endsWith("-") ? "\u2212" : "+"}${dir[0]
 /** Admin: name the parts of one 3D file and choose how each one opens, with a live preview. */
 export function ModelPartsEditor({ model }: { model: PublicModel }) {
   const t = useTranslations("admin.models.parts");
-  const router = useRouter();
   // Both start from what is saved and are never rebuilt, so the 3D scene is not reloaded after saving
   const [input] = useState(() => initialInput(model));
   const [edits, setEdits] = useState(() => initialEdits(model));
@@ -105,7 +103,6 @@ export function ModelPartsEditor({ model }: { model: PublicModel }) {
       });
 
       setResult(response.ok ? "saved" : "failed");
-      if (response.ok) router.refresh();
     });
   }
 
@@ -273,11 +270,11 @@ export function ModelPartsEditor({ model }: { model: PublicModel }) {
       </ol>
 
       <div className="flex flex-wrap items-center gap-4 border-t-2 border-foreground pt-6">
-        <Button type="button" onClick={save} disabled={pending || status !== "ready"}>
+        <Button type="button" onClick={save} busy={pending} disabled={status !== "ready"}>
           {pending ? t("saving") : t("save")}
         </Button>
         <p aria-live="polite" className="label">
-          {result === "saved" ? t("saved") : null}
+          {result === "saved" ? `\u2713 ${t("saved")}` : null}
           {result === "failed" ? <span className="text-accent">{t("failed")}</span> : null}
         </p>
       </div>

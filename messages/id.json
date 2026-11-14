@@ -96,8 +96,10 @@
         "title": "Hapus rumah",
         "warning": "Menghapus rumah juga menghapus semua ruangan dan datanya. Tindakan ini tidak bisa dibatalkan.",
         "confirm": "Saya paham, hapus rumah ini",
-        "submit": "Hapus rumah"
-      }
+        "submit": "Hapus rumah",
+        "deleting": "Menghapus..."
+      },
+      "saving": "Menyimpan..."
     },
     "furnitureForm": {
       "eyebrow": "02 / Furnitur",
@@ -123,7 +125,8 @@
         "title": "Hapus furnitur",
         "warning": "Menghapus furnitur juga menghapus semua gambar dan model 3D-nya. Tindakan ini tidak bisa dibatalkan.",
         "confirm": "Saya paham, hapus furnitur ini",
-        "submit": "Hapus furnitur"
+        "submit": "Hapus furnitur",
+        "deleting": "Menghapus..."
       }
     },
     "translate": {
@@ -168,7 +171,9 @@
         "deleteYes": "Ya, hapus",
         "cancel": "Batal",
         "parts": "Atur bagian dan gerak",
-        "partsClose": "Tutup pengaturan"
+        "partsClose": "Tutup pengaturan",
+        "deleting": "Menghapus model...",
+        "deleteFailed": "Gagal menghapus. Coba lagi."
       },
       "parts": {
         "title": "Bagian dan gerak",
@@ -283,7 +288,30 @@
         "save": "Simpan",
         "delete": "Hapus",
         "deleteConfirm": "Hapus gambar ini?",
-        "deleteYes": "Ya, hapus"
+        "deleteYes": "Ya, hapus",
+        "saving": "Menyimpan...",
+        "saved": "Tersimpan",
+        "deleting": "Menghapus..."
+      }
+    },
+    "upload": {
+      "buttonWorking": "Mengunggah...",
+      "buttonSaving": "Menyimpan...",
+      "summary": "{done} dari {total} file selesai",
+      "savingSummary": "Menyimpan ke database...",
+      "allDone": "Selesai. Semua file terunggah.",
+      "someFailed": "{failed} file gagal.",
+      "phases": {
+        "waiting": "Menunggu",
+        "compressing": "Mengecilkan",
+        "uploading": "Mengunggah",
+        "done": "Selesai",
+        "failed": "Gagal"
+      },
+      "reasons": {
+        "failed": "Gagal mengunggah. Coba lagi.",
+        "not_glb": "Ini bukan file .glb yang valid.",
+        "too_big": "File lebih dari 20 MB."
       }
     }
   },
@@ -412,7 +440,10 @@
         "closePart": "Tutup",
         "openAll": "Buka semua",
         "closeAll": "Tutup semua",
-        "openHint": "Ketuk atau klik pintu dan laci di model untuk membukanya."
+        "openHint": "Ketuk atau klik pintu dan laci di model untuk membukanya.",
+        "background": "Latar",
+        "dark": "Gelap",
+        "light": "Terang"
       },
       "specs": {
         "title": "Ukuran dan bahan",

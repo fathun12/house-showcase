@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { HouseKind } from "@/types/house";
-import { Button } from "@/ui/primitives/Button";
 import { Checkbox } from "@/ui/primitives/Field";
+import { SubmitButton } from "@/ui/primitives/SubmitButton";
 
 export function DeleteHouse({
   action,
@@ -20,9 +20,9 @@ export function DeleteHouse({
       <p>{t("warning")}</p>
       <form action={action} className="flex flex-col gap-6">
         <Checkbox label={t("confirm")} name="confirm" required />
-        <Button type="submit" variant="outline" className="self-start">
+        <SubmitButton variant="outline" className="self-start" pendingLabel={t("deleting")}>
           {t("submit")}
-        </Button>
+        </SubmitButton>
       </form>
     </section>
   );

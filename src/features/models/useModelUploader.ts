@@ -1,49 +1,65 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "@/lib/i18n/navigation";
-import { addModel } from "./actions";
+import { runPool, throttledReporter } from "@/features/upload/state";
+import { useUploadState } from "@/features/upload/useUploadState";
+import { addModels } from "./actions";
 import { checkGlb, uploadModelToStorage } from "./upload";
 
-export type ModelUploadError = "not_glb" | "too_big" | "failed";
+const CONCURRENCY = 2;
 
-type UploadState = {
-  status: "idle" | "working" | "done" | "error";
-  error: ModelUploadError | null;
-};
-
-const IDLE: UploadState = { status: "idle", error: null };
+type Uploaded = { storagePath: string; sizeBytes: number };
 
 export function useModelUploader(houseId: string) {
-  const router = useRouter();
-  const [state, setState] = useState<UploadState>(IDLE);
+  const { state, begin, patch, saving, finish } = useUploadState();
 
   async function upload(files: File[]) {
     if (files.length === 0) return;
 
-    setState({ status: "working", error: null });
-    let error: ModelUploadError | null = null;
+    begin(files.map((file) => file.name));
+    const uploaded: (Uploaded | null)[] = files.map(() => null);
 
-    for (const file of files) {
-      const check = await checkGlb(file);
+    await runPool(files, CONCURRENCY, async (file, index) => {
+      try {
+        const check = await checkGlb(file);
 
-      if (check !== "ok") {
-        error = check;
-        continue;
+        if (check !== "ok") {
+          patch(index, { phase: "failed", fraction: 1, reason: check });
+          return;
+        }
+
+        patch(index, { phase: "uploading", fraction: 0 });
+        const report = throttledReporter((value) => patch(index, { fraction: value }));
+        const storagePath = await uploadModelToStorage(houseId, file, report);
+
+        uploaded[index] = { storagePath, sizeBytes: file.size };
+        patch(index, { phase: "done", fraction: 1 });
+      } catch {
+        patch(index, { phase: "failed", fraction: 1, reason: "failed" });
+      }
+    });
+
+    const ready = uploaded.filter((item): item is Uploaded => item !== null);
+    let failed = files.length - ready.length;
+
+    if (ready.length > 0) {
+      saving();
+
+      let ok = false;
+      try {
+        ok = (await addModels({ houseId, items: ready })).ok;
+      } catch {
+        ok = false;
       }
 
-      try {
-        const storagePath = await uploadModelToStorage(houseId, file);
-        const result = await addModel({ houseId, storagePath, sizeBytes: file.size });
-
-        if (!result.ok) error = "failed";
-      } catch {
-        error = "failed";
+      if (!ok) {
+        failed = files.length;
+        uploaded.forEach((item, index) => {
+          if (item) patch(index, { phase: "failed", reason: "failed" });
+        });
       }
     }
 
-    setState({ status: error ? "error" : "done", error });
-    router.refresh();
+    finish(failed);
   }
 
   return { state, upload };

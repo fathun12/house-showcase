@@ -4,7 +4,8 @@ import { deleteMedia, updateMedia } from "@/features/media/actions";
 import { mediaUrl } from "@/features/media/url";
 import { cn } from "@/lib/utils/cn";
 import type { Media } from "@/types/house";
-import { Button, buttonStyles } from "@/ui/primitives/Button";
+import { buttonStyles } from "@/ui/primitives/Button";
+import { SubmitButton } from "@/ui/primitives/SubmitButton";
 import { Select, TextField } from "@/ui/primitives/Field";
 
 type RoomOption = { value: string; label: string };
@@ -80,9 +81,13 @@ export function MediaItem({ media, rooms }: { media: Media; rooms: RoomOption[] 
             )}
           </div>
 
-          <Button type="submit" className="self-start">
+          <SubmitButton
+            className="self-start"
+            pendingLabel={t("item.saving")}
+            doneLabel={t("item.saved")}
+          >
             {t("item.save")}
-          </Button>
+          </SubmitButton>
         </form>
 
         <details>
@@ -99,9 +104,9 @@ export function MediaItem({ media, rooms }: { media: Media; rooms: RoomOption[] 
             className="mt-3 flex flex-wrap items-center gap-4"
           >
             <span>{t("item.deleteConfirm")}</span>
-            <Button type="submit" variant="outline">
+            <SubmitButton variant="outline" pendingLabel={t("item.deleting")}>
               {t("item.deleteYes")}
-            </Button>
+            </SubmitButton>
           </form>
         </details>
       </div>

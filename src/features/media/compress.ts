@@ -10,9 +10,12 @@ const OPTIONS: Options = {
 
 export type CompressedImage = { file: File; width: number; height: number };
 
-/** Shrinks an image in the browser and reports its final size. */
-export async function compressImage(source: File): Promise<CompressedImage> {
-  const file = await imageCompression(source, OPTIONS);
+/** Shrinks an image in the browser and reports its final size. onProgress gets 0 to 100. */
+export async function compressImage(
+  source: File,
+  onProgress?: (percent: number) => void,
+): Promise<CompressedImage> {
+  const file = await imageCompression(source, { ...OPTIONS, onProgress });
 
   const bitmap = await createImageBitmap(file);
   const { width, height } = bitmap;

@@ -5,7 +5,10 @@ import { useTranslations } from "next-intl";
 import type { ModelView } from "@/features/furniture/view";
 import { useModelScene } from "@/features/model3d/useModelScene";
 import { cn } from "@/lib/utils/cn";
+import { ProgressBar } from "@/ui/primitives/ProgressBar";
 import { ViewerButton } from "@/ui/public/ViewerStage";
+
+const STAGE_KEY = "house-showcase:stage";
 
 const subscribeCoarse = (onChange: () => void) => {
   const query = window.matchMedia("(pointer: coarse)");
@@ -15,12 +18,22 @@ const subscribeCoarse = (onChange: () => void) => {
 const isCoarse = () => window.matchMedia("(pointer: coarse)").matches;
 const notCoarse = () => false;
 
+// This component only exists in the browser (it is loaded with ssr: false), so reading storage is safe
+function readLight() {
+  try {
+    return window.localStorage.getItem(STAGE_KEY) === "light";
+  } catch {
+    return false;
+  }
+}
+
 /** The 3D stage. With a mouse it is interactive in the page; on a touch screen it is a
  *  preview (so the page still scrolls) and a tap opens it full screen, where it is interactive. */
 export function ModelViewer({ models }: { models: ModelView[] }) {
   const t = useTranslations("public.furniture.model");
   const coarse = useSyncExternalStore(subscribeCoarse, isCoarse, notCoarse);
   const [expanded, setExpanded] = useState(false);
+  const [light, setLight] = useState(readLight);
   const interactive = !coarse || expanded;
 
   const { hostRef, parts, status, toggle, toggleOpen, setAllOpen, showAll, resetView } =
@@ -30,6 +43,16 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
   const openable = parts.filter((part) => part.motion !== "none");
   const allOpen = openable.length > 0 && openable.every((part) => part.open);
   const showParts = parts.length > 1 || openable.length > 0;
+
+  function chooseLight(next: boolean) {
+    setLight(next);
+
+    try {
+      window.localStorage.setItem(STAGE_KEY, next ? "light" : "dark");
+    } catch {
+      // The choice just is not remembered
+    }
+  }
 
   // Full screen: freeze the page behind it, and let Escape close it
   useEffect(() => {
@@ -56,6 +79,8 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
       aria-label={t("label")}
       className={cn(
         "flex flex-col bg-stage text-stage-ink",
+        light && "stage-light",
+        light && !expanded && "border-2 border-foreground",
         expanded ? "fixed inset-0 z-50" : "relative",
       )}
     >
@@ -84,9 +109,10 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
         <div ref={hostRef} className="absolute inset-0" />
 
         {status === "loading" ? (
-          <p className="label pointer-events-none absolute inset-0 grid place-items-center">
-            {t("loading")}
-          </p>
+          <div className="pointer-events-none absolute inset-0 grid place-content-center justify-items-center gap-4 p-6">
+            <p className="label">{t("loading")}</p>
+            <ProgressBar value={null} label={t("loading")} className="w-48" />
+          </div>
         ) : null}
 
         {status === "error" ? (
@@ -121,6 +147,16 @@ export function ModelViewer({ models }: { models: ModelView[] }) {
               {t("showAll")}
             </ViewerButton>
           ) : null}
+
+          <div className="ml-auto flex items-center gap-2">
+            <span className="label hidden text-stage-ink/60 sm:inline">{t("background")}</span>
+            <ViewerButton active={!light} aria-pressed={!light} onClick={() => chooseLight(false)}>
+              {t("dark")}
+            </ViewerButton>
+            <ViewerButton active={light} aria-pressed={light} onClick={() => chooseLight(true)}>
+              {t("light")}
+            </ViewerButton>
+          </div>
         </div>
 
         {openable.length > 0 ? (

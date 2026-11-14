@@ -1,33 +1,29 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { requireAdmin } from "@/features/auth/session";
 import { createClient } from "@/lib/supabase/server";
-import { newModelSchema, savePartsSchema } from "./schema";
+import { newModelsSchema } from "./batchSchema";
+import type { NewModelsInput } from "./batchSchema";
+import { savePartsSchema } from "./schema";
 import type { SavePartsInput } from "./schema";
 import { MODEL_BUCKET } from "./url";
 
-export type NewModelInput = {
-  houseId: string;
-  storagePath: string;
-  sizeBytes: number;
-};
-
-/** Called by the browser after a .glb was uploaded to storage: records it in the database. */
-export async function addModel(input: NewModelInput): Promise<{ ok: boolean }> {
+/** Called by the browser after its .glb files were uploaded to storage: records all of them in one go. */
+export async function addModels(input: NewModelsInput): Promise<{ ok: boolean }> {
   await requireAdmin();
 
-  const parsed = newModelSchema.safeParse(input);
+  const parsed = newModelsSchema.safeParse(input);
+  if (!parsed.success) return { ok: false };
 
-  if (
-    !parsed.success ||
-    !parsed.data.storagePath.startsWith(`${parsed.data.houseId}/`) ||
-    !parsed.data.storagePath.endsWith(".glb")
-  ) {
+  const { houseId, items } = parsed.data;
+  const paths = items.map((item) => item.storagePath);
+
+  if (paths.some((path) => !path.startsWith(`${houseId}/`) || !path.endsWith(".glb"))) {
     return { ok: false };
   }
 
-  const { houseId, storagePath, sizeBytes } = parsed.data;
   const supabase = await createClient();
 
   const { count } = await supabase
@@ -35,16 +31,20 @@ export async function addModel(input: NewModelInput): Promise<{ ok: boolean }> {
     .select("id", { count: "exact", head: true })
     .eq("house_id", houseId);
 
-  const { error } = await supabase.from("models").insert({
-    house_id: houseId,
-    storage_path: storagePath,
-    size_bytes: sizeBytes,
-    position: count ?? 0,
-  });
+  const start = count ?? 0;
+
+  const { error } = await supabase.from("models").insert(
+    items.map((item, index) => ({
+      house_id: houseId,
+      storage_path: item.storagePath,
+      size_bytes: item.sizeBytes,
+      position: start + index,
+    })),
+  );
 
   if (error) {
-    // Do not leave an orphan file in storage
-    await supabase.storage.from(MODEL_BUCKET).remove([storagePath]);
+    // Do not leave orphan files in storage
+    await supabase.storage.from(MODEL_BUCKET).remove(paths);
     return { ok: false };
   }
 
@@ -57,19 +57,24 @@ export async function deleteModel(modelId: string): Promise<void> {
 
   const supabase = await createClient();
 
-  const { data } = await supabase
+  // One call deletes the row (its parts go with it) and tells us which file belonged to it
+  const { data, error } = await supabase
     .from("models")
-    .select("storage_path")
+    .delete()
     .eq("id", modelId)
+    .select("storage_path")
     .maybeSingle();
 
-  if (data) {
-    await supabase.storage.from(MODEL_BUCKET).remove([data.storage_path]);
-  }
-
-  const { error } = await supabase.from("models").delete().eq("id", modelId);
-
   if (error) throw new Error("Could not delete model");
+
+  // The file itself is removed after the answer was sent: the admin does not wait for it
+  if (data) {
+    const path = data.storage_path as string;
+
+    after(async () => {
+      await supabase.storage.from(MODEL_BUCKET).remove([path]);
+    });
+  }
 
   revalidatePath("/", "layout");
 }
@@ -84,19 +89,6 @@ export async function saveModelParts(input: SavePartsInput): Promise<{ ok: boole
   const { modelId, parts } = parsed.data;
   const supabase = await createClient();
 
-  const { data: model } = await supabase
-    .from("models")
-    .select("id")
-    .eq("id", modelId)
-    .maybeSingle();
-
-  if (!model) return { ok: false };
-
-  const { data: old } = await supabase
-    .from("model_parts")
-    .select("id")
-    .eq("model_id", modelId);
-
   // Only parts that have a name or a movement are worth storing
   const rows = parts
     .filter((part) => part.labelId || part.labelEn || part.motion !== "none")
@@ -110,18 +102,24 @@ export async function saveModelParts(input: SavePartsInput): Promise<{ ok: boole
       position: index,
     }));
 
-  // Insert the new rows first and delete the old ones after, so a failure never loses everything
+  // Insert the new rows first and delete the old ones after, so a failure never loses everything.
+  // (A model that does not exist fails here: model_id is a foreign key.)
+  let keepIds: string[] = [];
+
   if (rows.length > 0) {
-    const { error } = await supabase.from("model_parts").insert(rows);
-    if (error) return { ok: false };
+    const { data, error } = await supabase.from("model_parts").insert(rows).select("id");
+    if (error || !data) return { ok: false };
+
+    keepIds = data.map((row) => row.id as string);
   }
 
-  const oldIds = (old ?? []).map((row) => row.id as string);
+  const cleanup = supabase.from("model_parts").delete().eq("model_id", modelId);
+  const { error } =
+    keepIds.length > 0
+      ? await cleanup.not("id", "in", `(${keepIds.join(",")})`)
+      : await cleanup;
 
-  if (oldIds.length > 0) {
-    const { error } = await supabase.from("model_parts").delete().in("id", oldIds);
-    if (error) return { ok: false };
-  }
+  if (error) return { ok: false };
 
   revalidatePath("/", "layout");
   return { ok: true };

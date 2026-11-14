@@ -96,8 +96,10 @@
         "title": "Delete house",
         "warning": "Deleting a house also deletes all its rooms and data. This cannot be undone.",
         "confirm": "I understand, delete this house",
-        "submit": "Delete house"
-      }
+        "submit": "Delete house",
+        "deleting": "Deleting..."
+      },
+      "saving": "Saving..."
     },
     "furnitureForm": {
       "eyebrow": "02 / Furniture",
@@ -123,7 +125,8 @@
         "title": "Delete furniture",
         "warning": "Deleting furniture also deletes all its images and 3D models. This cannot be undone.",
         "confirm": "I understand, delete this furniture",
-        "submit": "Delete furniture"
+        "submit": "Delete furniture",
+        "deleting": "Deleting..."
       }
     },
     "translate": {
@@ -168,7 +171,9 @@
         "deleteYes": "Yes, delete",
         "cancel": "Cancel",
         "parts": "Set up parts and movement",
-        "partsClose": "Close setup"
+        "partsClose": "Close setup",
+        "deleting": "Deleting model...",
+        "deleteFailed": "Could not delete. Please try again."
       },
       "parts": {
         "title": "Parts and movement",
@@ -283,7 +288,30 @@
         "save": "Save",
         "delete": "Delete",
         "deleteConfirm": "Delete this image?",
-        "deleteYes": "Yes, delete"
+        "deleteYes": "Yes, delete",
+        "saving": "Saving...",
+        "saved": "Saved",
+        "deleting": "Deleting..."
+      }
+    },
+    "upload": {
+      "buttonWorking": "Uploading...",
+      "buttonSaving": "Saving...",
+      "summary": "{done} of {total} files done",
+      "savingSummary": "Saving to the database...",
+      "allDone": "Done. All files uploaded.",
+      "someFailed": "{failed} files failed.",
+      "phases": {
+        "waiting": "Waiting",
+        "compressing": "Shrinking",
+        "uploading": "Uploading",
+        "done": "Done",
+        "failed": "Failed"
+      },
+      "reasons": {
+        "failed": "Upload failed. Please try again.",
+        "not_glb": "This is not a valid .glb file.",
+        "too_big": "The file is larger than 20 MB."
       }
     }
   },
@@ -412,7 +440,10 @@
         "closePart": "Close",
         "openAll": "Open all",
         "closeAll": "Close all",
-        "openHint": "Tap or click doors and drawers on the model to open them."
+        "openHint": "Tap or click doors and drawers on the model to open them.",
+        "background": "Background",
+        "dark": "Dark",
+        "light": "Light"
       },
       "specs": {
         "title": "Size and material",

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { redirectLocalized, requireAdmin } from "@/features/auth/session";
 import { MEDIA_BUCKET } from "@/features/media/url";
 import { MODEL_BUCKET } from "@/features/models/url";
@@ -62,32 +63,29 @@ export async function deleteHouse(houseId: string, kind: HouseKind = "house"): P
 
   const supabase = await createClient();
 
-  // Deleting a house only deletes database rows, so remove its image files first
-  const { data: media } = await supabase
-    .from("media")
-    .select("storage_path")
-    .eq("house_id", houseId);
-
-  const paths = (media ?? []).map((item) => item.storage_path as string);
-
-  if (paths.length > 0) {
-    await supabase.storage.from(MEDIA_BUCKET).remove(paths);
-  }
-
-  const { data: models } = await supabase
-    .from("models")
-    .select("storage_path")
-    .eq("house_id", houseId);
-
-  const modelPaths = (models ?? []).map((item) => item.storage_path as string);
-
-  if (modelPaths.length > 0) {
-    await supabase.storage.from(MODEL_BUCKET).remove(modelPaths);
-  }
+  // Deleting a house only deletes database rows, so first find out which files belong to it
+  const [{ data: media }, { data: models }] = await Promise.all([
+    supabase.from("media").select("storage_path").eq("house_id", houseId),
+    supabase.from("models").select("storage_path").eq("house_id", houseId),
+  ]);
 
   const { error } = await supabase.from("houses").delete().eq("id", houseId);
 
   if (error) throw new Error("Could not delete house");
+
+  const mediaPaths = (media ?? []).map((item) => item.storage_path as string);
+  const modelPaths = (models ?? []).map((item) => item.storage_path as string);
+
+  // The files are removed after the answer was sent: the admin does not wait for them
+  after(async () => {
+    if (mediaPaths.length > 0) {
+      await supabase.storage.from(MEDIA_BUCKET).remove(mediaPaths);
+    }
+
+    if (modelPaths.length > 0) {
+      await supabase.storage.from(MODEL_BUCKET).remove(modelPaths);
+    }
+  });
 
   revalidatePath("/", "layout");
   await redirectLocalized(kind === "furniture" ? "/admin/furniture" : "/admin/houses");
