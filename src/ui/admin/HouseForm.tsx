@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useHouseForm } from "@/features/houses/useHouseForm";
 import { Link } from "@/lib/i18n/navigation";
@@ -34,9 +35,74 @@ export function HouseForm({ house, kind }: { house: House | null; kind: HouseKin
     return t(`errors.${KNOWN_ERRORS.has(code) ? code : "invalid"}`);
   };
 
+  // Field messages sit under their fields, far above the Save button on a long form.
+  // After a failed save, a summary at the top of the form is scrolled into view.
+  const summaryRef = useRef<HTMLDivElement>(null);
+
+  const problems = Object.entries(errors).filter(
+    (entry): entry is [string, string] => Boolean(entry[1]) && entry[0] !== "form",
+  );
+
+  const labels: Record<string, string> = {
+    slug: t("fields.slug"),
+    title: t("fields.title"),
+    tagline: t("fields.tagline"),
+    designer: t("fields.designer"),
+    whatsapp: t("fields.whatsapp"),
+    floors: t("fields.floors"),
+    bedrooms: t("fields.bedrooms"),
+    bathrooms: t("fields.bathrooms"),
+    area_m2: t("fields.area"),
+    sort_order: t("fields.order"),
+    length_cm: tf("fields.length"),
+    width_cm: tf("fields.width"),
+    height_cm: tf("fields.height"),
+    material: tf("fields.material"),
+    finish: tf("fields.finish"),
+    why: isFurniture ? tf("fields.why") : t("fields.why"),
+    notes: isFurniture ? tf("fields.notes") : t("fields.notes"),
+  };
+
+  const labelOf = (field: string) => {
+    const base = field.replace(/_(id|en)$/, "");
+    const suffix = field.endsWith("_id") ? " / ID" : field.endsWith("_en") ? " / EN" : "";
+    return `${labels[base] ?? field}${suffix}`;
+  };
+
+  useEffect(() => {
+    const hasFieldErrors = Object.entries(errors).some(
+      ([field, code]) => code && field !== "form",
+    );
+
+    if (hasFieldErrors) {
+      summaryRef.current?.scrollIntoView({ block: "center" });
+      summaryRef.current?.focus({ preventScroll: true });
+    } else if (errors.form) {
+      window.scrollTo({ top: 0 });
+    }
+  }, [errors]);
+
   return (
     <form action={formAction} className="flex flex-col gap-12">
       <input type="hidden" name="kind" value={kind} />
+
+      {problems.length > 0 ? (
+        <div
+          ref={summaryRef}
+          role="alert"
+          tabIndex={-1}
+          className="border-2 border-accent p-4 text-accent outline-none"
+        >
+          <p className="label">{t("errors.summary")}</p>
+          <ul className="mt-3 flex flex-col gap-1 text-sm">
+            {problems.map(([field, code]) => (
+              <li key={field}>
+                {labelOf(field)}: {t(`errors.${KNOWN_ERRORS.has(code) ? code : "invalid"}`)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       {error("form") ? (
         <p role="alert" className="label border-2 border-accent p-4 text-accent">

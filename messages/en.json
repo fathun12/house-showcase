@@ -87,10 +87,11 @@
         "too_small": "Required, or the value is too small.",
         "too_big": "Too long or too large.",
         "invalid_format": "Wrong format.",
-        "invalid_type": "Must be a number.",
+        "invalid_type": "Must be a number, for example 75 or 75.5.",
         "duplicate": "This slug is already used by another project.",
         "save_failed": "Could not save. Please try again.",
-        "invalid": "Invalid value."
+        "invalid": "Invalid value.",
+        "summary": "Not saved yet. Please fix these fields:"
       },
       "delete": {
         "title": "Delete house",

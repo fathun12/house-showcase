@@ -87,10 +87,11 @@
         "too_small": "Wajib diisi, atau nilainya terlalu kecil.",
         "too_big": "Terlalu panjang atau terlalu besar.",
         "invalid_format": "Format tidak sesuai.",
-        "invalid_type": "Harus berupa angka.",
+        "invalid_type": "Harus berupa angka, contoh: 75 atau 75,5.",
         "duplicate": "Slug ini sudah dipakai proyek lain.",
         "save_failed": "Gagal menyimpan. Coba lagi.",
-        "invalid": "Isian tidak valid."
+        "invalid": "Isian tidak valid.",
+        "summary": "Simpan belum berhasil. Perbaiki isian ini:"
       },
       "delete": {
         "title": "Hapus rumah",

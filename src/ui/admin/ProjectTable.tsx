@@ -40,7 +40,7 @@ export function ProjectTable({
                 href={`${BASE[kind]}/${project.id}`}
                 className="font-bold underline underline-offset-4 hover:text-accent"
               >
-                {locale === "en" && project.title_en ? project.title_en : project.title_id}
+                {project.title_id}
               </Link>
             </Td>
             <Td className="font-mono text-sm">{project.slug}</Td>

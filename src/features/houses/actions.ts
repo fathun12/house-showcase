@@ -18,6 +18,31 @@ export type HouseFormState = {
   values: HouseFormValues | null;
 };
 
+const NUMBER_FIELDS = [
+  "floors",
+  "bedrooms",
+  "bathrooms",
+  "area_m2",
+  "length_cm",
+  "width_cm",
+  "height_cm",
+  "sort_order",
+] as const;
+
+/** People type "75,5" or "75 cm": turn that into "75.5" and "75" before the numbers are checked. */
+function cleanNumbers(values: HouseFormValues): HouseFormValues {
+  const cleaned = { ...values };
+
+  for (const field of NUMBER_FIELDS) {
+    cleaned[field] = values[field]
+      .trim()
+      .replace(/\s*(cm|m²|m2|m)$/i, "")
+      .replace(",", ".");
+  }
+
+  return cleaned;
+}
+
 export async function saveHouse(
   houseId: string | null,
   _previous: HouseFormState,
@@ -25,7 +50,7 @@ export async function saveHouse(
 ): Promise<HouseFormState> {
   await requireAdmin();
 
-  const values = readFormValues(formData, HOUSE_FIELDS);
+  const values = cleanNumbers(readFormValues(formData, HOUSE_FIELDS));
   const parsed = houseSchema.safeParse(values);
 
   if (!parsed.success) {
