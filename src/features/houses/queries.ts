@@ -70,7 +70,7 @@ export const getPublishedHouse = cache(async (slug: string): Promise<PublicHouse
 
   const { data, error } = await supabase
     .from("houses")
-    .select("*, rooms(*), media(*)")
+    .select("*, rooms(*), media(*), house_files(*)")
     .eq("slug", slug)
     .eq("kind", "house")
     .maybeSingle();

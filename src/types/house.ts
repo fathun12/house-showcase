@@ -1,3 +1,5 @@
+import type { HouseFile } from "@/types/file";
+
 export const HOUSE_KINDS = ["house", "furniture"] as const;
 
 export type HouseKind = (typeof HOUSE_KINDS)[number];
@@ -89,7 +91,11 @@ export type HouseSummary = Pick<
   | "sort_order"
 >;
 
-export type PublicHouse = House & { rooms: Room[]; media: Media[] };
+export type PublicHouse = House & {
+  rooms: Room[];
+  media: Media[];
+  house_files: HouseFile[];
+};
 
 export type Model = {
   id: string;

@@ -3,6 +3,7 @@ import type { HouseContent, SummaryRow } from "@/features/houses/view";
 import { buildSlides, buildViewerItems } from "@/features/viewer/items";
 import { isValidWhatsapp } from "@/lib/utils/whatsapp";
 import { Compare } from "@/ui/public/Compare";
+import { FileDownloads } from "@/ui/public/FileDownloads";
 import { FloorPlan } from "@/ui/public/FloorPlan";
 import { GalleryStrip } from "@/ui/public/GalleryStrip";
 import { Hero } from "@/ui/public/Hero";
@@ -126,6 +127,7 @@ export function HousePage({ content, compare }: Props) {
               designByLabel: t("specs.designBy"),
               designer: content.designer,
             }}
+            files={content.files.length > 0 ? <FileDownloads files={content.files} /> : null}
           />
 
           <div className="min-w-0">
@@ -196,6 +198,12 @@ export function HousePage({ content, compare }: Props) {
             ) : null}
           </div>
         </div>
+      ) : null}
+
+      {content.files.length > 0 ? (
+        <section className="gutter mx-auto max-w-page pt-6 lg:hidden">
+          <FileDownloads files={content.files} />
+        </section>
       ) : null}
 
       {has("gallery") ? (

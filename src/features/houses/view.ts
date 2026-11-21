@@ -1,3 +1,5 @@
+import { formatSize } from "@/features/files/size";
+import { extensionOf } from "@/features/files/url";
 import { mediaUrl } from "@/features/media/url";
 import { pickLocalized } from "@/lib/utils/format";
 import type { HouseSummary, Media, PublicHouse } from "@/types/house";
@@ -21,6 +23,13 @@ export type RoomView = {
   photos: ImageView[];
 };
 
+export type FileView = {
+  id: string;
+  name: string;
+  ext: string;
+  size: string;
+};
+
 export type HouseContent = {
   slug: string;
   title: string;
@@ -39,6 +48,7 @@ export type HouseContent = {
   floorplans: ImageView[];
   rooms: RoomView[];
   gallery: ImageView[];
+  files: FileView[];
 };
 
 export type SummaryRow = {
@@ -103,6 +113,12 @@ export function buildHouseContent(house: PublicHouse, locale: string): HouseCont
     hero: imagesOf("hero")[0] ?? null,
     floorplans: imagesOf("floorplan"),
     gallery: [...imagesOf("gallery"), ...orphanPhotos],
+    files: [...house.house_files].sort(byPosition).map((file) => ({
+      id: file.id,
+      name: file.file_name,
+      ext: extensionOf(file.file_name).toUpperCase(),
+      size: formatSize(file.size_bytes),
+    })),
     rooms: rooms.map((room, index) => {
       const name = pickLocalized(locale, room.name_id, room.name_en);
       const number = String(index + 1).padStart(2, "0");

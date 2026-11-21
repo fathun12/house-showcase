@@ -3,10 +3,10 @@ import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils/cn";
 import type { HouseKind } from "@/types/house";
 
-type Tab = "details" | "rooms" | "media" | "models";
+type Tab = "details" | "rooms" | "media" | "models" | "files";
 
 const TABS: Record<HouseKind, readonly Tab[]> = {
-  house: ["details", "rooms", "media"],
+  house: ["details", "rooms", "media", "models", "files"],
   furniture: ["details", "media", "models"],
 };
 

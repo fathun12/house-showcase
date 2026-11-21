@@ -147,7 +147,8 @@
       "details": "Detail",
       "rooms": "Ruangan",
       "media": "Gambar",
-      "models": "3D"
+      "models": "3D",
+      "files": "Berkas"
     },
     "models": {
       "eyebrow": "3D",
@@ -319,6 +320,45 @@
         "not_glb": "Ini bukan file .glb yang valid.",
         "too_big": "File lebih dari 20 MB."
       }
+    },
+    "files": {
+      "eyebrow": "Berkas",
+      "title": "Berkas unduhan",
+      "empty": "Belum ada berkas. Unggah di atas.",
+      "upload": {
+        "files": "Berkas",
+        "hint": "PDF, dokumen, OBJ, GLB, SKP, ZIP, dan sejenisnya, maksimal 50 MB per berkas. Berkas disimpan privat dan hanya bisa diunduh dengan token.",
+        "submit": "Unggah berkas"
+      },
+      "item": {
+        "size": "Ukuran",
+        "delete": "Hapus",
+        "deleteConfirm": "Hapus berkas ini dan semua tokennya?",
+        "deleteYes": "Ya, hapus",
+        "cancel": "Batal",
+        "deleting": "Menghapus berkas...",
+        "deleteFailed": "Gagal menghapus berkas. Coba lagi.",
+        "tokens": "Token unduhan",
+        "tokenNote": "Catatan: untuk siapa",
+        "tokenDays": "Berlaku",
+        "days": "{count} hari",
+        "create": "Buat token",
+        "creating": "Membuat...",
+        "createFailed": "Gagal membuat token. Coba lagi.",
+        "issued": "Token baru. Hanya tampil sekali, salin sekarang.",
+        "copy": "Salin",
+        "copied": "Tersalin",
+        "dismiss": "Tutup",
+        "noTokens": "Belum ada token.",
+        "revoke": "Cabut",
+        "until": "s/d",
+        "status": {
+          "active": "Aktif",
+          "used": "Terpakai",
+          "expired": "Kedaluwarsa",
+          "revoked": "Dicabut"
+        }
+      }
     }
   },
   "public": {
@@ -474,6 +514,19 @@
         "size": "Ukuran (cm)",
         "material": "Bahan"
       }
+    },
+    "files": {
+      "title": "Berkas",
+      "hint": "Mengunduh butuh token dari admin.",
+      "dialogTitle": "Masukkan token",
+      "dialogHint": "Token sekali pakai dari admin. Setelah dipakai, token langsung hangus.",
+      "tokenLabel": "Token",
+      "submit": "Unduh",
+      "checking": "Memeriksa...",
+      "cancel": "Batal",
+      "close": "Tutup",
+      "invalid": "Token tidak valid, sudah terpakai, atau kedaluwarsa.",
+      "started": "Unduhan dimulai. Token ini sudah hangus."
     }
   }
 }

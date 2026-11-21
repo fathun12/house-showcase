@@ -245,3 +245,65 @@ alter table public.houses
   add column material_en text not null default '',
   add column finish_id text not null default '',
   add column finish_en text not null default '';
+
+-- 21 Nov 2026: downloadable project files protected by one-time tokens
+create table public.house_files (
+  id           uuid primary key default gen_random_uuid(),
+  house_id     uuid not null references public.houses (id) on delete cascade,
+  storage_path text not null,
+  file_name    text not null,
+  size_bytes   bigint,
+  position     smallint not null default 0,
+  created_at   timestamptz not null default now()
+);
+
+create index house_files_house_idx on public.house_files (house_id, position);
+
+-- Only the SHA-256 hash of a token is stored. The token itself is shown once, to the admin.
+create table public.file_tokens (
+  id         uuid primary key default gen_random_uuid(),
+  file_id    uuid not null references public.house_files (id) on delete cascade,
+  token_hash text not null unique,
+  label      text not null default '',
+  expires_at timestamptz not null,
+  used_at    timestamptz,
+  revoked_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+create index file_tokens_file_idx on public.file_tokens (file_id, created_at desc);
+
+alter table public.house_files enable row level security;
+alter table public.file_tokens enable row level security;
+
+create policy "house_files_admin_all" on public.house_files
+  for all to authenticated using (true) with check (true);
+
+-- Visitors see the names and sizes of files of published houses (not the files themselves)
+create policy "house_files_public_read" on public.house_files
+  for select to anon, authenticated
+  using (exists (
+    select 1 from public.houses h
+    where h.id = house_files.house_id and h.is_published
+  ));
+
+create policy "file_tokens_admin_all" on public.file_tokens
+  for all to authenticated using (true) with check (true);
+
+grant select on public.house_files to anon, authenticated;
+grant insert, update, delete on public.house_files to authenticated;
+grant select, insert, update, delete on public.file_tokens to authenticated;
+
+revoke all on public.file_tokens from anon;
+revoke insert, update, delete on public.house_files from anon;
+
+-- Private bucket: no policy for anon, so nobody can open a file by its address.
+-- Downloads go through the server, which checks a token first.
+insert into storage.buckets (id, name, public, file_size_limit)
+values ('house-files', 'house-files', false, 52428800)
+on conflict (id) do nothing;
+
+create policy "house_files_storage_admin_all" on storage.objects
+  for all to authenticated
+  using (bucket_id = 'house-files')
+  with check (bucket_id = 'house-files');

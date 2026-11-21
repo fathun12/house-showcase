@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import type { RoomView } from "@/features/houses/view";
 import { useActiveSection } from "@/features/nav/useActiveSection";
 
@@ -18,6 +18,8 @@ type Props = {
     designByLabel: string;
     designer: string;
   };
+  /** Downloadable files, under the specs, on desktop only */
+  files?: ReactNode;
 };
 
 /** The marker of the section being read: a terracotta bar on the left edge of the
@@ -28,7 +30,7 @@ const marker =
 
 /** Numbered links to the page sections: a sticky bar on phones, a sticky column on desktop.
  *  On desktop the rooms sit under "Rooms", so every room is one click away while scrolling. */
-export function SectionIndex({ label, items, rooms, specs }: Props) {
+export function SectionIndex({ label, items, rooms, specs, files }: Props) {
   const activeSection = useActiveSection(items.map((item) => item.id));
   const passedRoom = useActiveSection(rooms.map((room) => room.anchor));
   const activeRoom = activeSection === "rooms" ? passedRoom : null;
@@ -114,6 +116,8 @@ export function SectionIndex({ label, items, rooms, specs }: Props) {
           ) : null}
         </div>
       ) : null}
+
+      {files ? <div className="mt-10 hidden pb-2 lg:block">{files}</div> : null}
     </nav>
   );
 }

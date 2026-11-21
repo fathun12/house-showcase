@@ -147,7 +147,8 @@
       "details": "Details",
       "rooms": "Rooms",
       "media": "Images",
-      "models": "3D"
+      "models": "3D",
+      "files": "Files"
     },
     "models": {
       "eyebrow": "3D",
@@ -319,6 +320,45 @@
         "not_glb": "This is not a valid .glb file.",
         "too_big": "The file is larger than 20 MB."
       }
+    },
+    "files": {
+      "eyebrow": "Files",
+      "title": "Download files",
+      "empty": "No files yet. Upload above.",
+      "upload": {
+        "files": "Files",
+        "hint": "PDF, documents, OBJ, GLB, SKP, ZIP and similar, up to 50 MB each. Files are private and can only be downloaded with a token.",
+        "submit": "Upload files"
+      },
+      "item": {
+        "size": "Size",
+        "delete": "Delete",
+        "deleteConfirm": "Delete this file and all its tokens?",
+        "deleteYes": "Yes, delete",
+        "cancel": "Cancel",
+        "deleting": "Deleting file...",
+        "deleteFailed": "Could not delete the file. Try again.",
+        "tokens": "Download tokens",
+        "tokenNote": "Note: who it is for",
+        "tokenDays": "Valid for",
+        "days": "{count, plural, one {# day} other {# days}}",
+        "create": "Create token",
+        "creating": "Creating...",
+        "createFailed": "Could not create the token. Try again.",
+        "issued": "New token. Shown only once, copy it now.",
+        "copy": "Copy",
+        "copied": "Copied",
+        "dismiss": "Close",
+        "noTokens": "No tokens yet.",
+        "revoke": "Revoke",
+        "until": "until",
+        "status": {
+          "active": "Active",
+          "used": "Used",
+          "expired": "Expired",
+          "revoked": "Revoked"
+        }
+      }
     }
   },
   "public": {
@@ -474,6 +514,19 @@
         "size": "Size (cm)",
         "material": "Material"
       }
+    },
+    "files": {
+      "title": "Files",
+      "hint": "Downloading needs a token from the admin.",
+      "dialogTitle": "Enter token",
+      "dialogHint": "A one-time token from the admin. Once used, it stops working.",
+      "tokenLabel": "Token",
+      "submit": "Download",
+      "checking": "Checking...",
+      "cancel": "Cancel",
+      "close": "Close",
+      "invalid": "The token is invalid, already used, or expired.",
+      "started": "Download started. This token has now expired."
     }
   }
 }
