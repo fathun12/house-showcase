@@ -1,6 +1,8 @@
 import { formatSize } from "@/features/files/size";
 import { extensionOf } from "@/features/files/url";
 import { mediaUrl } from "@/features/media/url";
+import { buildModelViews } from "@/features/models/view";
+import type { ModelView } from "@/features/models/view";
 import { pickLocalized } from "@/lib/utils/format";
 import type { HouseSummary, Media, PublicHouse } from "@/types/house";
 
@@ -49,6 +51,7 @@ export type HouseContent = {
   rooms: RoomView[];
   gallery: ImageView[];
   files: FileView[];
+  models: ModelView[];
 };
 
 export type SummaryRow = {
@@ -113,6 +116,7 @@ export function buildHouseContent(house: PublicHouse, locale: string): HouseCont
     hero: imagesOf("hero")[0] ?? null,
     floorplans: imagesOf("floorplan"),
     gallery: [...imagesOf("gallery"), ...orphanPhotos],
+    models: buildModelViews(house.models, locale),
     files: [...house.house_files].sort(byPosition).map((file) => ({
       id: file.id,
       name: file.file_name,

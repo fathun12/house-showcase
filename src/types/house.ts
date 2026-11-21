@@ -95,6 +95,7 @@ export type PublicHouse = House & {
   rooms: Room[];
   media: Media[];
   house_files: HouseFile[];
+  models: PublicModel[];
 };
 
 export type Model = {

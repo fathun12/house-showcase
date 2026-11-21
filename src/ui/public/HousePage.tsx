@@ -8,6 +8,7 @@ import { FloorPlan } from "@/ui/public/FloorPlan";
 import { GalleryStrip } from "@/ui/public/GalleryStrip";
 import { Hero } from "@/ui/public/Hero";
 import { ImageViewer } from "@/ui/public/ImageViewer";
+import { ModelSection } from "@/ui/public/ModelSection";
 import { Notes } from "@/ui/public/Notes";
 import { RoomPreview } from "@/ui/public/RoomPreview";
 import { RoomSection } from "@/ui/public/RoomSection";
@@ -37,6 +38,7 @@ export function HousePage({ content, compare }: Props) {
     content.rooms.length > 0 && { id: "rooms", label: t("nav.rooms") },
     content.why && { id: "why", label: t("nav.why") },
     content.notes && { id: "notes", label: t("nav.notes") },
+    content.models.length > 0 && { id: "model", label: t("furniture.nav.model") },
     content.gallery.length > 0 && { id: "gallery", label: t("nav.gallery") },
     compare.length > 1 && { id: "compare", label: t("nav.compare") },
   ]
@@ -198,6 +200,15 @@ export function HousePage({ content, compare }: Props) {
             ) : null}
           </div>
         </div>
+      ) : null}
+
+      {has("model") ? (
+        <section id="model" className="group gutter mx-auto max-w-page scroll-mt-20 pt-6 pb-12">
+          <SectionTitle number={numberOf("model")}>{t("furniture.model.title")}</SectionTitle>
+          <div className="mt-8">
+            <ModelSection models={content.models} />
+          </div>
+        </section>
       ) : null}
 
       {content.files.length > 0 ? (

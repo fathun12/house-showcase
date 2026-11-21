@@ -1,18 +1,12 @@
 import { byPosition, toImage } from "@/features/houses/view";
 import type { ImageView } from "@/features/houses/view";
-import { readSettings } from "@/features/model3d/config";
-import type { PartConfig } from "@/features/model3d/config";
-import { modelUrl } from "@/features/models/url";
+import { buildModelViews } from "@/features/models/view";
+import type { ModelView } from "@/features/models/view";
 import type { ViewerItem } from "@/features/viewer/items";
 import { pickLocalized } from "@/lib/utils/format";
 import type { FurnitureSummary, PublicFurniture } from "@/types/house";
 
-export type ModelView = {
-  id: string;
-  url: string;
-  /** glTF node name -> label and movement chosen in the admin */
-  configs: Record<string, PartConfig>;
-};
+export type { ModelView };
 
 export type FurnitureContent = {
   slug: string;
@@ -40,19 +34,7 @@ export function buildFurnitureContent(item: PublicFurniture, locale: string): Fu
   const imagesOf = (kind: "hero" | "gallery") =>
     media.filter((entry) => entry.kind === kind).map((entry) => toImage(entry, locale, title));
 
-  const models = [...item.models].sort(byPosition).map((model) => {
-    const configs: Record<string, PartConfig> = {};
-
-    for (const part of model.model_parts) {
-      configs[part.node_name] = {
-        label: pickLocalized(locale, part.label_id, part.label_en),
-        motion: part.motion,
-        settings: readSettings(part.settings),
-      };
-    }
-
-    return { id: model.id, url: modelUrl(model.storage_path), configs };
-  });
+  const models = buildModelViews(item.models, locale);
 
   return {
     slug: item.slug,
